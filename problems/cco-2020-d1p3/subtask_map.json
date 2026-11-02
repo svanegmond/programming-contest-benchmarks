@@ -1,0 +1,603 @@
+{
+ "problem_id": "cco-2020-d1p3",
+ "zip": "2020/2020CCOTestData.zip",
+ "method": "group number N in dayNdata/cco_d1p3/d1p3.G-K.in: G=1..7 -> subtask_1..subtask_7, G=8 -> full_constraints, G=0 sample; confirmed by max N/M per group and w>=ceil(N/2) only holding in G=3",
+ "members": [
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-01.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-01.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-02.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-02.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-03.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-03.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-04.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-04.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-05.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-05.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-06.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-06.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-07.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-07.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-08.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-08.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-09.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-09.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-10.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-10.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-11.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-11.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-12.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-12.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-13.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-13.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-14.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-14.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.1-15.in",
+   "expected": "day1data/cco_d1p3/d1p3.1-15.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-16.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-16.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-17.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-17.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-18.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-18.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-19.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-19.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-20.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-20.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-21.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-21.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-22.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-22.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-23.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-23.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-24.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-24.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-25.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-25.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-26.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-26.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-27.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-27.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-28.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-28.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-29.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-29.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-30.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-30.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-31.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-31.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-32.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-32.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-33.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-33.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.2-34.in",
+   "expected": "day1data/cco_d1p3/d1p3.2-34.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-35.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-35.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-36.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-36.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-37.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-37.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-38.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-38.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-39.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-39.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-40.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-40.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-41.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-41.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-42.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-42.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-43.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-43.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-44.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-44.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-45.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-45.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-46.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-46.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-47.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-47.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.3-48.in",
+   "expected": "day1data/cco_d1p3/d1p3.3-48.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-49.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-49.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-50.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-50.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-51.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-51.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-52.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-52.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-53.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-53.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-54.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-54.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-55.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-55.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-56.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-56.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-57.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-57.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-58.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-58.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-59.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-59.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-60.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-60.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-61.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-61.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.4-62.in",
+   "expected": "day1data/cco_d1p3/d1p3.4-62.out",
+   "subtask": "subtask_4"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-63.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-63.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-64.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-64.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-65.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-65.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-66.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-66.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-67.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-67.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-68.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-68.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-69.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-69.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-70.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-70.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-71.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-71.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-72.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-72.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-73.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-73.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-74.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-74.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-75.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-75.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.5-76.in",
+   "expected": "day1data/cco_d1p3/d1p3.5-76.out",
+   "subtask": "subtask_5"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-77.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-77.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-78.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-78.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-79.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-79.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-80.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-80.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-81.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-81.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-82.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-82.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-83.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-83.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-84.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-84.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-85.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-85.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-86.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-86.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-87.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-87.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-88.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-88.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-89.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-89.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.6-90.in",
+   "expected": "day1data/cco_d1p3/d1p3.6-90.out",
+   "subtask": "subtask_6"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-100.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-100.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-101.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-101.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-102.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-102.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-103.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-103.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-104.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-104.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-91.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-91.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-92.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-92.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-93.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-93.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-94.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-94.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-95.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-95.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-96.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-96.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-97.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-97.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-98.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-98.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.7-99.in",
+   "expected": "day1data/cco_d1p3/d1p3.7-99.out",
+   "subtask": "subtask_7"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-105.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-105.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-106.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-106.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-107.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-107.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-108.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-108.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-109.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-109.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-110.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-110.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-111.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-111.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-112.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-112.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-113.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-113.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-114.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-114.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-115.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-115.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-116.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-116.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-117.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-117.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p3/d1p3.8-118.in",
+   "expected": "day1data/cco_d1p3/d1p3.8-118.out",
+   "subtask": "full_constraints"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "day1data/cco_d1p3/d1p3.0.in",
+   "why": "sample"
+  }
+ ]
+}

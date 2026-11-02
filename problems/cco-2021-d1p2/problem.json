@@ -1,0 +1,23 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "validator",
+  "id": "cco-2021-d1p2",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco21p2",
+  "relative_tolerance": null,
+  "statement_path": "statements/2021/2021CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.32
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.68
+    }
+  ],
+  "time_limit_s": 1.5,
+  "title": "Weird Numeral System",
+  "year": 2021
+}

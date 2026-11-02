@@ -1,0 +1,17 @@
+[project]
+name = "programming-contest-benchmarks"
+version = "0.1.0"
+description = "Benchmark harness and admitted problem set for CCO programming-contest evaluations"
+requires-python = ">=3.12"
+dependencies = []
+license = "CC-BY-NC-4.0"
+
+[tool.pytest.ini_options]
+pythonpath = [".", "code/cco-eval"]
+addopts = ["--import-mode=importlib"]
+testpaths = ["code/cco-eval/tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

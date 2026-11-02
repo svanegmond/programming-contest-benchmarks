@@ -1,0 +1,278 @@
+{
+ "problem_id": "cco-2016-d2p2",
+ "zip": "2016/2016CCOTestData.zip",
+ "method": "ZIP's day2/zombie_subtasks.txt lists official Subtask 1-4 groups (0=sample); mapped 1->subtask_1, 2->subtask_2, 3->subtask_3, 4->full_constraints; checked against input N,M,K",
+ "members": [
+  {
+   "input": "day2/zombies_tests/zombies.1.in",
+   "expected": "day2/zombies_tests/zombies.1.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.10.in",
+   "expected": "day2/zombies_tests/zombies.10.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.11.in",
+   "expected": "day2/zombies_tests/zombies.11.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.12.in",
+   "expected": "day2/zombies_tests/zombies.12.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.13.in",
+   "expected": "day2/zombies_tests/zombies.13.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.14.in",
+   "expected": "day2/zombies_tests/zombies.14.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.15.in",
+   "expected": "day2/zombies_tests/zombies.15.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.16.in",
+   "expected": "day2/zombies_tests/zombies.16.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.17.in",
+   "expected": "day2/zombies_tests/zombies.17.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.18.in",
+   "expected": "day2/zombies_tests/zombies.18.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.19.in",
+   "expected": "day2/zombies_tests/zombies.19.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.2.in",
+   "expected": "day2/zombies_tests/zombies.2.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.20.in",
+   "expected": "day2/zombies_tests/zombies.20.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.21.in",
+   "expected": "day2/zombies_tests/zombies.21.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.22.in",
+   "expected": "day2/zombies_tests/zombies.22.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.23.in",
+   "expected": "day2/zombies_tests/zombies.23.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.24.in",
+   "expected": "day2/zombies_tests/zombies.24.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.25.in",
+   "expected": "day2/zombies_tests/zombies.25.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.26.in",
+   "expected": "day2/zombies_tests/zombies.26.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.27.in",
+   "expected": "day2/zombies_tests/zombies.27.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.28.in",
+   "expected": "day2/zombies_tests/zombies.28.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.29.in",
+   "expected": "day2/zombies_tests/zombies.29.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.3.in",
+   "expected": "day2/zombies_tests/zombies.3.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.30.in",
+   "expected": "day2/zombies_tests/zombies.30.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.31.in",
+   "expected": "day2/zombies_tests/zombies.31.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.32.in",
+   "expected": "day2/zombies_tests/zombies.32.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.33.in",
+   "expected": "day2/zombies_tests/zombies.33.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.34.in",
+   "expected": "day2/zombies_tests/zombies.34.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.35.in",
+   "expected": "day2/zombies_tests/zombies.35.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.36.in",
+   "expected": "day2/zombies_tests/zombies.36.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.37.in",
+   "expected": "day2/zombies_tests/zombies.37.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.38.in",
+   "expected": "day2/zombies_tests/zombies.38.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.39.in",
+   "expected": "day2/zombies_tests/zombies.39.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.4.in",
+   "expected": "day2/zombies_tests/zombies.4.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.40.in",
+   "expected": "day2/zombies_tests/zombies.40.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.41.in",
+   "expected": "day2/zombies_tests/zombies.41.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.42.in",
+   "expected": "day2/zombies_tests/zombies.42.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.43.in",
+   "expected": "day2/zombies_tests/zombies.43.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.44.in",
+   "expected": "day2/zombies_tests/zombies.44.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.45.in",
+   "expected": "day2/zombies_tests/zombies.45.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.46.in",
+   "expected": "day2/zombies_tests/zombies.46.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.47.in",
+   "expected": "day2/zombies_tests/zombies.47.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.48.in",
+   "expected": "day2/zombies_tests/zombies.48.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.49.in",
+   "expected": "day2/zombies_tests/zombies.49.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.5.in",
+   "expected": "day2/zombies_tests/zombies.5.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.50.in",
+   "expected": "day2/zombies_tests/zombies.50.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.51.in",
+   "expected": "day2/zombies_tests/zombies.51.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.52.in",
+   "expected": "day2/zombies_tests/zombies.52.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.53.in",
+   "expected": "day2/zombies_tests/zombies.53.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.6.in",
+   "expected": "day2/zombies_tests/zombies.6.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.7.in",
+   "expected": "day2/zombies_tests/zombies.7.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.8.in",
+   "expected": "day2/zombies_tests/zombies.8.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/zombies_tests/zombies.9.in",
+   "expected": "day2/zombies_tests/zombies.9.out",
+   "subtask": "subtask_1"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "day2/zombies_tests/zombies.sample.in",
+   "why": "sample"
+  }
+ ]
+}

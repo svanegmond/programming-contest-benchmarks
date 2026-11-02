@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2016/2016CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2016/2016CCOTestData.zip",
+    "subtask_map.json",
+    "statement:Day 1 Problem 1 Field Trip (N<=1000 for 3 of 25 marks)",
+    "sample:field_trip.sample.in/out == statement sample (8 5 2 -> 6 2)"
+  ],
+  "problem_id": "cco-2016-d1p1",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

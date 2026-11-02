@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T08:03:08Z",
+  "evidence": [
+    "statements/2015/2015CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2015/2015CCOTestData.zip",
+    "no_recognizer_matched_zip_members:2015CCOTestData.zip",
+    "worker:not_a_parsing_artifact",
+    "statement sample is plain text in 2015CCOProblemSet.html; no ZIP member equals it after whitespace normalization (all non-output members under 2 MB checked)",
+    "statement sample `4 2 / 3 / ...` absent from day2Data/Excavation (excavation-1a..e, 2a..g, 3a..h); ZIP ships tolerance_judge.py"
+  ],
+  "problem_id": "cco-2015-d2p3",
+  "reason": "samples_disagree",
+  "status": "rejected",
+  "worker_model": "anthropic/claude-sonnet-5-5"
+}

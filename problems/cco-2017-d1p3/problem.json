@@ -1,0 +1,31 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "exact",
+  "id": "cco-2017-d1p3",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco17p3",
+  "relative_tolerance": null,
+  "statement_path": "statements/2017/2017CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.2
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.4
+    }
+  ],
+  "time_limit_s": 4.0,
+  "title": "Vera and Modern Art",
+  "year": 2017
+}

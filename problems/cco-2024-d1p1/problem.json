@@ -1,0 +1,31 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "exact",
+  "id": "cco-2024-d1p1",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco24p1",
+  "relative_tolerance": null,
+  "statement_path": "statements/2024/2024CCOProblems.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.28
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.32
+    }
+  ],
+  "time_limit_s": 4.0,
+  "title": "Treasure Hunt",
+  "year": 2024
+}

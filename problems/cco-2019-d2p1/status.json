@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T07:30:05Z",
+  "evidence": [
+    "statements/2019/2019CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2019/2019CCOTestData.zip",
+    "subtask_mapping_unclear:day2data/cards_data/1a",
+    "statement: Day 2, Problem 1: Card Scoring (5 overlapping subtasks, no per-file mapping)",
+    "notes.md"
+  ],
+  "problem_id": "cco-2019-d2p1",
+  "reason": "unclear",
+  "status": "rejected",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

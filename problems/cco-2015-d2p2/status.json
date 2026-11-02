@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T08:03:08Z",
+  "evidence": [
+    "statements/2015/2015CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2015/2015CCOTestData.zip",
+    "subtask_mapping_unclear:day2Data/Timpanist/ascdesc1a",
+    "subtask_map.json",
+    "statement:Day 2 Problem 2 Timpanist (N<=50 and D<=3 for 60% of marks)",
+    "sample:sample1/2/3.in/out == statement samples (5.00, 4.50, 0.00)"
+  ],
+  "problem_id": "cco-2015-d2p2",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "anthropic/claude-sonnet-5-5"
+}

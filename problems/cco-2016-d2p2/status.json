@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2016/2016CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2016/2016CCOTestData.zip",
+    "subtask_map.json",
+    "2016/2016CCOTestData.zip:day2/zombie_subtasks.txt",
+    "statement: Day 2, Problem 2: Zombie Apocalypse",
+    "sample: zombies.sample.in/out (5 6 / 2 / 3 3 / 2 4 / 2 -> 15) matches statement"
+  ],
+  "problem_id": "cco-2016-d2p2",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

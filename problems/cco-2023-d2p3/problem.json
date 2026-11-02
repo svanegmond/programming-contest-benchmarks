@@ -1,0 +1,35 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "exact",
+  "id": "cco-2023-d2p3",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco23p6",
+  "relative_tolerance": null,
+  "statement_path": "statements/2023/2023CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_5",
+      "weight": 0.2
+    }
+  ],
+  "time_limit_s": 4.0,
+  "title": "Triangle Collection",
+  "year": 2023
+}

@@ -1,0 +1,27 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "exact",
+  "id": "cco-2021-d2p3",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco21p6",
+  "relative_tolerance": null,
+  "statement_path": "statements/2021/2021CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.48
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.24
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.28
+    }
+  ],
+  "time_limit_s": 4.0,
+  "title": "Loop Town",
+  "year": 2021
+}

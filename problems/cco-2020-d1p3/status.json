@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T07:45:10Z",
+  "evidence": [
+    "statements/2020/2020CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2020/2020CCOTestData.zip",
+    "subtask_map.json",
+    "statement: 2020CCOProblemSet.html \"Mountains and Valleys\" (7 subtasks + full)",
+    "sample d1p3.0.in/.out (expected 11) matches statement sample"
+  ],
+  "problem_id": "cco-2020-d1p3",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "anthropic/claude-sonnet-5-5"
+}

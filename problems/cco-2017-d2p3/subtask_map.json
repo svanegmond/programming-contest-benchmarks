@@ -1,0 +1,217 @@
+{
+ "problem_id": "cco-2017-d2p3",
+ "zip": "2017/2017CCOTestData.zip",
+ "method": "classified by statement property from each input grid: N*M<=8 -> subtask_1; solvable in <=2 shifts -> subtask_2; else full_constraints; sample01/sample02 excluded",
+ "members": [
+  {
+   "input": "day2/shifty/03.in",
+   "expected": "day2/shifty/03.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/04.in",
+   "expected": "day2/shifty/04.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/05.in",
+   "expected": "day2/shifty/05.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/06.in",
+   "expected": "day2/shifty/06.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/07.in",
+   "expected": "day2/shifty/07.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/08.in",
+   "expected": "day2/shifty/08.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/09.in",
+   "expected": "day2/shifty/09.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/10.in",
+   "expected": "day2/shifty/10.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/11.in",
+   "expected": "day2/shifty/11.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/12.in",
+   "expected": "day2/shifty/12.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/shifty/13.in",
+   "expected": "day2/shifty/13.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/14.in",
+   "expected": "day2/shifty/14.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/15.in",
+   "expected": "day2/shifty/15.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/16.in",
+   "expected": "day2/shifty/16.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/17.in",
+   "expected": "day2/shifty/17.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/18.in",
+   "expected": "day2/shifty/18.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/19.in",
+   "expected": "day2/shifty/19.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/20.in",
+   "expected": "day2/shifty/20.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/21.in",
+   "expected": "day2/shifty/21.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/22.in",
+   "expected": "day2/shifty/22.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/23.in",
+   "expected": "day2/shifty/23.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/shifty/24.in",
+   "expected": "day2/shifty/24.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/25.in",
+   "expected": "day2/shifty/25.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/26.in",
+   "expected": "day2/shifty/26.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/27.in",
+   "expected": "day2/shifty/27.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/28.in",
+   "expected": "day2/shifty/28.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/29.in",
+   "expected": "day2/shifty/29.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/30.in",
+   "expected": "day2/shifty/30.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/31.in",
+   "expected": "day2/shifty/31.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/32.in",
+   "expected": "day2/shifty/32.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/33.in",
+   "expected": "day2/shifty/33.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/34.in",
+   "expected": "day2/shifty/34.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/35.in",
+   "expected": "day2/shifty/35.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/36.in",
+   "expected": "day2/shifty/36.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/37.in",
+   "expected": "day2/shifty/37.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/38.in",
+   "expected": "day2/shifty/38.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/39.in",
+   "expected": "day2/shifty/39.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/40.in",
+   "expected": "day2/shifty/40.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/41.in",
+   "expected": "day2/shifty/41.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/shifty/42.in",
+   "expected": "day2/shifty/42.a",
+   "subtask": "full_constraints"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "day2/shifty/sample01.in",
+   "reason": "statement sample"
+  },
+  {
+   "member": "day2/shifty/sample02.in",
+   "reason": "statement sample"
+  }
+ ]
+}

@@ -1,0 +1,23 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "exact",
+  "id": "cco-2020-d1p2",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco20p2",
+  "relative_tolerance": null,
+  "statement_path": "statements/2020/2020CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.68
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.32
+    }
+  ],
+  "time_limit_s": 1.0,
+  "title": "Exercise Deadlines",
+  "year": 2020
+}

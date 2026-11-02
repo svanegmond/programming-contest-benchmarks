@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T07:43:24Z",
+  "evidence": [
+    "statements/2017/2017CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2017/2017CCOTestData.zip",
+    "subtask_map.json",
+    "statement: Day 2 Problem 1 Rainfall Capture (N<=10 for 5 marks, N<=50 for 10 more)",
+    "sample01-03 in/.a in ZIP match statement samples 1-3"
+  ],
+  "problem_id": "cco-2017-d2p1",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

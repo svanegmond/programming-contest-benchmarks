@@ -1,0 +1,240 @@
+{
+  "problem_id": "cco-2016-d2p3",
+  "zip": "2016/2016CCOTestData.zip",
+  "method": "Official day2/pirates_subtasks.txt in the ZIP lists batches 1-4 (0 = samples); verified against statement constraints by reading every input (N<=2000 for 1-6, max(1,i-3)<=V[i]<=i for 7-13, K=1e18 for 14-20, rest full).",
+  "members": [
+    {
+      "input": "day2/pirates_tests/pirates.1.in",
+      "expected": "day2/pirates_tests/pirates.1.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.2.in",
+      "expected": "day2/pirates_tests/pirates.2.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.3.in",
+      "expected": "day2/pirates_tests/pirates.3.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.4.in",
+      "expected": "day2/pirates_tests/pirates.4.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.5.in",
+      "expected": "day2/pirates_tests/pirates.5.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.6.in",
+      "expected": "day2/pirates_tests/pirates.6.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.7.in",
+      "expected": "day2/pirates_tests/pirates.7.out",
+      "subtask": "subtask_2"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.8.in",
+      "expected": "day2/pirates_tests/pirates.8.out",
+      "subtask": "subtask_2"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.9.in",
+      "expected": "day2/pirates_tests/pirates.9.out",
+      "subtask": "subtask_2"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.10.in",
+      "expected": "day2/pirates_tests/pirates.10.out",
+      "subtask": "subtask_2"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.11.in",
+      "expected": "day2/pirates_tests/pirates.11.out",
+      "subtask": "subtask_2"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.12.in",
+      "expected": "day2/pirates_tests/pirates.12.out",
+      "subtask": "subtask_2"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.13.in",
+      "expected": "day2/pirates_tests/pirates.13.out",
+      "subtask": "subtask_2"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.14.in",
+      "expected": "day2/pirates_tests/pirates.14.out",
+      "subtask": "subtask_3"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.15.in",
+      "expected": "day2/pirates_tests/pirates.15.out",
+      "subtask": "subtask_3"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.16.in",
+      "expected": "day2/pirates_tests/pirates.16.out",
+      "subtask": "subtask_3"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.17.in",
+      "expected": "day2/pirates_tests/pirates.17.out",
+      "subtask": "subtask_3"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.18.in",
+      "expected": "day2/pirates_tests/pirates.18.out",
+      "subtask": "subtask_3"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.19.in",
+      "expected": "day2/pirates_tests/pirates.19.out",
+      "subtask": "subtask_3"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.20.in",
+      "expected": "day2/pirates_tests/pirates.20.out",
+      "subtask": "subtask_3"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.21.in",
+      "expected": "day2/pirates_tests/pirates.21.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.22.in",
+      "expected": "day2/pirates_tests/pirates.22.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.23.in",
+      "expected": "day2/pirates_tests/pirates.23.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.24.in",
+      "expected": "day2/pirates_tests/pirates.24.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.25.in",
+      "expected": "day2/pirates_tests/pirates.25.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.26.in",
+      "expected": "day2/pirates_tests/pirates.26.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.27.in",
+      "expected": "day2/pirates_tests/pirates.27.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.28.in",
+      "expected": "day2/pirates_tests/pirates.28.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.29.in",
+      "expected": "day2/pirates_tests/pirates.29.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.30.in",
+      "expected": "day2/pirates_tests/pirates.30.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.31.in",
+      "expected": "day2/pirates_tests/pirates.31.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.32.in",
+      "expected": "day2/pirates_tests/pirates.32.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.33.in",
+      "expected": "day2/pirates_tests/pirates.33.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.34.in",
+      "expected": "day2/pirates_tests/pirates.34.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.35.in",
+      "expected": "day2/pirates_tests/pirates.35.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.36.in",
+      "expected": "day2/pirates_tests/pirates.36.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.37.in",
+      "expected": "day2/pirates_tests/pirates.37.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.38.in",
+      "expected": "day2/pirates_tests/pirates.38.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.39.in",
+      "expected": "day2/pirates_tests/pirates.39.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.40.in",
+      "expected": "day2/pirates_tests/pirates.40.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.41.in",
+      "expected": "day2/pirates_tests/pirates.41.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.42.in",
+      "expected": "day2/pirates_tests/pirates.42.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day2/pirates_tests/pirates.43.in",
+      "expected": "day2/pirates_tests/pirates.43.out",
+      "subtask": "full_constraints"
+    }
+  ],
+  "excluded": [
+    {
+      "member": "day2/pirates_tests/pirates.sample1.in",
+      "why": "sample (statement Sample Input 1; expected day2/pirates_tests/pirates..sample1.out)"
+    },
+    {
+      "member": "day2/pirates_tests/pirates.sample2.in",
+      "why": "sample (statement Sample Input 2; expected day2/pirates_tests/pirates..sample2.out)"
+    },
+    {
+      "member": "day2/pirates_tests/pirates.sample3.in",
+      "why": "sample (statement Sample Input 3; expected day2/pirates_tests/pirates..sample3.out)"
+    },
+    {
+      "member": "day2/pirates_tests/pirates.sample4.in",
+      "why": "sample (statement Sample Input 4; expected day2/pirates_tests/pirates..sample4.out)"
+    }
+  ]
+}

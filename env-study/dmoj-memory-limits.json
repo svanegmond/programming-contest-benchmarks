@@ -1,0 +1,545 @@
+{
+  "problems": [
+    {
+      "dmoj_code": "cco16p1",
+      "dmoj_name": "CCO '16 P1 - Field Trip",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2016-d1p1",
+      "title": "Field Trip",
+      "url": "https://dmoj.ca/problem/cco16p1"
+    },
+    {
+      "dmoj_code": "cco16p2",
+      "dmoj_name": "CCO '16 P2 - Splitting Hares",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2016-d1p2",
+      "title": "Splitting Hares",
+      "url": "https://dmoj.ca/problem/cco16p2"
+    },
+    {
+      "dmoj_code": "cco16p3",
+      "dmoj_name": "CCO '16 P3 - Legends",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2016-d1p3",
+      "title": "Legends",
+      "url": "https://dmoj.ca/problem/cco16p3"
+    },
+    {
+      "dmoj_code": "cco16p4",
+      "dmoj_name": "CCO '16 P4 - O Canada",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2016-d2p1",
+      "title": "O Canada",
+      "url": "https://dmoj.ca/problem/cco16p4"
+    },
+    {
+      "dmoj_code": "cco16p5",
+      "dmoj_name": "CCO '16 P5 - Zombie Apocalypse",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2016-d2p2",
+      "title": "Zombie Apocalypse",
+      "url": "https://dmoj.ca/problem/cco16p5"
+    },
+    {
+      "dmoj_code": "cco16p6",
+      "dmoj_name": "CCO '16 P6 - Pirates",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2016-d2p3",
+      "title": "Pirates",
+      "url": "https://dmoj.ca/problem/cco16p6"
+    },
+    {
+      "dmoj_code": "cco17p1",
+      "dmoj_name": "CCO '17 P1 - Vera and Trail Building",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2017-d1p1",
+      "title": "Vera and Trail Building",
+      "url": "https://dmoj.ca/problem/cco17p1"
+    },
+    {
+      "dmoj_code": "cco17p2",
+      "dmoj_name": "CCO '17 P2 - Cartesian Conquest",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2017-d1p2",
+      "title": "Cartesian Conquest",
+      "url": "https://dmoj.ca/problem/cco17p2"
+    },
+    {
+      "dmoj_code": "cco17p3",
+      "dmoj_name": "CCO '17 P3 - Vera and Modern Art",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2017-d1p3",
+      "title": "Vera and Modern Art",
+      "url": "https://dmoj.ca/problem/cco17p3"
+    },
+    {
+      "dmoj_code": "cco17p4",
+      "dmoj_name": "CCO '17 P4 - Rainfall Storage",
+      "match": "alias",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2017-d2p1",
+      "title": "Rainfall Capture",
+      "url": "https://dmoj.ca/problem/cco17p4"
+    },
+    {
+      "dmoj_code": "cco17p5",
+      "dmoj_name": "CCO '17 P5 - Professional Network",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2017-d2p2",
+      "title": "Professional Network",
+      "url": "https://dmoj.ca/problem/cco17p5"
+    },
+    {
+      "dmoj_code": "cco17p6",
+      "dmoj_name": "CCO '17 P6 - Shifty Grid",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2017-d2p3",
+      "title": "Shifty Grid",
+      "url": "https://dmoj.ca/problem/cco17p6"
+    },
+    {
+      "dmoj_code": "cco18p1",
+      "dmoj_name": "CCO '18 P1 - Geese vs. Hawks",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2018-d1p1",
+      "title": "Geese vs. Hawks",
+      "url": "https://dmoj.ca/problem/cco18p1"
+    },
+    {
+      "dmoj_code": "cco18p2",
+      "dmoj_name": "CCO '18 P2 - Wrong Answer",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2018-d1p2",
+      "title": "Wrong Answer",
+      "url": "https://dmoj.ca/problem/cco18p2"
+    },
+    {
+      "dmoj_code": "cco18p3",
+      "dmoj_name": "CCO '18 P3 - Fun Palace",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2018-d1p3",
+      "title": "Fun Palace",
+      "url": "https://dmoj.ca/problem/cco18p3"
+    },
+    {
+      "dmoj_code": "cco18p4",
+      "dmoj_name": "CCO '18 P4 - Gradient Descent",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2018-d2p1",
+      "title": "Gradient Descent",
+      "url": "https://dmoj.ca/problem/cco18p4"
+    },
+    {
+      "dmoj_code": "cco18p5",
+      "dmoj_name": "CCO '18 P5 - Boring Lectures",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2018-d2p2",
+      "title": "Boring Lectures",
+      "url": "https://dmoj.ca/problem/cco18p5"
+    },
+    {
+      "dmoj_code": "cco18p6",
+      "dmoj_name": "CCO '18 P6 - Flop Sorting",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2018-d2p3",
+      "title": "Flop Sorting",
+      "url": "https://dmoj.ca/problem/cco18p6"
+    },
+    {
+      "dmoj_code": "cco19p1",
+      "dmoj_name": "CCO '19 P1 - Human Error",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2019-d1p1",
+      "title": "Human Error",
+      "url": "https://dmoj.ca/problem/cco19p1"
+    },
+    {
+      "dmoj_code": "cco19p2",
+      "dmoj_name": "CCO '19 P2 - Sirtet",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2019-d1p2",
+      "title": "Sirtet",
+      "url": "https://dmoj.ca/problem/cco19p2"
+    },
+    {
+      "dmoj_code": "cco19p3",
+      "dmoj_name": "CCO '19 P3 - Winter Driving",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2019-d1p3",
+      "title": "Winter Driving",
+      "url": "https://dmoj.ca/problem/cco19p3"
+    },
+    {
+      "dmoj_code": "cco19p4",
+      "dmoj_name": "CCO '19 P4 - Card Scoring",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2019-d2p1",
+      "title": "Card Scoring",
+      "url": "https://dmoj.ca/problem/cco19p4"
+    },
+    {
+      "dmoj_code": "cco19p5",
+      "dmoj_name": "CCO '19 P5 - Marshmallow Molecules",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2019-d2p2",
+      "title": "Marshmallow Molecules",
+      "url": "https://dmoj.ca/problem/cco19p5"
+    },
+    {
+      "dmoj_code": "cco19p6",
+      "dmoj_name": "CCO '19 P6 - Bad Codes",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2019-d2p3",
+      "title": "Bad Codes",
+      "url": "https://dmoj.ca/problem/cco19p6"
+    },
+    {
+      "dmoj_code": "cco20p1",
+      "dmoj_name": "CCO '20 P1 - A Game with Grundy",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2020-d1p1",
+      "title": "A Game with Grundy",
+      "url": "https://dmoj.ca/problem/cco20p1"
+    },
+    {
+      "dmoj_code": "cco20p2",
+      "dmoj_name": "CCO '20 P2 - Exercise Deadlines",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2020-d1p2",
+      "title": "Exercise Deadlines",
+      "url": "https://dmoj.ca/problem/cco20p2"
+    },
+    {
+      "dmoj_code": "cco20p3",
+      "dmoj_name": "CCO '20 P3 - Mountains and Valleys",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2020-d1p3",
+      "title": "Mountains and Valleys",
+      "url": "https://dmoj.ca/problem/cco20p3"
+    },
+    {
+      "dmoj_code": "cco20p4",
+      "dmoj_name": "CCO '20 P4 - Travelling Salesperson",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2020-d2p1",
+      "title": "Travelling Salesperson",
+      "url": "https://dmoj.ca/problem/cco20p4"
+    },
+    {
+      "dmoj_code": "cco20p5",
+      "dmoj_name": "CCO '20 P5 - Interval Collection",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2020-d2p2",
+      "title": "Interval Collection",
+      "url": "https://dmoj.ca/problem/cco20p5"
+    },
+    {
+      "dmoj_code": "cco20p6",
+      "dmoj_name": "CCO '20 P6 - Shopping Plans",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2020-d2p3",
+      "title": "Shopping Plans",
+      "url": "https://dmoj.ca/problem/cco20p6"
+    },
+    {
+      "dmoj_code": "cco21p1",
+      "dmoj_name": "CCO '21 P1 - Swap Swap Sort",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2021-d1p1",
+      "title": "Swap Swap Sort",
+      "url": "https://dmoj.ca/problem/cco21p1"
+    },
+    {
+      "dmoj_code": "cco21p2",
+      "dmoj_name": "CCO '21 P2 - Weird Numeral System",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2021-d1p2",
+      "title": "Weird Numeral System",
+      "url": "https://dmoj.ca/problem/cco21p2"
+    },
+    {
+      "dmoj_code": "cco21p3",
+      "dmoj_name": "CCO '21 P3 - Through Another Maze Darkly",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2021-d1p3",
+      "title": "Through Another Maze Darkly",
+      "url": "https://dmoj.ca/problem/cco21p3"
+    },
+    {
+      "dmoj_code": "cco21p4",
+      "dmoj_name": "CCO '21 P4 - Travelling Merchant",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2021-d2p1",
+      "title": "Travelling Merchant",
+      "url": "https://dmoj.ca/problem/cco21p4"
+    },
+    {
+      "dmoj_code": "cco21p5",
+      "dmoj_name": "CCO '21 P5 - Bread First Search",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2021-d2p2",
+      "title": "Bread First Search",
+      "url": "https://dmoj.ca/problem/cco21p5"
+    },
+    {
+      "dmoj_code": "cco21p6",
+      "dmoj_name": "CCO '21 P6 - Loop Town",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2021-d2p3",
+      "title": "Loop Town",
+      "url": "https://dmoj.ca/problem/cco21p6"
+    },
+    {
+      "dmoj_code": "cco22p1",
+      "dmoj_name": "CCO '22 P1 - Alternating Heights",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2022-d1p1",
+      "title": "Alternating Heights",
+      "url": "https://dmoj.ca/problem/cco22p1"
+    },
+    {
+      "dmoj_code": "cco22p2",
+      "dmoj_name": "CCO '22 P2 - Rainy Markets",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2022-d1p2",
+      "title": "Rainy Markets",
+      "url": "https://dmoj.ca/problem/cco22p2"
+    },
+    {
+      "dmoj_code": "cco22p3",
+      "dmoj_name": "CCO '22 P3 - Double Attendance",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2022-d1p3",
+      "title": "Double Attendance",
+      "url": "https://dmoj.ca/problem/cco22p3"
+    },
+    {
+      "dmoj_code": "cco22p4",
+      "dmoj_name": "CCO '22 P4 - Bi-ing Lottery Treekets",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2022-d2p1",
+      "title": "Bi-ing Lottery Treekets",
+      "url": "https://dmoj.ca/problem/cco22p4"
+    },
+    {
+      "dmoj_code": "cco22p5",
+      "dmoj_name": "CCO '22 P5 - Phone Plans",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2022-d2p2",
+      "title": "Phone Plans",
+      "url": "https://dmoj.ca/problem/cco22p5"
+    },
+    {
+      "dmoj_code": "cco22p6",
+      "dmoj_name": "CCO '22 P6 - Good Game",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2022-d2p3",
+      "title": "Good Game",
+      "url": "https://dmoj.ca/problem/cco22p6"
+    },
+    {
+      "dmoj_code": "cco23p1",
+      "dmoj_name": "CCO '23 P1 - Binaria",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2023-d1p1",
+      "title": "Binaria",
+      "url": "https://dmoj.ca/problem/cco23p1"
+    },
+    {
+      "dmoj_code": "cco23p2",
+      "dmoj_name": "CCO '23 P2 - Real Mountains",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2023-d1p2",
+      "title": "Real Mountains",
+      "url": "https://dmoj.ca/problem/cco23p2"
+    },
+    {
+      "dmoj_code": "cco23p3",
+      "dmoj_name": "CCO '23 P3 - Line Town",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2023-d1p3",
+      "title": "Line Town",
+      "url": "https://dmoj.ca/problem/cco23p3"
+    },
+    {
+      "dmoj_code": "cco23p4",
+      "dmoj_name": "CCO '23 P4 - Flip it and Stick it",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2023-d2p1",
+      "title": "Flip it and Stick it",
+      "url": "https://dmoj.ca/problem/cco23p4"
+    },
+    {
+      "dmoj_code": "cco23p5",
+      "dmoj_name": "CCO '23 P5 - Travelling Trader",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2023-d2p2",
+      "title": "Travelling Trader",
+      "url": "https://dmoj.ca/problem/cco23p5"
+    },
+    {
+      "dmoj_code": "cco23p6",
+      "dmoj_name": "CCO '23 P6 - Triangle Collection",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2023-d2p3",
+      "title": "Triangle Collection",
+      "url": "https://dmoj.ca/problem/cco23p6"
+    },
+    {
+      "dmoj_code": "cco24p1",
+      "dmoj_name": "CCO '24 P1 - Treasure Hunt",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2024-d1p1",
+      "title": "Treasure Hunt",
+      "url": "https://dmoj.ca/problem/cco24p1"
+    },
+    {
+      "dmoj_code": "cco24p2",
+      "dmoj_name": "CCO '24 P2 - Pizza Party",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2024-d1p2",
+      "title": "Pizza Party",
+      "url": "https://dmoj.ca/problem/cco24p2"
+    },
+    {
+      "dmoj_code": "cco24p3",
+      "dmoj_name": "CCO '24 P3 - Summer Driving",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2024-d1p3",
+      "title": "Summer Driving",
+      "url": "https://dmoj.ca/problem/cco24p3"
+    },
+    {
+      "dmoj_code": "cco24p4",
+      "dmoj_name": "CCO '24 P4 - Infiltration",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2024-d2p1",
+      "title": "Infiltration",
+      "url": "https://dmoj.ca/problem/cco24p4"
+    },
+    {
+      "dmoj_code": "cco24p5",
+      "dmoj_name": "CCO '24 P5 - Heavy Light Decomposition",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2024-d2p2",
+      "title": "Heavy Light Decomposition",
+      "url": "https://dmoj.ca/problem/cco24p5"
+    },
+    {
+      "dmoj_code": "cco24p6",
+      "dmoj_name": "CCO '24 P6 - Telephone Plans",
+      "match": "title",
+      "memory_limit_mb": 1024,
+      "problem_id": "cco-2024-d2p3",
+      "title": "Telephone Plans",
+      "url": "https://dmoj.ca/problem/cco24p6"
+    },
+    {
+      "dmoj_code": "cco25p1",
+      "dmoj_name": "CCO '25 P1 - Asteroid Mining",
+      "match": "title",
+      "memory_limit_mb": 256,
+      "problem_id": "cco-2025-d1p1",
+      "title": "Asteroid Mining",
+      "url": "https://dmoj.ca/problem/cco25p1"
+    },
+    {
+      "dmoj_code": "cco25p2",
+      "dmoj_name": "CCO '25 P2 - Tree Decorations",
+      "match": "title",
+      "memory_limit_mb": 256,
+      "problem_id": "cco-2025-d1p2",
+      "title": "Tree Decorations",
+      "url": "https://dmoj.ca/problem/cco25p2"
+    },
+    {
+      "dmoj_code": "cco25p3",
+      "dmoj_name": "CCO '25 P3 - Balanced Integer",
+      "match": "title",
+      "memory_limit_mb": 256,
+      "problem_id": "cco-2025-d1p3",
+      "title": "Balanced Integer",
+      "url": "https://dmoj.ca/problem/cco25p3"
+    },
+    {
+      "dmoj_code": "cco25p4",
+      "dmoj_name": "CCO '25 P4 - Restaurant Recommendation Rescue",
+      "match": "title",
+      "memory_limit_mb": 256,
+      "problem_id": "cco-2025-d2p1",
+      "title": "Restaurant Recommendation Rescue",
+      "url": "https://dmoj.ca/problem/cco25p4"
+    },
+    {
+      "dmoj_code": "cco25p5",
+      "dmoj_name": "CCO '25 P5 - Patrol Robot",
+      "match": "title",
+      "memory_limit_mb": 256,
+      "problem_id": "cco-2025-d2p2",
+      "title": "Patrol Robot",
+      "url": "https://dmoj.ca/problem/cco25p5"
+    },
+    {
+      "dmoj_code": "cco25p6",
+      "dmoj_name": "CCO '25 P6 - Shopping Deals",
+      "match": "title",
+      "memory_limit_mb": 256,
+      "problem_id": "cco-2025-d2p3",
+      "title": "Shopping Deals",
+      "url": "https://dmoj.ca/problem/cco25p6"
+    }
+  ],
+  "source": "https://dmoj.ca/api/v2"
+}

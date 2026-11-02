@@ -1,0 +1,25 @@
+{
+  "answers": {
+    "cause": {
+      "choice": "valid",
+      "confidence": 0.95,
+      "probabilities": {
+        "suboptimal": 0.02,
+        "valid": 0.96,
+        "violates_constraint": 0.01,
+        "wrong_answer": 0.0,
+        "wrong_format": 0.01
+      },
+      "type": "choice"
+    },
+    "p_valid": {
+      "noul": 0.98,
+      "type": "noul"
+    }
+  },
+  "model": "jev-1.14.0",
+  "usage": {
+    "input_tokens": 2040,
+    "output_tokens": 75
+  }
+}

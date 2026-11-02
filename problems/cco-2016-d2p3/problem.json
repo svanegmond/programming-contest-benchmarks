@@ -1,0 +1,31 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "exact",
+  "id": "cco-2016-d2p3",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco16p6",
+  "relative_tolerance": null,
+  "statement_path": "statements/2016/2016CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.2
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.4
+    }
+  ],
+  "time_limit_s": 10.0,
+  "title": "Pirates",
+  "year": 2016
+}

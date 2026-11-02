@@ -1,0 +1,199 @@
+{
+  "source": "https://cemc.uwaterloo.ca/resources/past-contests?contest_category=80",
+  "captured_at": "2026-07-02T05:32:01.548650+00:00",
+  "attribution": "Official CEMC Canadian Computing Olympiad material (c) University of Waterloo, Centre for Education in Mathematics and Computing. Vendored unmodified; see NOTICE.",
+  "resources": [
+    {
+      "year": "2015",
+      "kind": "contest_html",
+      "path": "2015/2015CCOProblemSet.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2015/2015CCOProblemSet.html",
+      "bytes": 276018,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2015",
+      "kind": "contest_pdf",
+      "path": "2015/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2015/day12.pdf",
+      "bytes": 103900,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2016",
+      "kind": "contest_html",
+      "path": "2016/2016CCOProblemSet.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2016/2016CCOProblemSet.html",
+      "bytes": 679306,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2016",
+      "kind": "contest_pdf",
+      "path": "2016/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2016/day12.pdf",
+      "bytes": 205294,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2017",
+      "kind": "contest_html",
+      "path": "2017/2017CCOProblemSet.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2017/2017CCOProblemSet.html",
+      "bytes": 687281,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2017",
+      "kind": "contest_pdf",
+      "path": "2017/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2017/day12.pdf",
+      "bytes": 161752,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2018",
+      "kind": "contest_html",
+      "path": "2018/2018CCOProblemSet.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2018/2018CCOProblemSet.html",
+      "bytes": 136695,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2018",
+      "kind": "contest_pdf",
+      "path": "2018/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2018/day12.pdf",
+      "bytes": 180331,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2019",
+      "kind": "contest_html",
+      "path": "2019/2019CCOProblemSet.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2019/2019CCOProblemSet.html",
+      "bytes": 259514,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2019",
+      "kind": "contest_pdf",
+      "path": "2019/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2019/day12.pdf",
+      "bytes": 156531,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2020",
+      "kind": "contest_html",
+      "path": "2020/2020CCOProblemSet.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2020/2020CCOProblemSet.html",
+      "bytes": 1119602,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2020",
+      "kind": "contest_pdf",
+      "path": "2020/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2020/day12.pdf",
+      "bytes": 215600,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2021",
+      "kind": "contest_html",
+      "path": "2021/2021CCOProblemSet.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/2021CCOProblemSet.html",
+      "bytes": 189787,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2021",
+      "kind": "contest_pdf",
+      "path": "2021/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/day12.pdf",
+      "bytes": 251603,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2022",
+      "kind": "contest_html",
+      "path": "2022/2022CCOProblemSet.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/2022CCOProblemSet.html",
+      "bytes": 527871,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2022",
+      "kind": "contest_pdf",
+      "path": "2022/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/day12.pdf",
+      "bytes": 200353,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2023",
+      "kind": "contest_html",
+      "path": "2023/2023CCOProblemSet.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/2023CCOProblemSet.html",
+      "bytes": 137834,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2023",
+      "kind": "contest_pdf",
+      "path": "2023/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/day12.pdf",
+      "bytes": 171821,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2024",
+      "kind": "contest_html",
+      "path": "2024/2024CCOProblems.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2024CCOProblems.html",
+      "bytes": 216899,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2024",
+      "kind": "contest_pdf",
+      "path": "2024/day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/day12.pdf",
+      "bytes": 187730,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2025",
+      "kind": "contest_html",
+      "path": "2025/2025CCOProblems.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2025CCOProblems.html",
+      "bytes": 925293,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2025",
+      "kind": "contest_pdf",
+      "path": "2025/cco_day12.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/cco_day12.pdf",
+      "bytes": 663593,
+      "content_type": "application/pdf"
+    },
+    {
+      "year": "2026",
+      "kind": "contest_html",
+      "path": "2026/2026CCOProblems.html",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026CCOProblems.html",
+      "bytes": 384293,
+      "content_type": "text/html"
+    },
+    {
+      "year": "2026",
+      "kind": "contest_pdf",
+      "path": "2026/2026CCOProblems.pdf",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026CCOProblems.pdf",
+      "bytes": 440436,
+      "content_type": "application/pdf"
+    }
+  ]
+}

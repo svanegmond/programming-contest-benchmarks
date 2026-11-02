@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-20T07:30:11Z",
+  "evidence": [
+    "statements/2017/2017CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2017/2017CCOTestData.zip",
+    "subtask_mapping_unclear:day1/trail/03",
+    "checker_class:any-valid;io_mode:stdin/stdout"
+  ],
+  "problem_id": "cco-2017-d1p1",
+  "reason": "needs_validator",
+  "status": "rejected",
+  "worker_model": null
+}

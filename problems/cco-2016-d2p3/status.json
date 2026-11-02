@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2016/2016CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2016/2016CCOTestData.zip",
+    "subtask_map.json",
+    "2016/2016CCOTestData.zip:day2/pirates_subtasks.txt",
+    "statement section 'Pirates' (2016CCOProblemSet.html)",
+    "samples 1-4 inputs/outputs match ZIP pirates.sampleN.in/.out"
+  ],
+  "problem_id": "cco-2016-d2p3",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

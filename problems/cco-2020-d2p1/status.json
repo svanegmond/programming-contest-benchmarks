@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T07:30:02Z",
+  "evidence": [
+    "statements/2020/2020CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2020/2020CCOTestData.zip",
+    "layout:dNpM_filename",
+    "checker_class:scorer;io_mode:stdin/stdout",
+    "checker_proof_failed_or_stale:checker-proof.md"
+  ],
+  "problem_id": "cco-2020-d2p1",
+  "reason": "needs_scorer",
+  "status": "rejected",
+  "worker_model": null
+}

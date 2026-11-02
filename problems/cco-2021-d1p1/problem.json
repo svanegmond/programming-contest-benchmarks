@@ -1,0 +1,31 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "exact",
+  "id": "cco-2021-d1p1",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco21p1",
+  "relative_tolerance": null,
+  "statement_path": "statements/2021/2021CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.12
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.12
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.2
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.56
+    }
+  ],
+  "time_limit_s": 3.0,
+  "title": "Swap Swap Sort",
+  "year": 2021
+}

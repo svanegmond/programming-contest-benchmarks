@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2018/2018CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2018/2018CCOTestData.zip",
+    "subtask_mapping_unclear:2018CCOTestData/day1data/fun/fp.01",
+    "subtask_map.json",
+    "statement: 2018CCOProblemSet.html \"Fun Palace\" (Day 1 Problem 3), samples 1-3 = fp.01-fp.03 in/out in ZIP"
+  ],
+  "problem_id": "cco-2018-d1p3",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "anthropic/claude-sonnet-5-5"
+}

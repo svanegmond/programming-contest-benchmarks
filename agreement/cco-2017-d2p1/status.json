@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T08:11:10Z",
+  "evidence": [
+    "statements/2017/2017CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2017/2017CCOTestData.zip",
+    "subtask_map.json",
+    "statement section: Day 2, Problem 1: Rainfall Capture (N<=10 for 5 marks, N<=50 for 10 marks, full constraints N<=500 for remainder)",
+    "sample01-sample03 match statement samples 1-3 exactly in input and expected output (.in and .a)"
+  ],
+  "problem_id": "cco-2017-d2p1",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/google/gemini-3.8-flash"
+}

@@ -1,0 +1,83 @@
+{
+ "problem_id": "cco-2018-d2p2",
+ "zip": "2018/2018CCOTestData.zip",
+ "method": "header (N,K,Q) of each input checked against statement: Q=0 -> subtask_1; else N<=10^4 -> subtask_2; else full_constraints; boring.sample is the statement sample",
+ "members": [
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.01.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.01.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.02.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.02.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.03.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.03.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.04.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.04.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.05.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.05.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.06.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.06.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.07.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.07.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.08.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.08.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.09.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.09.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.10.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.10.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.11.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.11.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.12.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.12.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.13.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.13.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "2018CCOTestData/day2data/boring/boring.14.in",
+   "expected": "2018CCOTestData/day2data/boring/boring.14.out",
+   "subtask": "full_constraints"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "2018CCOTestData/day2data/boring/boring.sample.in",
+   "why": "sample"
+  }
+ ]
+}

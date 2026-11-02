@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-20T08:03:08Z",
+  "evidence": [
+    "statements/2015/2015CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2015/2015CCOTestData.zip",
+    "subtask_mapping_unclear:day2Data/Cars/cars.1",
+    "checker_class:any-valid;io_mode:stdin/stdout"
+  ],
+  "problem_id": "cco-2015-d2p1",
+  "reason": "needs_validator",
+  "status": "rejected",
+  "worker_model": null
+}

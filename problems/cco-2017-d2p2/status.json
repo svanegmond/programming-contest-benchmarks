@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2017/2017CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2017/2017CCOTestData.zip",
+    "subtask_map.json",
+    "statement section \"Professional Network\" (2017CCOProblemSet.html)",
+    "samples sample01a/02/03 outputs 3/0/8 match ZIP .a files"
+  ],
+  "problem_id": "cco-2017-d2p2",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

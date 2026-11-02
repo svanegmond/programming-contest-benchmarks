@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T07:30:11Z",
+  "evidence": [
+    "statements/2017/2017CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2017/2017CCOTestData.zip",
+    "subtask_mapping_unclear:day2/shifty/03",
+    "subtask_map:validated",
+    "matched_statement_sample:2017/2017CCOTestData.zip::day2/shifty/sample01.in",
+    "checker_proof:checker-proof.md"
+  ],
+  "problem_id": "cco-2017-d2p3",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": null
+}

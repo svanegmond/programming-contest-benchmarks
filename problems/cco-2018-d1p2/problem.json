@@ -1,0 +1,19 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "scorer",
+  "id": "cco-2018-d1p2",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco18p2",
+  "relative_tolerance": null,
+  "statement_path": "statements/2018/2018CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 1.0
+    }
+  ],
+  "time_limit_s": 1.0,
+  "title": "Wrong Answer",
+  "year": 2018
+}

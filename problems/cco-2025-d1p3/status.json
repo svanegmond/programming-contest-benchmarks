@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-20T07:27:13Z",
+  "evidence": [
+    "statements/2025/2025CCOProblems.html",
+    "requirements:problem-requirements.jsonl",
+    "2025/cco_data.zip",
+    "layout:dNpM_filename",
+    "matched_statement_sample:2025/cco_data.zip::cco_data/d1p3/d1p3.sample-01.in"
+  ],
+  "problem_id": "cco-2025-d1p3",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": null
+}

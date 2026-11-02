@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2017/2017CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2017/2017CCOTestData.zip",
+    "subtask_map.json",
+    "statement section \"Vera and Modern Art\" (2017CCOProblemSet.html)",
+    "sample01.in/.a matches statement sample output"
+  ],
+  "problem_id": "cco-2017-d1p3",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

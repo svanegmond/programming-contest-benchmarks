@@ -1,0 +1,8 @@
+{
+  "sample_conflicts": [
+    {
+      "detail": "worker verdict is admitted but no statement sample pair matched the ZIP after whitespace normalization",
+      "problem_id": "cco-2019-d2p3"
+    }
+  ]
+}

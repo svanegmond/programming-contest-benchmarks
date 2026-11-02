@@ -1,0 +1,371 @@
+{
+ "problem_id": "cco-2017-d2p2",
+ "zip": "2017/2017CCOTestData.zip",
+ "method": "Per-file check of N and B values vs statement constraints: 04-13 all B_i=1 (subtask_1), 14-34 N<=10 (subtask_2), 35-54 N<=1000 (subtask_3), 55-73 N up to 200000 (full_constraints); sample* excluded",
+ "members": [
+  {
+   "input": "day2/pronet/04.in",
+   "expected": "day2/pronet/04.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/05.in",
+   "expected": "day2/pronet/05.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/06.in",
+   "expected": "day2/pronet/06.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/07.in",
+   "expected": "day2/pronet/07.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/08.in",
+   "expected": "day2/pronet/08.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/09.in",
+   "expected": "day2/pronet/09.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/10.in",
+   "expected": "day2/pronet/10.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/11.in",
+   "expected": "day2/pronet/11.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/12.in",
+   "expected": "day2/pronet/12.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/13.in",
+   "expected": "day2/pronet/13.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/pronet/14.in",
+   "expected": "day2/pronet/14.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/15.in",
+   "expected": "day2/pronet/15.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/16.in",
+   "expected": "day2/pronet/16.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/17.in",
+   "expected": "day2/pronet/17.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/18.in",
+   "expected": "day2/pronet/18.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/19.in",
+   "expected": "day2/pronet/19.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/20.in",
+   "expected": "day2/pronet/20.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/21.in",
+   "expected": "day2/pronet/21.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/22.in",
+   "expected": "day2/pronet/22.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/23.in",
+   "expected": "day2/pronet/23.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/24.in",
+   "expected": "day2/pronet/24.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/25.in",
+   "expected": "day2/pronet/25.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/26.in",
+   "expected": "day2/pronet/26.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/27.in",
+   "expected": "day2/pronet/27.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/28.in",
+   "expected": "day2/pronet/28.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/29.in",
+   "expected": "day2/pronet/29.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/30.in",
+   "expected": "day2/pronet/30.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/31.in",
+   "expected": "day2/pronet/31.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/32.in",
+   "expected": "day2/pronet/32.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/33.in",
+   "expected": "day2/pronet/33.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/34.in",
+   "expected": "day2/pronet/34.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/pronet/35.in",
+   "expected": "day2/pronet/35.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/36.in",
+   "expected": "day2/pronet/36.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/37.in",
+   "expected": "day2/pronet/37.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/38.in",
+   "expected": "day2/pronet/38.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/39.in",
+   "expected": "day2/pronet/39.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/40.in",
+   "expected": "day2/pronet/40.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/41.in",
+   "expected": "day2/pronet/41.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/42.in",
+   "expected": "day2/pronet/42.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/43.in",
+   "expected": "day2/pronet/43.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/44.in",
+   "expected": "day2/pronet/44.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/45.in",
+   "expected": "day2/pronet/45.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/46.in",
+   "expected": "day2/pronet/46.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/47.in",
+   "expected": "day2/pronet/47.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/48.in",
+   "expected": "day2/pronet/48.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/49.in",
+   "expected": "day2/pronet/49.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/50.in",
+   "expected": "day2/pronet/50.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/51.in",
+   "expected": "day2/pronet/51.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/52.in",
+   "expected": "day2/pronet/52.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/53.in",
+   "expected": "day2/pronet/53.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/54.in",
+   "expected": "day2/pronet/54.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day2/pronet/55.in",
+   "expected": "day2/pronet/55.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/56.in",
+   "expected": "day2/pronet/56.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/57.in",
+   "expected": "day2/pronet/57.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/58.in",
+   "expected": "day2/pronet/58.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/59.in",
+   "expected": "day2/pronet/59.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/60.in",
+   "expected": "day2/pronet/60.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/61.in",
+   "expected": "day2/pronet/61.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/62.in",
+   "expected": "day2/pronet/62.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/63.in",
+   "expected": "day2/pronet/63.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/64.in",
+   "expected": "day2/pronet/64.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/65.in",
+   "expected": "day2/pronet/65.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/66.in",
+   "expected": "day2/pronet/66.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/67.in",
+   "expected": "day2/pronet/67.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/68.in",
+   "expected": "day2/pronet/68.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/69.in",
+   "expected": "day2/pronet/69.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/70.in",
+   "expected": "day2/pronet/70.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/71.in",
+   "expected": "day2/pronet/71.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/72.in",
+   "expected": "day2/pronet/72.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/pronet/73.in",
+   "expected": "day2/pronet/73.a",
+   "subtask": "full_constraints"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "day2/pronet/sample01a.in",
+   "why": "sample"
+  },
+  {
+   "member": "day2/pronet/sample02.in",
+   "why": "sample"
+  },
+  {
+   "member": "day2/pronet/sample03.in",
+   "why": "sample"
+  }
+ ]
+}

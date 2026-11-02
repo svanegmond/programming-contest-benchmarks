@@ -1,0 +1,9 @@
+{
+  "attempt_id": "fixture-2026-s1",
+  "problem_id": "fixture-2026-d1p1",
+  "subtask_pass": {"all": true},
+  "all_pass": true,
+  "partial_score": 1.0,
+  "outcome": "pass_on_time",
+  "env_id": "arch-fixture-2026-10-20"
+}

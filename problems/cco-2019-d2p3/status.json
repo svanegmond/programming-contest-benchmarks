@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2019/2019CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2019/2019CCOTestData.zip",
+    "subtask_mapping_unclear:day2data/bad_codes_data/badcodes.0-01",
+    "subtask_map.json",
+    "statement: 2019CCOProblemSet.html \"Day 2, Problem 3: Bad Codes\"",
+    "sample 2 matched to day2data/bad_codes_data/badcodes.0-02 (in/out)",
+    "reference solver agreed with all 68 expected outputs",
+    "admission_override:worker_admitted_but_no_sample_pair_matched_zip"
+  ],
+  "problem_id": "cco-2019-d2p3",
+  "reason": "samples_disagree",
+  "status": "rejected",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

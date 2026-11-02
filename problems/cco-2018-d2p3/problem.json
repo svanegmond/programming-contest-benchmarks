@@ -1,0 +1,27 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "validator",
+  "id": "cco-2018-d2p3",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco18p6",
+  "relative_tolerance": null,
+  "statement_path": "statements/2018/2018CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.4
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.4
+    }
+  ],
+  "time_limit_s": 2.0,
+  "title": "Flop Sorting",
+  "year": 2018
+}

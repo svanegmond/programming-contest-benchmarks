@@ -1,0 +1,19 @@
+{
+  "id": "fixture-2026-s1",
+  "problem_id": "fixture-2026-d1p1",
+  "mode": "agentic",
+  "model": "fixture-model",
+  "provider": "mock",
+  "language": "cpp",
+  "env_id": "arch-fixture-2026-10-20",
+  "prompt_hash": "fixture-prompt",
+  "transcript_path": "fixture/transcript.jsonl",
+  "code_path": "fixture/main.cpp",
+  "sample_index": 1,
+  "budget": {"wall_clock_s": 300.0, "max_turns": 20},
+  "agent_outcome": "submitted",
+  "auto_submitted": false,
+  "turns_used": 17,
+  "wall_s": 80.0,
+  "generation": {}
+}

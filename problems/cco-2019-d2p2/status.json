@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-20T07:30:05Z",
+  "evidence": [
+    "statements/2019/2019CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2019/2019CCOTestData.zip",
+    "subtask_map.json",
+    "statement: Day 2, Problem 2 Marshmallow Molecules (samples 1,2 = marsh.0-01, marsh.0-02 in/out matched)"
+  ],
+  "problem_id": "cco-2019-d2p2",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "anthropic/claude-sonnet-5-5"
+}

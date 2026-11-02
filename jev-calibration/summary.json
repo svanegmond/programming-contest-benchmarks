@@ -1,0 +1,107 @@
+{
+  "cost_usd": 0.004599126,
+  "errors": 0,
+  "input_tokens": 109503,
+  "latency_s": {
+    "max": 0.26201516698347405,
+    "mean": 0.1688046180352103,
+    "median": 0.14878877099545207,
+    "min": 0.1034835829923395,
+    "n": 24
+  },
+  "separation_at_0.5": {
+    "invalid_rejected": 18,
+    "invalid_total": 18,
+    "valid_accepted": 6,
+    "valid_total": 6
+  },
+  "variants": {
+    "constraint_violated": {
+      "causes": {
+        "violates_constraint": 6
+      },
+      "errors": 0,
+      "p_valid": [
+        0.03,
+        0.05,
+        0.04,
+        0.09,
+        0.07,
+        0.06
+      ],
+      "p_valid_stats": {
+        "max": 0.09,
+        "mean": 0.05666666666666667,
+        "median": 0.055,
+        "min": 0.03,
+        "n": 6
+      }
+    },
+    "expected": {
+      "causes": {
+        "valid": 6
+      },
+      "errors": 0,
+      "p_valid": [
+        0.98,
+        0.99,
+        0.97,
+        0.94,
+        0.89,
+        0.9
+      ],
+      "p_valid_stats": {
+        "max": 0.99,
+        "mean": 0.945,
+        "median": 0.955,
+        "min": 0.89,
+        "n": 6
+      }
+    },
+    "truncated": {
+      "causes": {
+        "wrong_answer": 2,
+        "wrong_format": 4
+      },
+      "errors": 0,
+      "p_valid": [
+        0.03,
+        0.03,
+        0.03,
+        0.07,
+        0.07,
+        0.15
+      ],
+      "p_valid_stats": {
+        "max": 0.15,
+        "mean": 0.06333333333333334,
+        "median": 0.05,
+        "min": 0.03,
+        "n": 6
+      }
+    },
+    "value_changed": {
+      "causes": {
+        "suboptimal": 3,
+        "violates_constraint": 2,
+        "wrong_answer": 1
+      },
+      "errors": 0,
+      "p_valid": [
+        0.06,
+        0.04,
+        0.06,
+        0.09,
+        0.1,
+        0.38
+      ],
+      "p_valid_stats": {
+        "max": 0.38,
+        "mean": 0.12166666666666666,
+        "median": 0.075,
+        "min": 0.04,
+        "n": 6
+      }
+    }
+  }
+}

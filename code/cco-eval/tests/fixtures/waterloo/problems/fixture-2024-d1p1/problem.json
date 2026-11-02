@@ -1,0 +1,12 @@
+{
+  "id": "fixture-2024-d1p1",
+  "year": 2024,
+  "day": 1,
+  "title": "Fixture: Sum Two Integers",
+  "statement_path": "code/cco-eval/tests/fixtures/waterloo/statements/fixture-2024-d1p1.md",
+  "time_limit_s": 1.0,
+  "memory_limit_mb": null,
+  "memory_limit_source": null,
+  "subtasks": [{"name": "all", "weight": 1.0}],
+  "grading_kind": "exact"
+}

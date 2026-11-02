@@ -1,0 +1,24 @@
+{
+  "seed": 20261020,
+  "method": "random.Random(seed).sample over problem ids sorted ascending, deterministic pool first, then unusual pool, from the same generator",
+  "deterministic_pool_size": 47,
+  "unusual_pool_size": 12,
+  "deterministic": [
+    "cco-2016-d2p2",
+    "cco-2016-d2p3",
+    "cco-2017-d1p3",
+    "cco-2018-d1p3",
+    "cco-2019-d1p3",
+    "cco-2021-d1p3",
+    "cco-2023-d1p2",
+    "cco-2023-d1p3",
+    "cco-2023-d2p1",
+    "cco-2025-d2p3"
+  ],
+  "unusual": [
+    "cco-2017-d2p3",
+    "cco-2020-d2p1",
+    "cco-2022-d1p2",
+    "cco-2024-d1p2"
+  ]
+}

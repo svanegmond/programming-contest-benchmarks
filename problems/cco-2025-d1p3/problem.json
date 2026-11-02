@@ -1,0 +1,39 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "exact",
+  "id": "cco-2025-d1p3",
+  "memory_limit_mb": 256,
+  "memory_limit_source": "dmoj:cco25p3",
+  "relative_tolerance": null,
+  "statement_path": "statements/2025/2025CCOProblems.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.08
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.24
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.08
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.36
+    },
+    {
+      "name": "subtask_5",
+      "weight": 0.16
+    },
+    {
+      "name": "subtask_6",
+      "weight": 0.08
+    }
+  ],
+  "time_limit_s": 30.0,
+  "title": "Balanced Integer",
+  "year": 2025
+}

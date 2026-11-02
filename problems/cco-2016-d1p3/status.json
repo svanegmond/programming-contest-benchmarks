@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T07:42:45Z",
+  "evidence": [
+    "statements/2016/2016CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2016/2016CCOTestData.zip",
+    "subtask_mapping_unclear:day1/legends_tests/final_legends.1",
+    "statement: 'Day 1, Problem 3: Legends' (first input line S = subtask)",
+    "zip layout: day1/legends_tests/final_legends.N.in/.out, N=1..182, all paired",
+    "no statement sample input found in ZIP (whole-file and per-case search)"
+  ],
+  "problem_id": "cco-2016-d1p3",
+  "reason": "unclear",
+  "status": "rejected",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

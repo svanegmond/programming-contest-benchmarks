@@ -1,0 +1,243 @@
+"""Orchestrate admission, cohort selection, and the runners."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import shlex
+import subprocess
+import sys
+from collections import Counter
+from pathlib import Path
+
+from cco_eval.utils import write_json
+from cco_eval.waterloo import Budget, Mode, RunManifest, Verdict, to_json
+from runners.common import (
+    DEFAULT_JUDGE_PATH, DEFAULT_REASONING_MAX_TOKENS, DEFAULT_ZIPS_ROOT, REPO_ROOT,
+    attempt_dir, load_problem, resolve_max_tokens,
+)
+from runners.judge_client import DEFAULT_SSH_HOST, REMOTE_ROOT, RemoteJudge
+
+BENCH = REPO_ROOT
+
+
+def command(argv, **kwargs):
+    return subprocess.run(argv, check=True, text=True, **kwargs)
+
+
+def read_json(path):
+    return json.loads(path.read_text())
+
+
+def admit(args):
+    from build_dashboard import _main_admitted_count, _records, metric_line, render_dashboard
+
+    remote = f"{REMOTE_ROOT}/src-cli"
+    command(["ssh", args.ssh_host, f"mkdir -p {remote}"])
+    command(["rsync", "-aR", "--exclude=.git", "--exclude=.venv", "--exclude=__pycache__", "code/cco-eval",
+             "statements", "env-study", "problems", f"{args.ssh_host}:{remote}/"], cwd=REPO_ROOT)
+    argv = ["python3", "code/cco-eval/admit.py", "--zips-root", args.zips_root,
+            "--corpus", "statements", "--requirements",
+            "env-study/problem-requirements.jsonl",
+            "--out", "problems", "--checked-at", "2026-10-20T00:00:00Z"]
+    command(["ssh", args.ssh_host, f"cd {remote} && {shlex.join(argv)}"])
+    command(["rsync", "-a", f"{args.ssh_host}:{remote}/problems/",
+             str(BENCH / "problems") + "/"])
+    rows = _records(BENCH / "problems")
+    (BENCH / "reports/DASHBOARD.md").write_text(render_dashboard(rows))
+    print(metric_line(rows, _main_admitted_count()))
+    return 0
+
+
+def cohort(args):
+    from build_cohort import draw
+
+    value = draw(BENCH / "problems", args.seed, args.deterministic, args.unusual)
+    write_json(args.out, value)
+    print(json.dumps(value, sort_keys=True))
+    return 0
+
+
+def telemetry(result):
+    generation = result["attempt"]["generation"]
+    calls = generation.get("calls")
+    attempt = result["attempt"]
+    meta = generation.get("raw_provider_metadata", {})
+    usage = meta.get("usage", {})
+    row = {
+        "attempt_id": attempt["id"], "problem_id": attempt["problem_id"], "model": attempt["model"],
+        "language": attempt["language"], "input_tokens": generation.get("input_tokens"),
+        "output_tokens": generation.get("output_tokens"),
+        "reasoning_tokens": usage.get("completion_tokens_details", {}).get("reasoning_tokens"),
+        "cost_usd": usage.get("cost"), "latency_ms": generation.get("latency_ms"),
+        "finish_reason": generation.get("stop_reason"), "upstream_provider": meta.get("provider"),
+        "extraction_error": generation.get("extraction_error"),
+    }
+    if calls is None:
+        return row
+    rows = [telemetry({"attempt": {**attempt, "generation": call}}) for call in calls]
+    for field in ("input_tokens", "output_tokens", "reasoning_tokens", "cost_usd", "latency_ms"):
+        values = [r[field] for r in rows]
+        row[field] = sum(values) if values and all(v is not None for v in values) else None
+    row["turns_used"] = result["attempt"].get("turns_used")
+    row["agent_outcome"] = result["attempt"].get("agent_outcome")
+    row["wall_s"] = result["attempt"].get("wall_s")
+    row["finish_reason"] = rows[-1]["finish_reason"] if rows else None
+    row["upstream_provider"] = rows[-1]["upstream_provider"] if rows else None
+    return row
+
+
+def admitted_problem_ids(problems_root):
+    return {p.parent.name for p in problems_root.glob("*/problem.json")
+            if (p.with_name("status.json").is_file() and read_json(p.with_name("status.json"))["status"] == "admitted")}
+
+
+def run(args):
+    from runners.agent_loop import run_agent
+    from runners.single_shot import run_one
+
+    models = [m.strip() for m in args.models.split(",") if m.strip()]
+    if not models or len(set(models)) != len(models) or any(not m.startswith("openrouter/") for m in models):
+        raise ValueError("--models must contain unique openrouter/... IDs")
+    if args.timeout <= 0:
+        raise ValueError("--timeout must be positive")
+    if args.mode == "single_shot" and args.budget is not None:
+        raise ValueError("--budget applies only to agentic mode")
+    if args.mode == "agentic" and args.max_tokens is not None:
+        raise ValueError("--max-tokens is currently supported only for single_shot")
+    budget = None
+    if args.mode == "agentic":
+        seconds, turns = (args.budget or "300:20").split(":")
+        budget = Budget(float(seconds), int(turns))
+        if budget.wall_clock_s <= 0 or budget.max_turns <= 0:
+            raise ValueError("--budget must be positive SECONDS:TURNS")
+    selection = read_json(args.cohort)
+    if not isinstance(selection, dict) or not isinstance(selection.get("deterministic"), list) or not isinstance(selection.get("unusual", []), list):
+        raise ValueError("cohort must have deterministic and optional unusual ID lists")
+    ids = selection["deterministic"] + selection.get("unusual", [])
+    if not ids or len(set(ids)) != len(ids) or not set(ids) <= admitted_problem_ids(BENCH / "problems"):
+        raise ValueError("cohort must contain unique admitted problems; draw with --unusual 0")
+    problems = [load_problem(pid) for pid in ids]
+    if any(not p.statement or not p.tests_path for p in problems):
+        raise ValueError("cohort has missing statements or tests")
+    judge = RemoteJudge(ssh_host=args.ssh_host, judge_path=args.judge_path,
+                        zips_root=args.zips_root, backend="vm", ssh_timeout=3600)
+    env_id = judge.env_id()
+    sha = command(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, capture_output=True).stdout.strip()
+    config = dict(git_sha=sha, env_id=env_id,
+                  cohort_hash=hashlib.sha256(args.cohort.read_bytes()).hexdigest(), models=models,
+                  mode=Mode(args.mode), caps={"max_tokens": {m: DEFAULT_REASONING_MAX_TOKENS if budget else resolve_max_tokens(m, args.max_tokens)
+                       for m in models}, "backend": "vm", "memory_mb": 2048, "kill_factor": 3},
+                  budget=budget,
+                  problem_ids=ids, timeout_s=args.timeout,
+                  judge={"ssh_host": args.ssh_host, "judge_path": args.judge_path, "zips_root": args.zips_root})
+    identity = hashlib.sha256(json.dumps(to_json(RunManifest(run_id="", **config)), sort_keys=True).encode()).hexdigest()[:16]
+    run_id = args.run_id or f"waterloo-{identity}"
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", run_id) or run_id in {".", ".."}:
+        raise ValueError("invalid run ID")
+    run_dir = args.out / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+    manifest = RunManifest(run_id=run_id, **config)
+    manifest_path = run_dir / "run.json"
+    if manifest_path.exists() and read_json(manifest_path) != to_json(manifest):
+        raise ValueError("run manifest differs; use a different --run-id (including after changing git SHA)")
+    write_json(manifest_path, to_json(manifest))
+    print(f"run_id={run_id}", flush=True)
+    completed = []
+    for model in models:
+        for problem in problems:
+            artifact = attempt_dir(args.out, run_id, problem.id, args.mode, model, 1)
+            if (artifact / "attempt.json").exists() and (artifact / "verdict.json").exists():
+                attempt, verdict = read_json(artifact / "attempt.json"), read_json(artifact / "verdict.json")
+                if (attempt["id"] != verdict["attempt_id"] or attempt["env_id"] != env_id
+                    or verdict["env_id"] != env_id or verdict["problem_id"] != problem.id
+                    or attempt["problem_id"] != problem.id or attempt["model"] != model
+                    or attempt["mode"] != args.mode or attempt["sample_index"] != 1):
+                    raise ValueError(f"invalid finished attempt: {artifact}")
+                result = {"attempt": attempt, "verdict": verdict}
+                print(f"skip finished model={model} problem={problem.id}", flush=True)
+            else:
+                if not os.getenv("OPENROUTER_API_KEY"):
+                    raise ValueError("missing OPENROUTER_API_KEY")
+                if budget:
+                    result = run_agent(problem, model, 1, out=args.out, run_id=run_id, judge=judge,
+                                       wall_clock_s=budget.wall_clock_s, max_turns=budget.max_turns,
+                                       request_timeout_s=args.timeout)
+                else:
+                    result = run_one(problem, model, 1, out=args.out, run_id=run_id, judge=judge,
+                                     timeout=args.timeout, max_tokens=args.max_tokens)
+                if result["attempt"].get("agent_outcome") == "harness_error":
+                    raise RuntimeError(f"agent attempt ended in harness_error, not scored: {artifact}; "
+                                       "rerun the same command to retry it")
+                raw = result["verdict"]
+                if result["attempt"]["env_id"] != env_id or raw.get("env_id", env_id) != env_id:
+                    raise ValueError("judge environment changed during the run; start a new run")
+                verdict = Verdict(attempt_id=result["attempt"]["id"], problem_id=problem.id,
+                                  subtask_pass=raw.get("subtask_pass", {}), all_pass=raw["all_pass"],
+                                  partial_score=raw.get("partial_score", 0.0), outcome=raw["outcome"], env_id=env_id)
+                write_json(artifact / "verdict.json", to_json(verdict))
+                result["verdict"] = to_json(verdict)
+                print(f"finished model={model} problem={problem.id} outcome={verdict.outcome}", flush=True)
+            completed.append(result)
+    (run_dir / "telemetry.jsonl").write_text("".join(json.dumps(telemetry(r), sort_keys=True) + "\n" for r in completed))
+    return 0
+
+
+def report(args):
+    from cco_eval.run_records import load_run
+
+    rows = load_run(args.out / args.run_id)
+    counts = {}
+    for row in rows:
+        group = counts.setdefault(row.attempt.model, Counter())
+        outcome = "truncated" if row.attempt.failure_kind == "truncated" else row.verdict.outcome
+        group[outcome] += 1
+    print("| Model | On-time | Over-time | Truncated | Fail |")
+    print("|---|---:|---:|---:|---:|")
+    for model, c in sorted(counts.items()):
+        print(f"| {model} | {c['pass_on_time']} | {c['pass_over_time']} | {c['truncated']} | {c['fail']} |")
+    return 0
+
+
+def parser():
+    root = argparse.ArgumentParser(description=__doc__)
+    commands = root.add_subparsers(dest="command", required=True)
+    admission = commands.add_parser("admit", help="Run admission on the judge host, dashboard, and suite metric")
+    admission.set_defaults(handler=admit)
+    draw = commands.add_parser("cohort", help="Draw a seeded cohort")
+    draw.add_argument("--out", type=Path, default=BENCH / "cohorts/cohort.json")
+    draw.add_argument("--seed", type=int, default=20261020)
+    draw.add_argument("--deterministic", type=int, default=10)
+    draw.add_argument("--unusual", type=int, default=4)
+    draw.set_defaults(handler=cohort)
+    experiment = commands.add_parser("run", help="Generate and judge")
+    experiment.add_argument("--models", required=True)
+    experiment.add_argument("--cohort", required=True, type=Path)
+    experiment.add_argument("--mode", required=True, choices=[m.value for m in Mode])
+    experiment.add_argument("--budget")
+    experiment.add_argument("--timeout", type=float, default=300)
+    experiment.add_argument("--max-tokens", type=int)
+    experiment.add_argument("--run-id")
+    experiment.set_defaults(handler=run)
+    summary = commands.add_parser("report", help="Summarize a run without contacting APIs")
+    summary.add_argument("run_id")
+    summary.set_defaults(handler=report)
+    for sub in (admission, experiment):
+        sub.add_argument("--ssh-host", default=DEFAULT_SSH_HOST)
+        sub.add_argument("--zips-root", default=DEFAULT_ZIPS_ROOT)
+    experiment.add_argument("--judge-path", default=DEFAULT_JUDGE_PATH)
+    for sub in (experiment, summary):
+        sub.add_argument("--out", type=Path, default=BENCH / "runs-raw")
+    return root
+
+
+def main(argv=None):
+    args = parser().parse_args(argv)
+    try:
+        return args.handler(args)
+    except (ValueError, RuntimeError, OSError, KeyError, subprocess.CalledProcessError) as exc:
+        print(f"waterloo: {exc}", file=sys.stderr)
+        return 1

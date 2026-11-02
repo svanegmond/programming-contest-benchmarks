@@ -1,0 +1,31 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "exact",
+  "id": "cco-2022-d2p2",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco22p5",
+  "relative_tolerance": null,
+  "statement_path": "statements/2022/2022CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.24
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.24
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.32
+    }
+  ],
+  "time_limit_s": 3.0,
+  "title": "Phone Plans",
+  "year": 2022
+}

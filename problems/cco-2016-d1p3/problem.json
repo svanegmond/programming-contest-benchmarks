@@ -1,0 +1,35 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "exact",
+  "id": "cco-2016-d1p3",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco16p3",
+  "relative_tolerance": null,
+  "statement_path": "statements/2016/2016CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_5",
+      "weight": 0.2
+    }
+  ],
+  "time_limit_s": 2.0,
+  "title": "Legends",
+  "year": 2016
+}

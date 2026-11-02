@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2016/2016CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2016/2016CCOTestData.zip",
+    "subtask_mapping_unclear:day2/canada_tests/canada.1",
+    "zip day2/canada_subtasks.txt: subtask 1 = canada.1-22, subtask 2 = canada.23-44 (inputs checked: 1-22 have G in {2,10}, 23-44 have G 7341-10000)",
+    "statement 'Day 2, Problem 1: O Canada': sample (N=2,G=2, RW/WR/WR/RW -> 1) has no ZIP pair; day2/canada_tests/canada.sample.in is b'2\\n' and canada.sample.out is absent"
+  ],
+  "problem_id": "cco-2016-d2p1",
+  "reason": "samples_disagree",
+  "status": "rejected",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

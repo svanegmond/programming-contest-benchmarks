@@ -1,0 +1,73 @@
+{
+ "problem_id": "cco-2020-d1p1",
+ "zip": "2020/2020CCOTestData.zip",
+ "method": "Per-input L,R from line 2 checked against statement subtask (|L|,|R|<=1e6 -> subtask_1, else full_constraints); matches official d1p1.NN vs d1p1.2-NN batch naming; sample.in excluded",
+ "members": [
+  {
+   "input": "day1data/cco_d1p1/d1p1.01.in",
+   "expected": "day1data/cco_d1p1/d1p1.01.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.02.in",
+   "expected": "day1data/cco_d1p1/d1p1.02.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.03.in",
+   "expected": "day1data/cco_d1p1/d1p1.03.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.04.in",
+   "expected": "day1data/cco_d1p1/d1p1.04.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.05.in",
+   "expected": "day1data/cco_d1p1/d1p1.05.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.06.in",
+   "expected": "day1data/cco_d1p1/d1p1.06.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.07.in",
+   "expected": "day1data/cco_d1p1/d1p1.07.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.2-01.in",
+   "expected": "day1data/cco_d1p1/d1p1.2-01.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.2-02.in",
+   "expected": "day1data/cco_d1p1/d1p1.2-02.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.2-03.in",
+   "expected": "day1data/cco_d1p1/d1p1.2-03.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.2-04.in",
+   "expected": "day1data/cco_d1p1/d1p1.2-04.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/cco_d1p1/d1p1.2-05.in",
+   "expected": "day1data/cco_d1p1/d1p1.2-05.out",
+   "subtask": "full_constraints"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "day1data/cco_d1p1/sample.in",
+   "why": "sample"
+  }
+ ]
+}

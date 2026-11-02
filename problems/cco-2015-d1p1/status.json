@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T08:03:08Z",
+  "evidence": [
+    "statements/2015/2015CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2015/2015CCOTestData.zip",
+    "no_recognizer_matched_zip_members:2015CCOTestData.zip",
+    "worker:not_a_parsing_artifact",
+    "statement sample is plain text in 2015CCOProblemSet.html; no ZIP member equals it after whitespace normalization (all non-output members under 2 MB checked)",
+    "statement sample `3 20 / 18 25 18` -> `7 16` absent: hf.1-8 have W=0, hf.9-25 have W>0, none is the sample"
+  ],
+  "problem_id": "cco-2015-d1p1",
+  "reason": "samples_disagree",
+  "status": "rejected",
+  "worker_model": "anthropic/claude-sonnet-5-5"
+}

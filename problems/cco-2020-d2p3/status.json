@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T07:30:02Z",
+  "evidence": [
+    "statements/2020/2020CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2020/2020CCOTestData.zip",
+    "subtask_mapping_unclear:day2data/cco_d2p3/d2p3.0-01",
+    "subtask_map.json",
+    "statement: Shopping Plans (2020CCOProblemSet.html), subtask list in Input Specification",
+    "sample d2p3.0-01.in/.out matches statement sample"
+  ],
+  "problem_id": "cco-2020-d2p3",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "anthropic/claude-sonnet-5-5"
+}

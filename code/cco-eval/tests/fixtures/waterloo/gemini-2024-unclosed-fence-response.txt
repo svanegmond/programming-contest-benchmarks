@@ -1,0 +1,24 @@
+A short solution in C++ (gnu++20) for the sum problem.
+
+### Method
+
+Read both integers and print their sum.
+
+### C++ Source Code
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Synthetic fixture: a response cut off before the closing fence.
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    long long a, b;
+    if (!(cin >> a >> b)) return 0;
+
+    cout << a +

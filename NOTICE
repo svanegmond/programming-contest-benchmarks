@@ -1,0 +1,25 @@
+programming-contest-benchmarks
+
+This repository is licensed under the Creative Commons Attribution-NonCommercial
+4.0 International licence (CC BY-NC 4.0): https://creativecommons.org/licenses/by-nc/4.0/
+The full text is in LICENSE.
+
+CEMC attribution
+----------------
+The contest statements in statements/ and the problems, titles, subtask
+structure and test data they describe are the work of the Centre for Education
+in Mathematics and Computing (CEMC), University of Waterloo:
+Canadian Computing Olympiad, 2015 to 2026.
+Copyright University of Waterloo. Source: https://cemc.uwaterloo.ca/resources/past-contests
+
+The statements are reproduced unmodified. The official test-data ZIPs are not
+included. Each is linked to its CEMC source URL in testdata/zips.json, and
+code/cco-eval/fetch_zips.py downloads it. CEMC does not publish checksums, so
+files are fetched from their source URLs and not verified. This repository claims no
+ownership of CEMC material. Its licence applies to that material only as far
+as CEMC's own terms allow. See https://cemc.uwaterloo.ca for those terms.
+
+Third-party data
+----------------
+env-study/dmoj-memory-limits.json records memory limits read from the public
+DMOJ API (https://dmoj.ca/api/v2), used where a statement gives none.

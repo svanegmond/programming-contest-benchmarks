@@ -1,0 +1,20 @@
+{
+  "seed": 20261020,
+  "derived_from": "cohort.json minus cco-2020-d2p1 (rejected)",
+  "deterministic": [
+    "cco-2016-d2p2",
+    "cco-2016-d2p3",
+    "cco-2017-d1p3",
+    "cco-2018-d1p3",
+    "cco-2019-d1p3",
+    "cco-2021-d1p3",
+    "cco-2023-d1p2",
+    "cco-2023-d1p3",
+    "cco-2023-d2p1",
+    "cco-2025-d2p3",
+    "cco-2017-d2p3",
+    "cco-2022-d1p2",
+    "cco-2024-d1p2"
+  ],
+  "unusual": []
+}

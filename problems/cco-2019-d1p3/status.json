@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-20T07:30:05Z",
+  "evidence": [
+    "statements/2019/2019CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2019/2019CCOTestData.zip",
+    "layout:day_directory_title",
+    "matched_statement_sample:2019/2019CCOTestData.zip::day1data/winter_driving_data/winter.sample.in"
+  ],
+  "problem_id": "cco-2019-d1p3",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": null
+}

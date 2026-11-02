@@ -1,0 +1,358 @@
+{
+ "problem_id": "cco-2019-d1p2",
+ "zip": "2019/2019CCOTestData.zip",
+ "method": "no README/batch numbering; classified by first-line N M against statement: N*M<=2000 -> subtask_1, else M==2 -> subtask_2, else full_constraints (first matching subtask in statement order; tests 07-11 are 20x2 and satisfy both subtask_1 and subtask_2, assigned to subtask_1)",
+ "members": [
+  {
+   "input": "day1data/sirtet_data/sirtet.02.in",
+   "expected": "day1data/sirtet_data/sirtet.02.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.03.in",
+   "expected": "day1data/sirtet_data/sirtet.03.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.04.in",
+   "expected": "day1data/sirtet_data/sirtet.04.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.05.in",
+   "expected": "day1data/sirtet_data/sirtet.05.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.06.in",
+   "expected": "day1data/sirtet_data/sirtet.06.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.07.in",
+   "expected": "day1data/sirtet_data/sirtet.07.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.08.in",
+   "expected": "day1data/sirtet_data/sirtet.08.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.09.in",
+   "expected": "day1data/sirtet_data/sirtet.09.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.10.in",
+   "expected": "day1data/sirtet_data/sirtet.10.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.11.in",
+   "expected": "day1data/sirtet_data/sirtet.11.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.12.in",
+   "expected": "day1data/sirtet_data/sirtet.12.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.13.in",
+   "expected": "day1data/sirtet_data/sirtet.13.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.14.in",
+   "expected": "day1data/sirtet_data/sirtet.14.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.15.in",
+   "expected": "day1data/sirtet_data/sirtet.15.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.16.in",
+   "expected": "day1data/sirtet_data/sirtet.16.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.17.in",
+   "expected": "day1data/sirtet_data/sirtet.17.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.18.in",
+   "expected": "day1data/sirtet_data/sirtet.18.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.19.in",
+   "expected": "day1data/sirtet_data/sirtet.19.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.20.in",
+   "expected": "day1data/sirtet_data/sirtet.20.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.21.in",
+   "expected": "day1data/sirtet_data/sirtet.21.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.22.in",
+   "expected": "day1data/sirtet_data/sirtet.22.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.23.in",
+   "expected": "day1data/sirtet_data/sirtet.23.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.24.in",
+   "expected": "day1data/sirtet_data/sirtet.24.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.25.in",
+   "expected": "day1data/sirtet_data/sirtet.25.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.26.in",
+   "expected": "day1data/sirtet_data/sirtet.26.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.27.in",
+   "expected": "day1data/sirtet_data/sirtet.27.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.28.in",
+   "expected": "day1data/sirtet_data/sirtet.28.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.29.in",
+   "expected": "day1data/sirtet_data/sirtet.29.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.30.in",
+   "expected": "day1data/sirtet_data/sirtet.30.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.31.in",
+   "expected": "day1data/sirtet_data/sirtet.31.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.32.in",
+   "expected": "day1data/sirtet_data/sirtet.32.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.33.in",
+   "expected": "day1data/sirtet_data/sirtet.33.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.34.in",
+   "expected": "day1data/sirtet_data/sirtet.34.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.35.in",
+   "expected": "day1data/sirtet_data/sirtet.35.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.36.in",
+   "expected": "day1data/sirtet_data/sirtet.36.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.37.in",
+   "expected": "day1data/sirtet_data/sirtet.37.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.38.in",
+   "expected": "day1data/sirtet_data/sirtet.38.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.39.in",
+   "expected": "day1data/sirtet_data/sirtet.39.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.40.in",
+   "expected": "day1data/sirtet_data/sirtet.40.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.41.in",
+   "expected": "day1data/sirtet_data/sirtet.41.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.42.in",
+   "expected": "day1data/sirtet_data/sirtet.42.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.43.in",
+   "expected": "day1data/sirtet_data/sirtet.43.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.44.in",
+   "expected": "day1data/sirtet_data/sirtet.44.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.45.in",
+   "expected": "day1data/sirtet_data/sirtet.45.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.46.in",
+   "expected": "day1data/sirtet_data/sirtet.46.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.47.in",
+   "expected": "day1data/sirtet_data/sirtet.47.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.48.in",
+   "expected": "day1data/sirtet_data/sirtet.48.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.49.in",
+   "expected": "day1data/sirtet_data/sirtet.49.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.50.in",
+   "expected": "day1data/sirtet_data/sirtet.50.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.51.in",
+   "expected": "day1data/sirtet_data/sirtet.51.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.52.in",
+   "expected": "day1data/sirtet_data/sirtet.52.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.53.in",
+   "expected": "day1data/sirtet_data/sirtet.53.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.54.in",
+   "expected": "day1data/sirtet_data/sirtet.54.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.55.in",
+   "expected": "day1data/sirtet_data/sirtet.55.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.56.in",
+   "expected": "day1data/sirtet_data/sirtet.56.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.57.in",
+   "expected": "day1data/sirtet_data/sirtet.57.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.58.in",
+   "expected": "day1data/sirtet_data/sirtet.58.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.59.in",
+   "expected": "day1data/sirtet_data/sirtet.59.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.60.in",
+   "expected": "day1data/sirtet_data/sirtet.60.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.61.in",
+   "expected": "day1data/sirtet_data/sirtet.61.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.62.in",
+   "expected": "day1data/sirtet_data/sirtet.62.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.63.in",
+   "expected": "day1data/sirtet_data/sirtet.63.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.64.in",
+   "expected": "day1data/sirtet_data/sirtet.64.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.65.in",
+   "expected": "day1data/sirtet_data/sirtet.65.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.66.in",
+   "expected": "day1data/sirtet_data/sirtet.66.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.67.in",
+   "expected": "day1data/sirtet_data/sirtet.67.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.68.in",
+   "expected": "day1data/sirtet_data/sirtet.68.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.69.in",
+   "expected": "day1data/sirtet_data/sirtet.69.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1data/sirtet_data/sirtet.70.in",
+   "expected": "day1data/sirtet_data/sirtet.70.out",
+   "subtask": "full_constraints"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "day1data/sirtet_data/sirtet.sample.in",
+   "why": "sample"
+  }
+ ]
+}

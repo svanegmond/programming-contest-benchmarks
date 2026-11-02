@@ -1,0 +1,35 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "exact",
+  "id": "cco-2020-d2p2",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco20p5",
+  "relative_tolerance": null,
+  "statement_path": "statements/2020/2020CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.12
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.32
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.28
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.16
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.12
+    }
+  ],
+  "time_limit_s": 3.5,
+  "title": "Interval Collection",
+  "year": 2020
+}

@@ -1,0 +1,27 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "float_tol",
+  "id": "cco-2015-d2p3",
+  "memory_limit_mb": null,
+  "memory_limit_source": null,
+  "relative_tolerance": null,
+  "statement_path": "statements/2015/2015CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.15
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.25
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.6
+    }
+  ],
+  "time_limit_s": 10.0,
+  "title": "Eggscavation",
+  "year": 2015
+}

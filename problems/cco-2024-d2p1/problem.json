@@ -1,0 +1,19 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "scorer",
+  "id": "cco-2024-d2p1",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco24p4",
+  "relative_tolerance": null,
+  "statement_path": "statements/2024/2024CCOProblems.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 1.0
+    }
+  ],
+  "time_limit_s": 1.0,
+  "title": "Infiltration",
+  "year": 2024
+}

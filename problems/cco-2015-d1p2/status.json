@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T08:03:08Z",
+  "evidence": [
+    "statements/2015/2015CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2015/2015CCOTestData.zip",
+    "no_recognizer_matched_zip_members:2015CCOTestData.zip",
+    "worker:not_a_parsing_artifact",
+    "statement sample is plain text in 2015CCOProblemSet.html; no ZIP member equals it after whitespace normalization (all non-output members under 2 MB checked)",
+    "statement sample `3 3 / 0 2 5 / 0 1 4 / 1 2 3` -> `7` absent from day1Data/Artskjid (A.N.dat/A.N.diff, N=1..50)"
+  ],
+  "problem_id": "cco-2015-d1p2",
+  "reason": "samples_disagree",
+  "status": "rejected",
+  "worker_model": "anthropic/claude-sonnet-5-5"
+}

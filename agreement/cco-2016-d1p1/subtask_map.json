@@ -1,0 +1,108 @@
+{
+  "problem_id": "cco-2016-d1p1",
+  "zip": "2016/2016CCOTestData.zip",
+  "method": "ZIP day1/field_subtasks.txt defines Subtask 1 (1-13) and cumulative Subtask 2 (1-19); verified N<=1000 for 1-13 (subtask_1) and N=10^6 for 14-19 (full_constraints); sample excluded",
+  "members": [
+    {
+      "input": "day1/field_trip_tests/field_trip.1.in",
+      "expected": "day1/field_trip_tests/field_trip.1.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.2.in",
+      "expected": "day1/field_trip_tests/field_trip.2.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.3.in",
+      "expected": "day1/field_trip_tests/field_trip.3.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.4.in",
+      "expected": "day1/field_trip_tests/field_trip.4.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.5.in",
+      "expected": "day1/field_trip_tests/field_trip.5.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.6.in",
+      "expected": "day1/field_trip_tests/field_trip.6.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.7.in",
+      "expected": "day1/field_trip_tests/field_trip.7.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.8.in",
+      "expected": "day1/field_trip_tests/field_trip.8.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.9.in",
+      "expected": "day1/field_trip_tests/field_trip.9.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.10.in",
+      "expected": "day1/field_trip_tests/field_trip.10.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.11.in",
+      "expected": "day1/field_trip_tests/field_trip.11.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.12.in",
+      "expected": "day1/field_trip_tests/field_trip.12.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.13.in",
+      "expected": "day1/field_trip_tests/field_trip.13.out",
+      "subtask": "subtask_1"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.14.in",
+      "expected": "day1/field_trip_tests/field_trip.14.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.15.in",
+      "expected": "day1/field_trip_tests/field_trip.15.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.16.in",
+      "expected": "day1/field_trip_tests/field_trip.16.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.17.in",
+      "expected": "day1/field_trip_tests/field_trip.17.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.18.in",
+      "expected": "day1/field_trip_tests/field_trip.18.out",
+      "subtask": "full_constraints"
+    },
+    {
+      "input": "day1/field_trip_tests/field_trip.19.in",
+      "expected": "day1/field_trip_tests/field_trip.19.out",
+      "subtask": "full_constraints"
+    }
+  ],
+  "excluded": [
+    {
+      "member": "day1/field_trip_tests/field_trip.sample.in",
+      "why": "sample"
+    }
+  ]
+}

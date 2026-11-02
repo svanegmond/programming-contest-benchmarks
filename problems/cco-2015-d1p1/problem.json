@@ -1,0 +1,23 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "exact",
+  "id": "cco-2015-d1p1",
+  "memory_limit_mb": null,
+  "memory_limit_source": null,
+  "relative_tolerance": null,
+  "statement_path": "statements/2015/2015CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.3
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.7
+    }
+  ],
+  "time_limit_s": 2.0,
+  "title": "Hungry Fox",
+  "year": 2015
+}

@@ -1,0 +1,39 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "exact",
+  "id": "cco-2026-d2p3",
+  "memory_limit_mb": 512,
+  "memory_limit_source": "statements/2026/2026CCOProblems.html",
+  "relative_tolerance": null,
+  "statement_path": "statements/2026/2026CCOProblems.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.04
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.12
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.16
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.16
+    },
+    {
+      "name": "subtask_5",
+      "weight": 0.24
+    },
+    {
+      "name": "subtask_6",
+      "weight": 0.28
+    }
+  ],
+  "time_limit_s": 5.0,
+  "title": "Walking on a Graph",
+  "year": 2026
+}

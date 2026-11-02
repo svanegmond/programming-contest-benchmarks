@@ -1,0 +1,20 @@
+cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Synthetic fixture: a response cut off mid-program by a token cap,
+// with a bare language label and no code fence.
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    long long a, b;
+    if (!(cin >> a >> b)) return 0;
+
+    vector<long long> values = {a, b};
+    long long total = 0;
+    for (size_t i = 0; i < values.size(); ++i) {
+        total += values[i

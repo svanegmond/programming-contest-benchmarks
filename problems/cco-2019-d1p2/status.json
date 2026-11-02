@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2019/2019CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2019/2019CCOTestData.zip",
+    "subtask_map.json",
+    "statement: Day 1, Problem 2: Sirtet (2019CCOProblemSet.html)",
+    "sirtet.sample.in/out matches statement sample (5 4 grid)"
+  ],
+  "problem_id": "cco-2019-d1p2",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

@@ -1,0 +1,17 @@
+# One package name per line. These are installed from ARCHIVE_DATE.
+base
+base-devel
+gcc
+python
+pypy3
+git
+pkgconf
+libcap
+libseccomp
+systemd
+linux
+mkinitcpio
+squashfs-tools
+
+# Isolate source revision: v2.7, commit 8f185bb37f3f23e29b33b0c7727c91c13429abe3.
+# Isolate is built in the rootfs using the packages above.

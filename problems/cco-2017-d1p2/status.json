@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-20T07:30:11Z",
+  "evidence": [
+    "statements/2017/2017CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2017/2017CCOTestData.zip",
+    "subtask_mapping_unclear:day1/cartesian/02",
+    "subtask_map.json",
+    "statement: Day 1, Problem 2: Cartesian Conquest (sample 10 6 -> 5 8 matches day1/cartesian/sample01.in/.a)"
+  ],
+  "problem_id": "cco-2017-d1p2",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

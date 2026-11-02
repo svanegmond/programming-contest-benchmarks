@@ -1,0 +1,39 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "float_tol",
+  "id": "cco-2019-d2p1",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco19p4",
+  "relative_tolerance": null,
+  "statement_path": "statements/2019/2019CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.16
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.04
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.2
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.12
+    },
+    {
+      "name": "subtask_5",
+      "weight": 0.12
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.36
+    }
+  ],
+  "time_limit_s": 6.0,
+  "title": "Card Scoring",
+  "year": 2019
+}

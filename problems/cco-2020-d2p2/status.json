@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-20T07:45:00Z",
+  "evidence": [
+    "statements/2020/2020CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2020/2020CCOTestData.zip",
+    "layout:dNpM_filename",
+    "no_sample_pair_matched_zip_after_whitespace_normalization",
+    "worker:not_a_parsing_artifact",
+    "statement sample (5 events, outputs 4 6 5 4 7) is plain <pre><code>, parsed cleanly; absent from ZIP",
+    "zip:no_member_equals_sample_in_any_name_or_directory"
+  ],
+  "problem_id": "cco-2020-d2p2",
+  "reason": "samples_disagree",
+  "status": "rejected",
+  "worker_model": "anthropic/claude-sonnet-5-5"
+}

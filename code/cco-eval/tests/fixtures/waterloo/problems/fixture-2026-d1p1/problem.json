@@ -1,0 +1,12 @@
+{
+  "id": "fixture-2026-d1p1",
+  "year": 2026,
+  "day": 1,
+  "title": "Fixture: Maximum Value",
+  "statement_path": "code/cco-eval/tests/fixtures/waterloo/statements/fixture-2026-d1p1.md",
+  "time_limit_s": 3.0,
+  "memory_limit_mb": 256,
+  "memory_limit_source": "fixture statement",
+  "subtasks": [{"name": "all", "weight": 1.0}],
+  "grading_kind": "exact"
+}

@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2020/2020CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2020/2020CCOTestData.zip",
+    "subtask_mapping_unclear:day1data/cco_d1p1/d1p1.01",
+    "subtask_map.json",
+    "statement: Day 1 Problem 1 \"A Game with Grundy\" (15 of 25 marks: |L|,|R|<=1e6)",
+    "sample.in/sample.out in ZIP == statement sample (3 friends -> 5,12,15,15)"
+  ],
+  "problem_id": "cco-2020-d1p1",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

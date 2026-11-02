@@ -1,0 +1,79 @@
+{
+  "source": "https://cemc.uwaterloo.ca/resources/past-contests?contest_category=80",
+  "captured_at": "2026-07-02T05:32:01.548650+00:00",
+  "note": "Official CCO test-data ZIPs are not vendored. Fetch from url with code/cco-eval/fetch_zips.py; CEMC does not publish checksums, so files are not verified.",
+  "resources": [
+    {
+      "year": "2015",
+      "kind": "test_data_zip",
+      "url": "https://s3.amazonaws.com/cemc.drupal/documents/bigfiles/2015CCOTestData.zip",
+      "bytes": 102749467
+    },
+    {
+      "year": "2016",
+      "kind": "test_data_zip",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2016/2016CCOTestData.zip",
+      "bytes": 183389380
+    },
+    {
+      "year": "2017",
+      "kind": "test_data_zip",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2017/2017CCOTestData.zip",
+      "bytes": 151187767
+    },
+    {
+      "year": "2018",
+      "kind": "test_data_zip",
+      "url": "https://cemc.uwaterloo.ca/sites/default/files/documents/2018/2018CCOTestData.zip",
+      "bytes": 31316924
+    },
+    {
+      "year": "2019",
+      "kind": "test_data_zip",
+      "url": "https://s3.amazonaws.com/cemc.drupal/documents/bigfiles/2019CCOTestData.zip",
+      "bytes": 85714216
+    },
+    {
+      "year": "2020",
+      "kind": "test_data_zip",
+      "url": "https://s3.amazonaws.com/cemc.drupal/documents/bigfiles/2020CCOTestData.zip",
+      "bytes": 728831857
+    },
+    {
+      "year": "2021",
+      "kind": "test_data_zip",
+      "url": "https://s3.amazonaws.com/cemc.drupal/documents/bigfiles/2021CCOTestData.zip",
+      "bytes": 538542440
+    },
+    {
+      "year": "2022",
+      "kind": "test_data_zip",
+      "url": "https://s3.amazonaws.com/cemc.drupal/documents/bigfiles/2022CCOTestData.zip",
+      "bytes": 1919665522
+    },
+    {
+      "year": "2023",
+      "kind": "test_data_zip",
+      "url": "https://s3.amazonaws.com/cemc.drupal/documents/bigfiles/2023CCOTestData.zip",
+      "bytes": 276710216
+    },
+    {
+      "year": "2024",
+      "kind": "test_data_zip",
+      "url": "https://s3.amazonaws.com/cemc.drupal/documents/bigfiles/2024CCOTestData.zip",
+      "bytes": 1398286847
+    },
+    {
+      "year": "2025",
+      "kind": "test_data_zip",
+      "url": "https://s3.amazonaws.com/cemc.drupal/documents/bigfiles/prod/cco_data.zip",
+      "bytes": 633696316
+    },
+    {
+      "year": "2026",
+      "kind": "test_data_zip",
+      "url": "https://s3.amazonaws.com/cemc.drupal/documents/bigfiles/prod/cco2026_data.zip",
+      "bytes": 1670393994
+    }
+  ]
+}

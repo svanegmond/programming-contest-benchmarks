@@ -1,0 +1,23 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "exact",
+  "id": "cco-2016-d2p1",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco16p4",
+  "relative_tolerance": null,
+  "statement_path": "statements/2016/2016CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.48
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.52
+    }
+  ],
+  "time_limit_s": 1.0,
+  "title": "O Canada",
+  "year": 2016
+}

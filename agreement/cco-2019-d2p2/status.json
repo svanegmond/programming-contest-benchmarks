@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-10-20T08:00:00Z",
+  "evidence": [
+    "statements/2019/2019CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2019/2019CCOTestData.zip",
+    "subtask_map.json",
+    "statement: 2019CCOProblemSet.html \"Day 2, Problem 2: Marshmallow Molecules\"",
+    "sample 1 matched to day2data/marshmallow_data/marsh.0-01 (in/out)",
+    "sample 2 matched to day2data/marshmallow_data/marsh.0-02 (in/out)",
+    "group 1 (13 tests) verified N <= 100 for subtask_1",
+    "group 2 (12 tests) verified N <= 5000 for subtask_2",
+    "group 3 (12 tests) verified at most one b_i = j for subtask_3",
+    "group 4 (18 tests) verified general constraints for full_constraints"
+  ],
+  "problem_id": "cco-2019-d2p2",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/google/gemini-3.8-flash"
+}

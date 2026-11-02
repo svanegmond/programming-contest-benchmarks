@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-20T07:30:06Z",
+  "evidence": [
+    "statements/2018/2018CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2018/2018CCOTestData.zip",
+    "layout:day_directory_title",
+    "matched_statement_sample:2018/2018CCOTestData.zip::2018CCOTestData/day1data/geese/gesse.sample-01.in"
+  ],
+  "problem_id": "cco-2018-d1p1",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": null
+}

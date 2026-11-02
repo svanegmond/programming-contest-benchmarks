@@ -1,0 +1,31 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "exact",
+  "id": "cco-2021-d1p3",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco21p3",
+  "relative_tolerance": null,
+  "statement_path": "statements/2021/2021CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.16
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.16
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.48
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.2
+    }
+  ],
+  "time_limit_s": 8.0,
+  "title": "Through Another Maze Darkly",
+  "year": 2021
+}

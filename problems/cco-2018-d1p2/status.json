@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-20T07:30:06Z",
+  "evidence": [
+    "statements/2018/2018CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2018/2018CCOTestData.zip",
+    "layout:day_directory_title",
+    "checker_class:scorer;io_mode:output-only"
+  ],
+  "problem_id": "cco-2018-d1p2",
+  "reason": "output_only",
+  "status": "rejected",
+  "worker_model": null
+}

@@ -1,0 +1,10 @@
+{
+  "id": "runner-sum-smoke",
+  "year": 2026,
+  "day": 1,
+  "title": "Sum Two Integers",
+  "statement_path": "statement.md",
+  "tests_path": "tests.jsonl",
+  "time_limit_s": 1,
+  "memory_limit_mb": 128
+}

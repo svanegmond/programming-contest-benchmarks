@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-20T07:30:06Z",
+  "evidence": [
+    "statements/2018/2018CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2018/2018CCOTestData.zip",
+    "subtask_mapping_unclear:2018CCOTestData/day2data/boring/boring.01",
+    "subtask_map.json",
+    "statement: Day 2, Problem 2: Boring Lectures (subtasks Q=0, N<=10^4)",
+    "sample matched: boring.sample.in/.out (4 3 1 -> 8,6)"
+  ],
+  "problem_id": "cco-2018-d2p2",
+  "reason": null,
+  "status": "admitted",
+  "worker_model": "openrouter/anthropic/claude-sonnet-5.5"
+}

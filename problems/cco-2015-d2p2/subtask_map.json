@@ -1,0 +1,346 @@
+{
+ "problem_id": "cco-2015-d2p2",
+ "zip": "2015/2015CCOTestData.zip",
+ "method": "first-line N,D of each input: N<=50 and D<=3 -> subtask_1, else full_constraints; sample1-3 excluded",
+ "members": [
+  {
+   "input": "day2Data/Timpanist/ascdesc1a.in",
+   "expected": "day2Data/Timpanist/ascdesc1a.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/ascdesc1b.in",
+   "expected": "day2Data/Timpanist/ascdesc1b.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/ascdesc1c.in",
+   "expected": "day2Data/Timpanist/ascdesc1c.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/ascdesc1d.in",
+   "expected": "day2Data/Timpanist/ascdesc1d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/ascendinga.in",
+   "expected": "day2Data/Timpanist/ascendinga.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/ascendingb.in",
+   "expected": "day2Data/Timpanist/ascendingb.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/ascendingc.in",
+   "expected": "day2Data/Timpanist/ascendingc.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/ascendingd.in",
+   "expected": "day2Data/Timpanist/ascendingd.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign0a.in",
+   "expected": "day2Data/Timpanist/bign0a.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign0b.in",
+   "expected": "day2Data/Timpanist/bign0b.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign0c.in",
+   "expected": "day2Data/Timpanist/bign0c.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign0d.in",
+   "expected": "day2Data/Timpanist/bign0d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign1a.in",
+   "expected": "day2Data/Timpanist/bign1a.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign1b.in",
+   "expected": "day2Data/Timpanist/bign1b.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign1c.in",
+   "expected": "day2Data/Timpanist/bign1c.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign1d.in",
+   "expected": "day2Data/Timpanist/bign1d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign2a.in",
+   "expected": "day2Data/Timpanist/bign2a.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign2b.in",
+   "expected": "day2Data/Timpanist/bign2b.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign2c.in",
+   "expected": "day2Data/Timpanist/bign2c.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bign2d.in",
+   "expected": "day2Data/Timpanist/bign2d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bignandD0.in",
+   "expected": "day2Data/Timpanist/bignandD0.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bignandD1.in",
+   "expected": "day2Data/Timpanist/bignandD1.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/bignandD2.in",
+   "expected": "day2Data/Timpanist/bignandD2.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/davea.in",
+   "expected": "day2Data/Timpanist/davea.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/daveb.in",
+   "expected": "day2Data/Timpanist/daveb.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/davec.in",
+   "expected": "day2Data/Timpanist/davec.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/daved.in",
+   "expected": "day2Data/Timpanist/daved.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/descendinga.in",
+   "expected": "day2Data/Timpanist/descendinga.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/descendingb.in",
+   "expected": "day2Data/Timpanist/descendingb.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/descendingc.in",
+   "expected": "day2Data/Timpanist/descendingc.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/descendingd.in",
+   "expected": "day2Data/Timpanist/descendingd.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/notintegerb.in",
+   "expected": "day2Data/Timpanist/notintegerb.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/notintegerc.in",
+   "expected": "day2Data/Timpanist/notintegerc.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/notintegerd.in",
+   "expected": "day2Data/Timpanist/notintegerd.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/onebiggap0a.in",
+   "expected": "day2Data/Timpanist/onebiggap0a.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/onebiggap0b.in",
+   "expected": "day2Data/Timpanist/onebiggap0b.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/onebiggap0c.in",
+   "expected": "day2Data/Timpanist/onebiggap0c.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/onebiggap0d.in",
+   "expected": "day2Data/Timpanist/onebiggap0d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/onenote.in",
+   "expected": "day2Data/Timpanist/onenote.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small0a.in",
+   "expected": "day2Data/Timpanist/small0a.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small0b.in",
+   "expected": "day2Data/Timpanist/small0b.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small0c.in",
+   "expected": "day2Data/Timpanist/small0c.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small0d.in",
+   "expected": "day2Data/Timpanist/small0d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/small1a.in",
+   "expected": "day2Data/Timpanist/small1a.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small1b.in",
+   "expected": "day2Data/Timpanist/small1b.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small1c.in",
+   "expected": "day2Data/Timpanist/small1c.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small1d.in",
+   "expected": "day2Data/Timpanist/small1d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/small2a.in",
+   "expected": "day2Data/Timpanist/small2a.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small2b.in",
+   "expected": "day2Data/Timpanist/small2b.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small2c.in",
+   "expected": "day2Data/Timpanist/small2c.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small2d.in",
+   "expected": "day2Data/Timpanist/small2d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/small3a.in",
+   "expected": "day2Data/Timpanist/small3a.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small3b.in",
+   "expected": "day2Data/Timpanist/small3b.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small3c.in",
+   "expected": "day2Data/Timpanist/small3c.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/small3d.in",
+   "expected": "day2Data/Timpanist/small3d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/threenotesearly.in",
+   "expected": "day2Data/Timpanist/threenotesearly.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/timp.1a.in",
+   "expected": "day2Data/Timpanist/timp.1a.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/timp.1b.in",
+   "expected": "day2Data/Timpanist/timp.1b.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/timp.1c.in",
+   "expected": "day2Data/Timpanist/timp.1c.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/timp.1d.in",
+   "expected": "day2Data/Timpanist/timp.1d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/tuneatbeg0a.in",
+   "expected": "day2Data/Timpanist/tuneatbeg0a.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/tuneatbeg0b.in",
+   "expected": "day2Data/Timpanist/tuneatbeg0b.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/tuneatbeg0c.in",
+   "expected": "day2Data/Timpanist/tuneatbeg0c.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2Data/Timpanist/tuneatbeg0d.in",
+   "expected": "day2Data/Timpanist/tuneatbeg0d.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2Data/Timpanist/twonoteslate.in",
+   "expected": "day2Data/Timpanist/twonoteslate.out",
+   "subtask": "subtask_1"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "day2Data/Timpanist/sample1.in",
+   "why": "sample"
+  },
+  {
+   "member": "day2Data/Timpanist/sample2.in",
+   "why": "sample"
+  },
+  {
+   "member": "day2Data/Timpanist/sample3.in",
+   "why": "sample"
+  }
+ ]
+}

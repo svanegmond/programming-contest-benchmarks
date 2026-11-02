@@ -1,0 +1,126 @@
+{
+ "problem_id": "cco-2018-d1p3",
+ "zip": "2018/2018CCOTestData.zip",
+ "method": "Read every input; assigned each to the tightest statement subtask whose constraints it satisfies (s1: all a=b=1,e<=200; s2: all values<=2; s3: N<=200 and values<=200; else full); fp.01-03 equal the statement samples.",
+ "members": [
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.04.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.04.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.05.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.05.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.06.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.06.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.07.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.07.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.08.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.08.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.09.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.09.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.10.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.10.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.11.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.11.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.12.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.12.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.13.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.13.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.14.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.14.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.15.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.15.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.16.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.16.out",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.17.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.17.out",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.18.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.18.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.19.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.19.out",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.20.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.20.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.21.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.21.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.22.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.22.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.23.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.23.out",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "2018CCOTestData/day1data/fun/fp.24.in",
+   "expected": "2018CCOTestData/day1data/fun/fp.24.out",
+   "subtask": "full_constraints"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "2018CCOTestData/day1data/fun/fp.01.in",
+   "why": "sample"
+  },
+  {
+   "member": "2018CCOTestData/day1data/fun/fp.02.in",
+   "why": "sample"
+  },
+  {
+   "member": "2018CCOTestData/day1data/fun/fp.03.in",
+   "why": "sample"
+  }
+ ]
+}

@@ -1,0 +1,321 @@
+{
+ "problem_id": "cco-2017-d2p1",
+ "zip": "2017/2017CCOTestData.zip",
+ "method": "Numbered batches: 04-23 N<=10 (subtask_1), 24-43 N<=50 (subtask_2), 44-63 N<=500 (full_constraints); sample01-sample03 excluded as samples",
+ "members": [
+  {
+   "input": "day2/rainfall/04.in",
+   "expected": "day2/rainfall/04.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/05.in",
+   "expected": "day2/rainfall/05.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/06.in",
+   "expected": "day2/rainfall/06.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/07.in",
+   "expected": "day2/rainfall/07.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/08.in",
+   "expected": "day2/rainfall/08.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/09.in",
+   "expected": "day2/rainfall/09.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/10.in",
+   "expected": "day2/rainfall/10.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/11.in",
+   "expected": "day2/rainfall/11.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/12.in",
+   "expected": "day2/rainfall/12.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/13.in",
+   "expected": "day2/rainfall/13.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/14.in",
+   "expected": "day2/rainfall/14.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/15.in",
+   "expected": "day2/rainfall/15.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/16.in",
+   "expected": "day2/rainfall/16.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/17.in",
+   "expected": "day2/rainfall/17.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/18.in",
+   "expected": "day2/rainfall/18.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/19.in",
+   "expected": "day2/rainfall/19.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/20.in",
+   "expected": "day2/rainfall/20.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/21.in",
+   "expected": "day2/rainfall/21.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/22.in",
+   "expected": "day2/rainfall/22.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/23.in",
+   "expected": "day2/rainfall/23.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day2/rainfall/24.in",
+   "expected": "day2/rainfall/24.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/25.in",
+   "expected": "day2/rainfall/25.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/26.in",
+   "expected": "day2/rainfall/26.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/27.in",
+   "expected": "day2/rainfall/27.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/28.in",
+   "expected": "day2/rainfall/28.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/29.in",
+   "expected": "day2/rainfall/29.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/30.in",
+   "expected": "day2/rainfall/30.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/31.in",
+   "expected": "day2/rainfall/31.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/32.in",
+   "expected": "day2/rainfall/32.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/33.in",
+   "expected": "day2/rainfall/33.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/34.in",
+   "expected": "day2/rainfall/34.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/35.in",
+   "expected": "day2/rainfall/35.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/36.in",
+   "expected": "day2/rainfall/36.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/37.in",
+   "expected": "day2/rainfall/37.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/38.in",
+   "expected": "day2/rainfall/38.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/39.in",
+   "expected": "day2/rainfall/39.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/40.in",
+   "expected": "day2/rainfall/40.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/41.in",
+   "expected": "day2/rainfall/41.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/42.in",
+   "expected": "day2/rainfall/42.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/43.in",
+   "expected": "day2/rainfall/43.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day2/rainfall/44.in",
+   "expected": "day2/rainfall/44.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/45.in",
+   "expected": "day2/rainfall/45.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/46.in",
+   "expected": "day2/rainfall/46.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/47.in",
+   "expected": "day2/rainfall/47.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/48.in",
+   "expected": "day2/rainfall/48.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/49.in",
+   "expected": "day2/rainfall/49.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/50.in",
+   "expected": "day2/rainfall/50.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/51.in",
+   "expected": "day2/rainfall/51.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/52.in",
+   "expected": "day2/rainfall/52.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/53.in",
+   "expected": "day2/rainfall/53.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/54.in",
+   "expected": "day2/rainfall/54.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/55.in",
+   "expected": "day2/rainfall/55.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/56.in",
+   "expected": "day2/rainfall/56.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/57.in",
+   "expected": "day2/rainfall/57.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/58.in",
+   "expected": "day2/rainfall/58.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/59.in",
+   "expected": "day2/rainfall/59.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/60.in",
+   "expected": "day2/rainfall/60.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/61.in",
+   "expected": "day2/rainfall/61.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/62.in",
+   "expected": "day2/rainfall/62.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day2/rainfall/63.in",
+   "expected": "day2/rainfall/63.a",
+   "subtask": "full_constraints"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "day2/rainfall/sample01.in",
+   "why": "sample"
+  },
+  {
+   "member": "day2/rainfall/sample02.in",
+   "why": "sample"
+  },
+  {
+   "member": "day2/rainfall/sample03.in",
+   "why": "sample"
+  }
+ ]
+}

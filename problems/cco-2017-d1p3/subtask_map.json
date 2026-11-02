@@ -1,0 +1,213 @@
+{
+ "problem_id": "cco-2017-d1p3",
+ "zip": "2017/2017CCOTestData.zip",
+ "method": "Per-file inspection of input headers vs statement: 02-11 N=Q=2000 (subtask_1); 12-21 N=Q=2e5 with all y=1 (subtask_2); 22-31 N=Q=1e5 and r,c<=1e9 (subtask_3); 32-41 N=Q=2e5 y>1 coords up to 1e18 (full_constraints); sample01 excluded. No 01 file exists in ZIP.",
+ "members": [
+  {
+   "input": "day1/art/02.in",
+   "expected": "day1/art/02.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/03.in",
+   "expected": "day1/art/03.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/04.in",
+   "expected": "day1/art/04.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/05.in",
+   "expected": "day1/art/05.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/06.in",
+   "expected": "day1/art/06.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/07.in",
+   "expected": "day1/art/07.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/08.in",
+   "expected": "day1/art/08.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/09.in",
+   "expected": "day1/art/09.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/10.in",
+   "expected": "day1/art/10.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/11.in",
+   "expected": "day1/art/11.a",
+   "subtask": "subtask_1"
+  },
+  {
+   "input": "day1/art/12.in",
+   "expected": "day1/art/12.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/13.in",
+   "expected": "day1/art/13.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/14.in",
+   "expected": "day1/art/14.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/15.in",
+   "expected": "day1/art/15.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/16.in",
+   "expected": "day1/art/16.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/17.in",
+   "expected": "day1/art/17.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/18.in",
+   "expected": "day1/art/18.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/19.in",
+   "expected": "day1/art/19.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/20.in",
+   "expected": "day1/art/20.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/21.in",
+   "expected": "day1/art/21.a",
+   "subtask": "subtask_2"
+  },
+  {
+   "input": "day1/art/22.in",
+   "expected": "day1/art/22.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/23.in",
+   "expected": "day1/art/23.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/24.in",
+   "expected": "day1/art/24.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/25.in",
+   "expected": "day1/art/25.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/26.in",
+   "expected": "day1/art/26.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/27.in",
+   "expected": "day1/art/27.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/28.in",
+   "expected": "day1/art/28.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/29.in",
+   "expected": "day1/art/29.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/30.in",
+   "expected": "day1/art/30.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/31.in",
+   "expected": "day1/art/31.a",
+   "subtask": "subtask_3"
+  },
+  {
+   "input": "day1/art/32.in",
+   "expected": "day1/art/32.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1/art/33.in",
+   "expected": "day1/art/33.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1/art/34.in",
+   "expected": "day1/art/34.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1/art/35.in",
+   "expected": "day1/art/35.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1/art/36.in",
+   "expected": "day1/art/36.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1/art/37.in",
+   "expected": "day1/art/37.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1/art/38.in",
+   "expected": "day1/art/38.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1/art/39.in",
+   "expected": "day1/art/39.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1/art/40.in",
+   "expected": "day1/art/40.a",
+   "subtask": "full_constraints"
+  },
+  {
+   "input": "day1/art/41.in",
+   "expected": "day1/art/41.a",
+   "subtask": "full_constraints"
+  }
+ ],
+ "excluded": [
+  {
+   "member": "day1/art/sample01.in",
+   "why": "sample"
+  }
+ ]
+}

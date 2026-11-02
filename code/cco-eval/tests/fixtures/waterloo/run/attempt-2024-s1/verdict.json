@@ -1,0 +1,9 @@
+{
+  "attempt_id": "fixture-2024-s1",
+  "problem_id": "fixture-2024-d1p1",
+  "subtask_pass": {"all": false},
+  "all_pass": false,
+  "partial_score": 0.0,
+  "outcome": "fail",
+  "env_id": "arch-fixture-2026-10-20"
+}

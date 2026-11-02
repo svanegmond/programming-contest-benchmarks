@@ -1,0 +1,43 @@
+{
+  "start": {
+    "time_utc": "2026-10-20T08:27:17Z",
+    "loadavg": "0.43 0.84 0.74 1/965 69753",
+    "governor_cpu0": "powersave",
+    "boost": "1",
+    "epp_cpu0": "performance",
+    "thp": "[always] madvise never",
+    "aslr": "2",
+    "ollama_ps": {
+      "http://localhost:11434/api/ps": "unreachable: <urlopen error [Errno 111] Connection refused>",
+      "http://ollama-host.example:11434/api/ps": "{\"models\":[]}"
+    },
+    "ollama_cpu_ticks": 26,
+    "vm_pid": "68785"
+  },
+  "runs": 200,
+  "block": 20,
+  "warmup": 10,
+  "arms": [
+    "host",
+    "vm"
+  ],
+  "env_id": {
+    "host": "687bded99a1810ec00310a4c21a4dad52197abf869a07c61ec594f4cfee9d9f9",
+    "vm": "687bded99a1810ec00310a4c21a4dad52197abf869a07c61ec594f4cfee9d9f9"
+  },
+  "end": {
+    "time_utc": "2026-10-20T08:48:28Z",
+    "loadavg": "1.28 1.17 1.05 1/737 76472",
+    "governor_cpu0": "powersave",
+    "boost": "1",
+    "epp_cpu0": "performance",
+    "thp": "[always] madvise never",
+    "aslr": "2",
+    "ollama_ps": {
+      "http://localhost:11434/api/ps": "unreachable: <urlopen error [Errno 111] Connection refused>",
+      "http://ollama-host.example:11434/api/ps": "{\"models\":[]}"
+    },
+    "ollama_cpu_ticks": 27,
+    "vm_pid": "68785"
+  }
+}

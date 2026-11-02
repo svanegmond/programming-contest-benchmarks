@@ -1,0 +1,35 @@
+{
+  "absolute_tolerance": null,
+  "day": 1,
+  "grading_kind": "exact",
+  "id": "cco-2026-d1p1",
+  "memory_limit_mb": 512,
+  "memory_limit_source": "statements/2026/2026CCOProblems.html",
+  "relative_tolerance": null,
+  "statement_path": "statements/2026/2026CCOProblems.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.12
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.12
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.28
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.28
+    },
+    {
+      "name": "subtask_5",
+      "weight": 0.2
+    }
+  ],
+  "time_limit_s": 4.0,
+  "title": "Waterloo Tag",
+  "year": 2026
+}

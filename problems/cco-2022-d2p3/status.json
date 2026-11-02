@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-20T07:29:18Z",
+  "evidence": [
+    "statements/2022/2022CCOProblemSet.html",
+    "requirements:problem-requirements.jsonl",
+    "2022/2022CCOTestData.zip",
+    "layout:dNpM_filename",
+    "checker_class:any-valid;io_mode:stdin/stdout"
+  ],
+  "problem_id": "cco-2022-d2p3",
+  "reason": "needs_validator",
+  "status": "rejected",
+  "worker_model": null
+}

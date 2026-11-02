@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.DS_Store
+# CCO test-data ZIPs are fetched, never committed. See testdata/zips.json.
+*.zip
+testdata/zips/
+# Built from the official ZIPs by code/cco-eval/jev_calibration.py prep
+jev-calibration/cases.jsonl
+# Raw run output (code, transcripts, prompts) is never committed. Publish with code/cco-eval/export_run.py.
+runs-raw/

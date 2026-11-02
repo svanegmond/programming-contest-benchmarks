@@ -1,0 +1,31 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "exact",
+  "id": "cco-2025-d2p1",
+  "memory_limit_mb": 256,
+  "memory_limit_source": "dmoj:cco25p4",
+  "relative_tolerance": null,
+  "statement_path": "statements/2025/2025CCOProblems.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.12
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.28
+    },
+    {
+      "name": "subtask_3",
+      "weight": 0.4
+    },
+    {
+      "name": "subtask_4",
+      "weight": 0.2
+    }
+  ],
+  "time_limit_s": 2.0,
+  "title": "Restaurant Recommendation Rescue",
+  "year": 2025
+}

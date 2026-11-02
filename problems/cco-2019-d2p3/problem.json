@@ -1,0 +1,27 @@
+{
+  "absolute_tolerance": null,
+  "day": 2,
+  "grading_kind": "exact",
+  "id": "cco-2019-d2p3",
+  "memory_limit_mb": 1024,
+  "memory_limit_source": "dmoj:cco19p6",
+  "relative_tolerance": null,
+  "statement_path": "statements/2019/2019CCOProblemSet.html",
+  "subtasks": [
+    {
+      "name": "subtask_1",
+      "weight": 0.16
+    },
+    {
+      "name": "subtask_2",
+      "weight": 0.28
+    },
+    {
+      "name": "full_constraints",
+      "weight": 0.56
+    }
+  ],
+  "time_limit_s": 1.0,
+  "title": "Bad Codes",
+  "year": 2019
+}
