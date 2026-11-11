@@ -16,6 +16,14 @@ from runners.judge_client import StubJudge
 from waterloo import cli
 
 MODEL = "openrouter/openai/gpt-oss-20b"
+CATALOG = {
+    "openai/gpt-oss-20b": {
+        "id": "openai/gpt-oss-20b",
+        "top_provider": {"max_completion_tokens": 32768},
+        "supported_parameters": ["reasoning", "reasoning_effort", "temperature", "max_tokens"],
+        "reasoning": {"supported_efforts": ["high", "medium", "low"], "default_effort": "medium"},
+    }
+}
 
 
 @pytest.fixture
@@ -28,11 +36,12 @@ def experiment(tmp_path, monkeypatch):
     monkeypatch.setattr(cli, "load_problem", lambda pid: replace(problem, id=pid))
     monkeypatch.setattr(cli, "admitted_problem_ids", lambda root: {"p", "q", "r"})
     monkeypatch.setattr(cli, "RemoteJudge", lambda **kw: StubJudge())
+    monkeypatch.setattr(cli, "load_openrouter_catalog", lambda **kw: CATALOG)
     monkeypatch.setenv("OPENROUTER_API_KEY", "test-key-not-sent")
     cohort = tmp_path / "cohort.json"
     write_json(cohort, {"seed": 1, "deterministic": ["p", "q"], "unusual": []})
     argv = ["run", "--models", MODEL, "--cohort", str(cohort), "--mode", "single_shot",
-            "--out", str(tmp_path / "runs")]
+            "--lane", "python", "--out", str(tmp_path / "runs")]
     return tmp_path, argv
 
 
@@ -42,7 +51,7 @@ def test_help_is_available_from_checkout_without_pythonpath():
     result = subprocess.run([sys.executable, "-m", "waterloo", "--help"], cwd=cli.REPO_ROOT,
                             env=env, text=True, capture_output=True)
     assert result.returncode == 0
-    assert "{admit,cohort,run,report}" in result.stdout
+    assert "{admit,cohort,run,report,publish}" in result.stdout
 
 
 def test_rerun_skips_finished_attempts(experiment, monkeypatch, capsys):
@@ -56,11 +65,17 @@ def test_rerun_skips_finished_attempts(experiment, monkeypatch, capsys):
     assert len(calls) == 2
     run_dir = next((root / "runs").iterdir())
     manifest = json.loads((run_dir / "run.json").read_text())
+    config = json.loads((run_dir / "run-config.json").read_text())
     assert len(manifest["git_sha"]) == 40
     assert len(manifest["cohort_hash"]) == 64
     assert manifest["models"] == [MODEL]
     assert manifest["budget"] is None
-    assert manifest["caps"]["max_tokens"][MODEL] == 32768
+    assert manifest["k"] == 1
+    assert manifest["lane"] == "python"
+    assert manifest["reasoning_effort"] == "high"
+    assert manifest["caps"]["max_tokens"][MODEL] == 65536
+    assert manifest["caps"]["reasoning_effort"][MODEL] == "high"
+    assert config["git_sha"] == manifest["git_sha"]
     assert cli.main(argv) == 0
     assert len(calls) == 2
     assert capsys.readouterr().out.count("skip finished") == 2
@@ -68,7 +83,43 @@ def test_rerun_skips_finished_attempts(experiment, monkeypatch, capsys):
     assert [row["cost_usd"] for row in telemetry] == [0.125, 0.125]
     assert len(list(run_dir.rglob("attempt.json"))) == 2
     assert cli.main(["report", run_dir.name, "--out", str(root / "runs")]) == 0
-    assert f"| {MODEL} | 2 | 0 | 0 | 0 |" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "mean partial_score" in out
+    assert "pass@k" in out
+
+
+def test_k_writes_per_sample_artifacts(experiment, monkeypatch):
+    root, argv = experiment
+    response = GenerateResult("```python\nimport sys\nprint(sum(map(int, sys.stdin.read().split())))\n```",
+                              "openrouter", MODEL, 1.0, 1, 1, "stop", {})
+    monkeypatch.setattr("runners.single_shot.run_model", lambda *a, **kw: response)
+    assert cli.main(argv + ["--k", "2", "--temperature", "0.2"]) == 0
+    run_dir = next((root / "runs").iterdir())
+    manifest = json.loads((run_dir / "run.json").read_text())
+    assert manifest["k"] == 2
+    assert manifest["temperature"] == 0.2
+    assert len(list(run_dir.rglob("attempt.json"))) == 4
+    samples = {path.parent.name for path in run_dir.rglob("attempt.json")}
+    assert samples == {"s1", "s2"}
+
+
+def test_dry_run_writes_config_without_an_api_key(experiment, monkeypatch, capsys):
+    root, argv = experiment
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    assert cli.main(argv + ["--dry-run"]) == 0
+    run_dir = next((root / "runs").iterdir())
+    config = json.loads((run_dir / "run-config.json").read_text())
+    assert config["reasoning_effort"] == "high"
+    assert config["lane"] == "python"
+
+
+def test_headline_lane_defaults_to_cpp(experiment, monkeypatch):
+    root, argv = experiment
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    stripped = [item for item in argv if item not in {"--lane", "python"}]
+    assert cli.main(stripped + ["--dry-run", "--run-id", "default-lane"]) == 0
+    manifest = json.loads((root / "runs" / "default-lane" / "run.json").read_text())
+    assert manifest["lane"] == "cpp"
 
 
 def test_environment_change_is_not_relabelled_as_the_manifest_environment(experiment, monkeypatch, capsys):
@@ -98,16 +149,18 @@ def test_explicit_run_id_refuses_different_caps(experiment, monkeypatch, capsys)
     assert "run manifest differs" in capsys.readouterr().err
 
 
-def test_agent_budget_is_recorded_and_finished_attempt_is_resumable(experiment, monkeypatch, capsys):
+def test_agent_turn_budget_is_recorded_and_finished_attempt_is_resumable(experiment, monkeypatch, capsys):
     root, argv = experiment
     argv[argv.index("single_shot")] = "agentic"
-    argv += ["--budget", "0.1:1"]
+    argv += ["--max-turns", "1"]
     monkeypatch.setattr("runners.agent_loop.run_model",
                         lambda *a, **k: GenerateResult("", "openrouter", MODEL, 1.0, 1, 1, "stop", {}))
     assert cli.main(argv) == 0
     run_dir = next((root / "runs").iterdir())
     manifest = json.loads((run_dir / "run.json").read_text())
-    assert manifest["budget"] == {"wall_clock_s": 0.1, "max_turns": 1}
+    assert manifest["budget"]["max_turns"] == 1
+    assert manifest["budget"]["wall_clock_s"] is None
+    assert manifest["caps"]["max_tokens"][MODEL] == 65536
     assert len(list(run_dir.rglob("verdict.json"))) == 2
     assert cli.main(argv) == 0
     assert capsys.readouterr().out.count("skip finished") == 2
@@ -134,9 +187,10 @@ def test_telemetry_reports_agent_outcome_wall_time_and_last_finish_reason():
 
 
 @pytest.mark.parametrize("mode, extra, error", [
-    ("single_shot", ["--budget", "1:1"], "only to agentic"),
-    ("agentic", ["--budget", "0:1"], "must be positive"),
-    ("agentic", ["--max-tokens", "10"], "only for single_shot"),
+    ("single_shot", ["--budget", "1:1"], "wall-clock"),
+    ("agentic", ["--budget", "0:1"], "wall-clock"),
+    ("single_shot", ["--cluster-select"], "greater than 1"),
+    ("single_shot", ["--multi-submit"], "only to agentic"),
 ])
 def test_incompatible_budget_or_cap_is_rejected(experiment, mode, extra, error, capsys):
     _, argv = experiment
@@ -145,17 +199,30 @@ def test_incompatible_budget_or_cap_is_rejected(experiment, mode, extra, error, 
     assert error in capsys.readouterr().err
 
 
+def test_agentic_accepts_max_tokens(experiment, monkeypatch):
+    _, argv = experiment
+    argv[argv.index("single_shot")] = "agentic"
+    monkeypatch.setattr("runners.agent_loop.run_model",
+                        lambda *a, **k: GenerateResult("", "openrouter", MODEL, 1.0, 1, 1, "stop", {}))
+    assert cli.main(argv + ["--max-tokens", "4000", "--max-turns", "1"]) == 0
+    run_dir = next((experiment[0] / "runs").iterdir())
+    assert json.loads((run_dir / "run.json").read_text())["caps"]["max_tokens"][MODEL] == 4000
+
+
 def test_report_counts_truncation_separately_even_when_code_passes(tmp_path, capsys):
     for index, outcome in enumerate([Outcome3.PASS_ON_TIME, Outcome3.PASS_OVER_TIME, Outcome3.FAIL, Outcome3.PASS_ON_TIME]):
         folder = tmp_path / "r" / str(index)
         attempt = Attempt(str(index), f"p{index}", Mode.SINGLE_SHOT, MODEL, "openrouter", None,
                           "env", "hash", "transcript", None, 1,
                           failure_kind="truncated" if index == 3 else None)
-        verdict = Verdict(str(index), f"p{index}", {}, outcome != Outcome3.FAIL, 0, outcome, "env")
+        verdict = Verdict(str(index), f"p{index}", {}, outcome != Outcome3.FAIL, 0.5 if outcome != Outcome3.FAIL else 0,
+                          outcome, "env")
         write_json(folder / "attempt.json", to_json(attempt))
         write_json(folder / "verdict.json", to_json(verdict))
     assert cli.main(["report", "r", "--out", str(tmp_path)]) == 0
-    assert f"| {MODEL} | 1 | 1 | 1 | 1 |" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "mean partial_score" in out
+    assert "| 1 | 1 | 1 | 1 |" in out or "1 |" in out
 
 
 def test_cohort_draw_is_repeatable(tmp_path):

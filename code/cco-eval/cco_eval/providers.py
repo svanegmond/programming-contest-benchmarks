@@ -177,6 +177,8 @@ def generate_openrouter(
     tools: list[dict[str, object]] | None = None,
     base_url: str = DEFAULT_OPENROUTER_URL,
     reasoning_effort: str | None = None,
+    temperature: float = 0.0,
+    supported_parameters: list[str] | None = None,
 ) -> GenerateResult:
     """Call OpenRouter's OpenAI-compatible chat completions endpoint."""
     start = time.perf_counter()
@@ -184,8 +186,10 @@ def generate_openrouter(
         "model": model,
         "messages": messages,
         "max_tokens": max_tokens,
-        "temperature": 0,
     }
+    params = set(supported_parameters) if supported_parameters is not None else {"temperature"}
+    if supported_parameters is None or "temperature" in params:
+        payload["temperature"] = temperature
     if tools:
         payload["tools"] = tools
         payload["tool_choice"] = "auto"

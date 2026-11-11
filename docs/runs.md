@@ -1,25 +1,25 @@
 # Runs
 
-`runs/` holds one folder per published run, named `<YYYY-MM-DD>-<name>`. A run that only exercises the harness carries `label: test` and a `-test` suffix. A test run is not a result. `runs/2026-10-29-pilot2-test/` is the first entry.
+Finished runs are published as a GitHub Pages site, not committed to `main`. `main` holds code, problem data, tests and docs.
 
-## What a run folder contains
+Raw output (code, transcripts, prompts) stays in `runs-raw/`, which is gitignored. A published page never includes solutions.
 
-Exactly three files:
+## What a published report contains
 
-- `manifest.json`: `run_id`, `label`, `models`, `mode`, `caps`, `budget`, `problem_ids`, `timeout_s`, and an optional `note`.
-  - `caps` holds the per-model output-token caps and the judge limits.
-  - `budget` is `null` for single-shot runs, and wall-clock seconds and turns for agentic runs.
-- `results.csv`: one row per attempt, with the columns `problem`, `mode`, `model`, `sample`, `verdict` (`pass` or `fail`), `outcome` (`pass_on_time`, `pass_over_time`, `truncated` or `fail`), `partial_score` and `cost_usd`.
-- `summary.md`: outcome counts and cost per model, for the cohort in the manifest.
+`python -m waterloo publish RUN_ID --site site/` writes:
 
-A run folder never contains code, transcripts, prompts, workspaces, model output text, host names, endpoint URLs or dashboard links. Model-written solutions, transcripts and prompts stay out of the repository because published text can contaminate future evaluations.
+- `index.html`: a short table with pass@k, mean `partial_score`, and the three-way outcome counts, split by language.
+- `run-config.json`: downloadable reproducibility payload (model, provider, effort, token limits, temperature, k, lane, selection method, prompt version, HTTP timeout, git SHA of this harness, env id, cohort hash).
+- `results.csv`: one row per attempt, including `language`, `verdict`, `outcome`, `partial_score` and `cost_usd`.
+- `summary.md`: the same table in Markdown.
 
-## How a run lands
+Host names, SSH targets, code, transcripts and prompts are omitted.
 
-1. Run `python -m waterloo run ...` from a clean checkout. Raw output goes to `runs-raw/`, which is gitignored.
-2. Reduce it: `python code/cco-eval/export_run.py runs-raw/<run_id> --out runs/<date>-<name> --label <test|pilot|full>`.
-3. Check that `results.csv` has one row per problem, model and sample.
-4. Cite cost per generation, from `cost_usd`. A provider balance delta lags the calls and is not a cost.
-5. Commit `runs/<date>-<name>/` and nothing from `runs-raw/`.
+## How a run lands on Pages
 
-`code/cco-eval/tests/test_runs_layout.py` checks the file set, the manifest keys, the CSV header and the absence of hashes for every folder in `runs/`.
+1. `python -m waterloo run --models openrouter/... --cohort cohorts/mine.json --mode single_shot` from a clean checkout. Add `--dry-run` to resolve config without calling a model.
+2. `python -m waterloo report RUN_ID` prints the table locally.
+3. `python -m waterloo publish RUN_ID --site /tmp/cco-pages`.
+4. Push `/tmp/cco-pages` to the `gh-pages` branch (orphan branch, not `main`). `.github/workflows/pages.yml` deploys that branch.
+
+Do not commit `site/` or `runs-raw/` to `main`.

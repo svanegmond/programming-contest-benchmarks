@@ -2,7 +2,7 @@
 
 A harness and an admitted problem set for evaluating language models on Canadian Computing Olympiad (CCO) problems. It covers the 12 CCO contests from 2015 to 2026. The official CEMC test data decides every verdict.
 
-Model-written solutions, transcripts and prompts are not published. A solution or prompt on the public web can end up in a future model's training data and make later evaluations of that model meaningless. Published runs contain identifiers, verdicts, outcomes and costs only (see [docs/runs.md](docs/runs.md)).
+Model-written solutions, transcripts and prompts are not published. A solution or prompt on the public web can end up in a future model's training data and make later evaluations of that model meaningless. Published runs are GitHub Pages reports with identifiers, verdicts, `partial_score`, pass@k and a downloadable run-config (see [docs/runs.md](docs/runs.md)). They are not committed to `main`.
 
 ## The cohort
 
@@ -19,7 +19,7 @@ All 72 problems (12 contests, 6 each) were put through admission. 51 are admitte
 
 A problem is admitted only when its statement sample matches a pair in the official ZIP, its tests map to the statement's subtasks, and its grading kind (exact, float tolerance, or a validator) is implemented. Validators for three problems are admitted.
 
-A run draws a seeded subset, a cohort. `cohorts/cohort.json` is the seed 20261020 draw (10 deterministic and 4 unusual problems). `cohorts/pilot2-cohort.json` is the 13 graded problems of the first test run.
+A run draws a seeded subset, a cohort. `cohorts/cohort.json` is the seed 20261020 draw (10 deterministic and 4 unusual problems). `cohorts/pilot2-cohort.json` is a 13-problem subset used in early harness checks.
 
 ## Fetch the test data
 
@@ -37,15 +37,34 @@ The script exits nonzero if a download fails, and warns if a file's size differs
 Install `pytest` from `pyproject.toml` (Python 3.12 or later), then run `make test`. A run needs two things outside this repository:
 
 - A judge host reachable over SSH. It holds the fetched ZIPs and the pinned Arch Linux judge VM built by `code/cco-eval/judge/build-image.sh` and `judge/vm.sh`. Point at it with `WATERLOO_SSH_HOST` (`user@host`) and `WATERLOO_REMOTE_ROOT` (default `/srv/waterloo`; ZIPs go in `$WATERLOO_REMOTE_ROOT/zips`).
-- `OPENROUTER_API_KEY` for model calls. Keep keys in the environment, never in a file.
+- `OPENROUTER_API_KEY` for model calls. Keep keys in the environment, never in a file. `--dry-run` resolves config without a key.
 
 ```sh
 python -m waterloo cohort --out cohorts/mine.json --deterministic 2 --unusual 0
 python -m waterloo run --models openrouter/openai/gpt-oss-20b --cohort cohorts/mine.json --mode single_shot
 python -m waterloo report RUN_ID
+python -m waterloo publish RUN_ID --site site/
 ```
 
-`run` writes raw output (code, transcripts, prompts) to `runs-raw/`, which is gitignored. Reduce a finished run to its publishable record with `code/cco-eval/export_run.py`; [docs/runs.md](docs/runs.md) has the steps.
+`run` writes raw output (code, transcripts, prompts) to `runs-raw/`, which is gitignored. Publish with `python -m waterloo publish`; [docs/runs.md](docs/runs.md) has the Pages steps.
+
+### Flags
+
+| Flag | Default | Notes |
+|---|---|---|
+| `--mode` | required | `single_shot` or `agentic` |
+| `--lane` | `cpp` | Headline C++ lane. `python` forces PyPy3. `free` lets the model pick; reports split by language and never take the better language per problem. Standard library only. |
+| `--k` | `1` | Samples per problem. Reports unbiased pass@k (Chen et al. 2021) and mean `partial_score`. |
+| `--temperature` | `0` | Configurable; raise it for k>1 studies. |
+| `--reasoning-effort` | `high` | Sent for every reasoning model and recorded. `none` omits the parameter. |
+| `--max-tokens` | catalog | OpenRouter public catalog, with a 65,536 floor for reasoning models. Allowed in both modes. |
+| `--timeout` | `7200` | HTTP transport timeout for dead connections (retried). Not a generation budget. There is no wall-clock limit on the model or the agent. |
+| `--max-turns` | `20` | Agentic stopping condition. |
+| `--cluster-select` | off | AlphaCode-style filter/cluster when k>1. Logs the chosen sample and why. Official tests are still graded for pass@k. |
+| `--multi-submit` | off | Agentic: verdict-only feedback (`accepted` / `wrong_answer` / `too_slow` / `runtime_error` / `compile_error`), counting failed submits. |
+| `--dry-run` | off | Write `run-config.json` without calling a model. |
+
+A future `libraries` lane is not built. The agent would request packages, the harness would check an allowlist and install pinned versions offline for both the agent sandbox and the judge, and versions plus hashes would be recorded.
 
 ## Layout
 
@@ -55,8 +74,7 @@ python -m waterloo report RUN_ID
 | `statements/` | CEMC contest HTML and PDFs, unmodified, with `manifest.json`. |
 | `testdata/` | `zips.json`: URL and size of each official ZIP. |
 | `cohorts/` | Seeded cohort files. |
-| `runs/` | One folder per published run. |
-| `reports/` | Methodology and aggregate results only. |
+| `reports/` | Admission dashboard and judge/environment notes. Run scores are not stored here. |
 | `env-study/`, `jev-calibration/`, `agreement/`, `timing/` | Admission inputs, the Jev judge calibration results, the subtask-map agreement data, and the VM timing data. |
 | `code/cco-eval/` | Admission, judge, runners, platform sinks, dashboard, cohort builder and tests. `waterloo/` is the command line. |
 

@@ -41,6 +41,12 @@ class Mode(StrEnum):
     AGENTIC = "agentic"
 
 
+class Lane(StrEnum):
+    CPP = "cpp"
+    PYTHON = "python"
+    FREE = "free"
+
+
 class Language(StrEnum):
     CPP = "cpp"
     PYTHON = "python"
@@ -48,7 +54,7 @@ class Language(StrEnum):
 
 class AgentOutcome(StrEnum):
     SUBMITTED = "submitted"
-    WALL_CLOCK_EXHAUSTED = "wall_clock_exhausted"
+    WALL_CLOCK_EXHAUSTED = "wall_clock_exhausted"  # historical; new runs never emit this
     TURN_BUDGET_EXHAUSTED = "turn_budget_exhausted"
     NO_SOLUTION_WRITTEN = "no_solution_written"
     HARNESS_ERROR = "harness_error"
@@ -115,8 +121,8 @@ class Admission:
 
 @dataclass
 class Budget:
-    wall_clock_s: float
     max_turns: int
+    wall_clock_s: float | None = None
 
 
 @dataclass
@@ -132,6 +138,13 @@ class RunManifest:
     problem_ids: list[str]
     timeout_s: float
     judge: dict[str, str]
+    k: int = 1
+    temperature: float = 0.0
+    reasoning_effort: str | None = "high"
+    lane: str = "cpp"
+    selection: str = "pass_at_k"
+    prompt_version: str = "cco-v2"
+    multi_submit: bool = False
 
 
 @dataclass
@@ -154,6 +167,7 @@ class Attempt:
     wall_s: float | None = None
     generation: dict[str, object] = field(default_factory=dict)
     failure_kind: FailureKind | None = None
+    failed_submits: int = 0
 
 
 @dataclass
