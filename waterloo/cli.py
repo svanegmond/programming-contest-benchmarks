@@ -14,6 +14,7 @@ from pathlib import Path
 
 from build_cohort import draw
 from build_dashboard import _main_admitted_count, _records, metric_line, render_dashboard
+from cco_eval import batch as batch_api
 from cco_eval.decoding import (
     DEFAULT_HTTP_TIMEOUT_S,
     DEFAULT_REASONING_EFFORT,
@@ -22,17 +23,17 @@ from cco_eval.decoding import (
     resolve_max_tokens,
     resolve_reasoning_effort,
 )
-from cco_eval.pages import markdown_report, public_run_config, publish as write_pages
+from cco_eval.pages import markdown_report, public_run_config, publish as write_pages, publish_site
 from cco_eval.utils import write_json
 from cco_eval.waterloo import Budget, GIVE_UP_TIMEOUT_S, Lane, Mode, RunManifest, Verdict, to_json
 from runners.agent_loop import run_agent
 from runners.common import (
     DEFAULT_JUDGE_PATH, DEFAULT_ZIPS_ROOT, REPO_ROOT,
-    attempt_dir, load_problem,
+    attempt_dir, load_problem, model_slug,
 )
 from runners.judge_client import DEFAULT_SSH_HOST, REMOTE_ROOT, RemoteJudge
 from runners.selection import cluster_select, generate_cluster_inputs, programs_from_results
-from runners.single_shot import run_one
+from runners.single_shot import batch_request, run_one
 
 BENCH = REPO_ROOT
 
@@ -113,8 +114,49 @@ def _catalog_or_empty():
         return {}
 
 
+def batch_custom_id(problem_id, sample_index):
+    return f"{problem_id}--s{sample_index}"
+
+
+def _finished(artifact):
+    return (artifact / "attempt.json").exists() and (artifact / "verdict.json").exists()
+
+
+def _batch_worst_case(model, requests, catalog):
+    return sum(batch_api.worst_case_cost(model, catalog, batch_api.estimate_prompt_tokens(messages),
+                                         int(req.body["max_tokens"]))
+               for req, messages in requests)
+
+
+def run_batch_model(args, model, problems, run_dir, catalog, *, http=None, sleep=None):
+    """Submit (or resume) one Batch API job for every unfinished sample of ``model``.
+
+    Returns (custom_id -> GenerateResult or error string, state path, state), or None when
+    nothing is pending. The job id lives in
+    ``batches/<model>.active.json`` until every answered sample is recorded."""
+    pending = [(p, i) for p in problems for i in range(1, args.k + 1)
+               if not _finished(attempt_dir(args.out, run_dir.name, p.id, args.mode, model, i))]
+    state_path = run_dir / "batches" / f"{model_slug(model)}.active.json"
+    if not pending and not state_path.exists():
+        return None
+    http = http or batch_api.OpenRouterHTTP(timeout=args.timeout)
+    requests = [batch_request(p, model, batch_custom_id(p.id, i), max_tokens=args.max_tokens,
+                              temperature=args.temperature, reasoning_effort=args.reasoning_effort,
+                              lane=Lane(args.lane), catalog=catalog) for p, i in pending]
+    if not state_path.exists():
+        worst = _batch_worst_case(model, requests, catalog)
+        remaining = batch_api.ensure_affordable(http, worst)
+        print(f"batch guard model={model} worst_case_usd={worst:.4f} credits_usd={remaining:.4f}", flush=True)
+    state = batch_api.submit_or_resume(model, [r for r, _ in requests], state_path, http)
+    kwargs = {"sleep": sleep} if sleep else {}
+    final = batch_api.poll(state, state_path, http, **kwargs)
+    return batch_api.map_results(final, state, http), state_path, state
+
+
 def run(args):
     models = [m.strip() for m in args.models.split(",") if m.strip()]
+    if args.batch:
+        models = [batch_api.as_batch_model(m) for m in models]
     if not models or len(set(models)) != len(models) or any(not m.startswith("openrouter/") for m in models):
         raise ValueError("--models must contain unique openrouter/... IDs")
     if args.timeout <= 0:
@@ -129,6 +171,12 @@ def run(args):
         raise ValueError("--cluster-select is only meaningful when --k is greater than 1")
     if args.temperature < 0:
         raise ValueError("--temperature must be non-negative")
+    batch_models = [m for m in models if batch_api.is_batch_model(m)]
+    if batch_models and args.mode != "single_shot":
+        raise ValueError("Batch API (:batch models or --batch) works only in single_shot mode; "
+                         "agentic turns depend on tool results and cannot be batched")
+    if batch_models and args.cluster_select:
+        raise ValueError("--cluster-select is not supported with Batch API models")
     lane = Lane(args.lane)
     budget = Budget(max_turns=args.max_turns) if args.mode == "agentic" else None
     if budget is not None and budget.max_turns <= 0:
@@ -149,12 +197,16 @@ def run(args):
     sha = command(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, capture_output=True).stdout.strip()
     max_tokens = {m: resolve_max_tokens(m, args.max_tokens, catalog=catalog) for m in models}
     effort_sent = {m: resolve_reasoning_effort(m, args.reasoning_effort, catalog) for m in models}
+    if batch_models and catalog and any(batch_api.model_id(m) not in catalog for m in batch_models):
+        missing = [m for m in batch_models if batch_api.model_id(m) not in catalog]
+        raise ValueError(f"no OpenRouter batch variant for {', '.join(missing)}")
     config = dict(
         git_sha=sha, env_id=env_id,
         cohort_hash=hashlib.sha256(args.cohort.read_bytes()).hexdigest(), models=models,
         mode=Mode(args.mode),
         caps={"max_tokens": max_tokens, "reasoning_effort": effort_sent,
-              "backend": "vm", "memory_mb": 2048, "give_up_timeout_s": GIVE_UP_TIMEOUT_S},
+              "backend": "vm", "memory_mb": 2048, "give_up_timeout_s": GIVE_UP_TIMEOUT_S,
+              **({"batch_models": batch_models} if batch_models else {})},
         budget=budget, problem_ids=ids, timeout_s=args.timeout,
         judge={"ssh_host": args.ssh_host, "judge_path": args.judge_path, "zips_root": args.zips_root},
         k=args.k, temperature=args.temperature, reasoning_effort=args.reasoning_effort,
@@ -176,14 +228,30 @@ def run(args):
     print(f"run_id={run_id}", flush=True)
     if args.dry_run:
         print(json.dumps(public_run_config(to_json(manifest)), indent=2, sort_keys=True))
+        for model in batch_models:
+            requests = [batch_request(p, model, batch_custom_id(p.id, i), max_tokens=args.max_tokens,
+                                      temperature=args.temperature, reasoning_effort=args.reasoning_effort,
+                                      lane=lane, catalog=catalog)
+                        for p in problems for i in range(1, args.k + 1)]
+            print(f"batch dry-run model={model} submit_as={batch_api.submit_slug(model)} "
+                  f"requests={len(requests)} worst_case_usd={_batch_worst_case(model, requests, catalog):.4f}",
+                  flush=True)
         return 0
     completed = []
+    batch_failures = []
     for model in models:
+        batch_results, batch_state_path, batch_state = {}, None, None
+        if model in batch_models:
+            if not os.getenv("OPENROUTER_API_KEY"):
+                raise ValueError("missing OPENROUTER_API_KEY")
+            outcome = run_batch_model(args, model, problems, run_dir, catalog)
+            if outcome:
+                batch_results, batch_state_path, batch_state = outcome
         for problem in problems:
             problem_results = []
             for sample_index in range(1, args.k + 1):
                 artifact = attempt_dir(args.out, run_id, problem.id, args.mode, model, sample_index)
-                if (artifact / "attempt.json").exists() and (artifact / "verdict.json").exists():
+                if _finished(artifact):
                     attempt, verdict = read_json(artifact / "attempt.json"), read_json(artifact / "verdict.json")
                     if (attempt["id"] != verdict["attempt_id"] or attempt["env_id"] != env_id
                         or verdict["env_id"] != env_id or verdict["problem_id"] != problem.id
@@ -195,6 +263,14 @@ def run(args):
                 else:
                     if not os.getenv("OPENROUTER_API_KEY"):
                         raise ValueError("missing OPENROUTER_API_KEY")
+                    batch_generation = None
+                    if model in batch_models:
+                        batch_generation = batch_results.get(batch_custom_id(problem.id, sample_index))
+                        if not hasattr(batch_generation, "text"):
+                            batch_failures.append(f"{model} {problem.id} s{sample_index}: {batch_generation}")
+                            print(f"batch request failed model={model} problem={problem.id} "
+                                  f"sample={sample_index}: {batch_generation}", flush=True)
+                            continue
                     if budget:
                         result = run_agent(
                             problem, model, sample_index, out=args.out, run_id=run_id, judge=judge,
@@ -208,6 +284,7 @@ def run(args):
                             problem, model, sample_index, out=args.out, run_id=run_id, judge=judge,
                             timeout=args.timeout, max_tokens=args.max_tokens, temperature=args.temperature,
                             reasoning_effort=args.reasoning_effort, lane=lane, catalog=catalog,
+                            generation=batch_generation,
                         )
                     if result["attempt"].get("agent_outcome") == "harness_error":
                         raise RuntimeError(f"agent attempt ended in harness_error, not scored: {artifact}; "
@@ -241,7 +318,12 @@ def run(args):
                 write_json(model_dir / "selection.json", decision.to_json())
                 print(f"cluster model={model} problem={problem.id} chosen={decision.chosen_index} "
                       f"reason={decision.reason}", flush=True)
+        if batch_state_path is not None:
+            batch_api.archive(batch_state_path, batch_state)
     (run_dir / "telemetry.jsonl").write_text("".join(json.dumps(telemetry(r), sort_keys=True) + "\n" for r in completed))
+    if batch_failures:
+        raise RuntimeError(f"{len(batch_failures)} batch request(s) got no usable response and were not scored; "
+                           "rerun the same command to resubmit them: " + "; ".join(batch_failures))
     return 0
 
 
@@ -257,7 +339,10 @@ def report(args):
 
 
 def publish(args):
-    write_pages(args.out / args.run_id, args.site)
+    if len(args.run_id) == 1 and not args.note:
+        write_pages(args.out / args.run_id[0], args.site)
+    else:
+        publish_site([args.out / run_id for run_id in args.run_id], args.site, args.note)
     print(args.site / "index.html")
     return 0
 
@@ -295,6 +380,9 @@ def parser():
                             help="AlphaCode-style filter/cluster selection. Off by default; requires --k > 1.")
     experiment.add_argument("--multi-submit", action="store_true",
                             help="Agentic: allow multiple submits with verdict-only feedback. Off by default.")
+    experiment.add_argument("--batch", action="store_true",
+                            help="Single-shot: send each model through OpenRouter's Batch API (same as "
+                                 "naming it <model>:batch). Async, batch-priced; polled with no wall clock.")
     experiment.add_argument("--dry-run", action="store_true",
                             help="Resolve and write run-config without calling a model or the judge.")
     experiment.add_argument("--run-id")
@@ -303,7 +391,8 @@ def parser():
     summary.add_argument("run_id")
     summary.set_defaults(handler=report)
     pages = commands.add_parser("publish", help="Write a concise GitHub Pages report (not for committing to main)")
-    pages.add_argument("run_id")
+    pages.add_argument("run_id", nargs="+", help="One run, or several for an overview page.")
+    pages.add_argument("--note", action="append", default=[], help="Overview footnote (repeatable).")
     pages.add_argument("--site", type=Path, default=BENCH / "site")
     pages.set_defaults(handler=publish)
     for sub in (admission, experiment):
