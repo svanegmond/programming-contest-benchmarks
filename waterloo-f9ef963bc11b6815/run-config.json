@@ -53,6 +53,7 @@
   "reasoning_effort_sent": {
     "openrouter/moonshotai/kimi-k3.1-pro:batch": "high"
   },
+  "reasoning_published": true,
   "run_id": "waterloo-f9ef963bc11b6815",
   "selection": "pass_at_k",
   "temperature": 0.0

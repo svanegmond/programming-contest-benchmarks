@@ -32,6 +32,7 @@
     "openrouter/google/gemini-4-argon": "high",
     "openrouter/google/gemini-4-carbon": "high"
   },
+  "reasoning_published": true,
   "run_id": "waterloo-f2e36b272c0a3950",
   "selection": "pass_at_k",
   "temperature": 0.0
