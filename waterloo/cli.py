@@ -342,7 +342,7 @@ def publish(args):
     if len(args.run_id) == 1 and not args.note:
         write_pages(args.out / args.run_id[0], args.site)
     else:
-        publish_site([args.out / run_id for run_id in args.run_id], args.site, args.note)
+        publish_site([args.out / run_id for run_id in args.run_id], args.site, args.note, args.title)
     print(args.site / "index.html")
     return 0
 
@@ -393,6 +393,7 @@ def parser():
     pages = commands.add_parser("publish", help="Write a concise GitHub Pages report (not for committing to main)")
     pages.add_argument("run_id", nargs="+", help="One run, or several for an overview page.")
     pages.add_argument("--note", action="append", default=[], help="Overview footnote (repeatable).")
+    pages.add_argument("--title", default="CCO benchmark runs", help="Overview page title.")
     pages.add_argument("--site", type=Path, default=BENCH / "site")
     pages.set_defaults(handler=publish)
     for sub in (admission, experiment):
