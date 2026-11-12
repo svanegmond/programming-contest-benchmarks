@@ -18,6 +18,7 @@ from cco_eval.decoding import (
 )
 from cco_eval.models import GenerateResult
 from cco_eval.providers import openrouter_chat_payload
+from cco_eval.reasoning import ReasoningTurn, write_trace
 from cco_eval.waterloo import Attempt, FailureKind, Lane, Language, Mode, Outcome3, Verdict, to_json
 from cco_eval.utils import write_json
 from runners.common import (
@@ -190,6 +191,9 @@ def run_one(problem: ProblemData, model: str, sample_index: int, *, out: Path, r
     record_statement_file(problem, artifact)
     (artifact / "prompt.txt").write_text(prompt, encoding="utf-8")
     (artifact / "raw_response.txt").write_text(generation.text, encoding="utf-8")
+    reasoning = write_trace(artifact, [(1, ReasoningTurn.from_generation(generation))],
+                            model=model, mode=Mode.SINGLE_SHOT.value)
+    generation_record["reasoning"] = {k: v for k, v in reasoning.items() if not k.endswith("_path")}
     try:
         language, code = extract_solution(generation.text, lane)
     except ValueError as exc:
@@ -207,7 +211,7 @@ def run_one(problem: ProblemData, model: str, sample_index: int, *, out: Path, r
             prompt_hash=sha256_text(prompt),
             transcript_path=str(transcript_path), code_path=None, sample_index=sample_index,
             generation={**generation_record, "extraction_error": str(exc)},
-            failure_kind=failure_kind or FailureKind.NO_PROGRAM,
+            failure_kind=failure_kind or FailureKind.NO_PROGRAM, reasoning=reasoning,
         )
         dump_attempt(artifact / "attempt.json", attempt)
         failure = {"attempt_id": attempt_id, "problem_id": problem.id, "all_pass": False,
@@ -231,6 +235,7 @@ def run_one(problem: ProblemData, model: str, sample_index: int, *, out: Path, r
         prompt_hash=sha256_text(prompt),
         transcript_path=str(artifact / "transcript.jsonl"), code_path=str(code_path),
         sample_index=sample_index, generation=generation_record, failure_kind=failure_kind,
+        reasoning=reasoning,
     )
     with (artifact / "transcript.jsonl").open("w", encoding="utf-8") as fh:
         for message in messages:

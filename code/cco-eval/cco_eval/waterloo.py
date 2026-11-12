@@ -180,6 +180,8 @@ class Attempt:
     generation: dict[str, object] = field(default_factory=dict)
     failure_kind: FailureKind | None = None
     failed_submits: int = 0
+    # Summary of the saved reasoning trace (kind, visible vs billed counts, paths); see reasoning.py.
+    reasoning: dict[str, object] | None = None
 
 
 @dataclass

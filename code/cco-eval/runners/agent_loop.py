@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from cco_eval.decoding import DEFAULT_HTTP_TIMEOUT_S, DEFAULT_REASONING_EFFORT
+from cco_eval.reasoning import ReasoningTurn, write_trace
 from cco_eval.tracing import JsonlTracer
 from cco_eval.utils import sha256_text
 from cco_eval.waterloo import AgentOutcome, Attempt, Budget, Lane, Language, Mode
@@ -211,6 +212,7 @@ def run_agent(
         outcome: AgentOutcome | None = None
         turns_used = 0
         generations: list[dict[str, Any]] = []
+        reasoning_turns: list[tuple[int, ReasoningTurn]] = []
         error: str | None = None
         failed_submits = 0
         for turn in range(1, max_turns + 1):
@@ -220,6 +222,9 @@ def run_agent(
                     response = _call_model(client, messages, request_timeout_s)
                 assistant, generation = _assistant_payload(response)
                 assistant.setdefault("role", "assistant")
+                turn_reasoning = ReasoningTurn.from_generation(response)
+                reasoning_turns.append((turn, turn_reasoning))
+                generation["reasoning"] = turn_reasoning.summary()
                 generations.append(generation)
                 messages.append(assistant)
                 _write_transcript(transcript, {"type": "message", **assistant, "turn": turn,
@@ -300,6 +305,7 @@ def run_agent(
         if outcome is None:
             outcome = AgentOutcome.TURN_BUDGET_EXHAUSTED
 
+    reasoning = write_trace(artifact, reasoning_turns, model=model, mode=Mode.AGENTIC.value)
     auto_submitted = outcome == AgentOutcome.TURN_BUDGET_EXHAUSTED and latest_solution is not None
     code_selection = submitted or (latest_solution if auto_submitted else None)
     if code_selection is None and outcome == AgentOutcome.TURN_BUDGET_EXHAUSTED:
@@ -322,7 +328,7 @@ def run_agent(
         if error else {"calls": generations, "max_tokens": effective_max_tokens,
                        "temperature": temperature, "reasoning_effort": reasoning_effort,
                        "lane": lane.value},
-        failed_submits=failed_submits,
+        failed_submits=failed_submits, reasoning=reasoning,
     )
     dump_attempt(artifact / "attempt.json", attempt)
     verdict: dict[str, Any] = {"attempt_id": attempt_id, "problem_id": problem.id,

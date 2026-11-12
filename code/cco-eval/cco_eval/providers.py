@@ -230,7 +230,8 @@ def openrouter_chat_payload(
         payload["tools"] = tools
         payload["tool_choice"] = "auto"
     if reasoning_effort:
-        payload["reasoning"] = {"effort": reasoning_effort}
+        # Reasoning is returned by default; exclude=False makes keeping it explicit.
+        payload["reasoning"] = {"effort": reasoning_effort, "exclude": False}
     return payload
 
 
@@ -261,6 +262,10 @@ def parse_openrouter_chat(parsed: dict[str, object], model: str, latency_ms: flo
         )
     else:
         text = str(content or "")
+    reasoning = message.get("reasoning")
+    if reasoning is None:
+        reasoning = message.get("reasoning_content")
+    details = message.get("reasoning_details")
     return GenerateResult(
         text=text,
         provider="openrouter",
@@ -270,6 +275,8 @@ def parse_openrouter_chat(parsed: dict[str, object], model: str, latency_ms: flo
         output_tokens=int_or_none(usage.get("completion_tokens")),
         stop_reason=str(choice["finish_reason"]) if isinstance(choice, dict) and choice.get("finish_reason") is not None else None,
         raw_provider_metadata=metadata,
+        reasoning=str(reasoning) if reasoning not in (None, "") else None,
+        reasoning_details=[d for d in details if isinstance(d, dict)] if isinstance(details, list) else None,
     )
 
 
