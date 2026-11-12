@@ -35,7 +35,7 @@ def _language(record: RunRecord) -> str:
 
 
 def _success(record: RunRecord) -> bool:
-    return str(record.verdict.outcome) == "pass_on_time"
+    return bool(record.verdict.all_pass)
 
 
 def _mean(values: Iterable[float]) -> float:

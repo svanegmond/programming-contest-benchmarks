@@ -79,6 +79,18 @@ class FailureKind(StrEnum):
     NO_PROGRAM = "no_program"
 
 
+# Per-test sandbox give-up. Statement time_limit_s is recorded as over_time, not a fail.
+GIVE_UP_TIMEOUT_S = 120.0
+
+
+def sandbox_timeout_s(time_limit_s: float, give_up_s: float | None = None) -> float:
+    limit = float(time_limit_s)
+    give_up = GIVE_UP_TIMEOUT_S if give_up_s is None else float(give_up_s)
+    if limit <= 0 or give_up <= 0:
+        raise ValueError("timeouts must be positive")
+    return max(limit, give_up)
+
+
 @dataclass
 class Subtask:
     name: str
@@ -143,7 +155,7 @@ class RunManifest:
     reasoning_effort: str | None = "high"
     lane: str = "cpp"
     selection: str = "pass_at_k"
-    prompt_version: str = "cco-v2"
+    prompt_version: str = "cco-v3"
     multi_submit: bool = False
 
 

@@ -8,8 +8,8 @@ Raw output (code, transcripts, prompts) stays in `runs-raw/`, which is gitignore
 
 `python -m waterloo publish RUN_ID --site site/` writes:
 
-- `index.html`: a short table with pass@k, mean `partial_score`, and the three-way outcome counts, split by language.
-- `run-config.json`: downloadable reproducibility payload (model, provider, effort, token limits, temperature, k, lane, selection method, prompt version, HTTP timeout, git SHA of this harness, env id, cohort hash).
+- `index.html`: a short table with pass@k (correctness), mean `partial_score`, and on-time / over-time counts vs the statement limit, split by language.
+- `run-config.json`: downloadable reproducibility payload (model, provider, effort, token limits, temperature, k, lane, selection method, prompt version, HTTP timeout, 120s per-test give-up timeout, git SHA of this harness, env id, cohort hash).
 - `results.csv`: one row per attempt, including `language`, `verdict`, `outcome`, `partial_score` and `cost_usd`.
 - `summary.md`: the same table in Markdown.
 

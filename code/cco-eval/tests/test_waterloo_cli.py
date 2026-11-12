@@ -111,6 +111,7 @@ def test_dry_run_writes_config_without_an_api_key(experiment, monkeypatch, capsy
     config = json.loads((run_dir / "run-config.json").read_text())
     assert config["reasoning_effort"] == "high"
     assert config["lane"] == "python"
+    assert config["give_up_timeout_s"] == 120.0
 
 
 def test_headline_lane_defaults_to_cpp(experiment, monkeypatch):

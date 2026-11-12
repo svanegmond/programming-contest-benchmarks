@@ -38,6 +38,7 @@ def public_run_config(manifest: dict[str, Any]) -> dict[str, Any]:
         "prompt_version": manifest.get("prompt_version"),
         "max_turns": budget.get("max_turns") if isinstance(budget, dict) else None,
         "http_timeout_s": manifest.get("timeout_s"),
+        "give_up_timeout_s": caps.get("give_up_timeout_s"),
         "multi_submit": manifest.get("multi_submit", False),
         "problem_ids": manifest.get("problem_ids"),
         "backend": caps.get("backend"),
@@ -88,6 +89,8 @@ def markdown_report(manifest: dict[str, Any], run_dir: Path, *, include_download
         f"temp `{manifest.get('temperature')}` · prompt `{manifest.get('prompt_version')}` · "
         f"git `{manifest.get('git_sha')}`",
         "",
+        "pass@k is correctness (`all_pass`). On-time / over-time are vs the statement limit, not the score.",
+        "",
         "| Model | Language | pass@k | mean partial_score | On-time | Over-time | Truncated | Fail |",
         "|---|---|---:|---:|---:|---:|---:|---:|",
     ]
@@ -112,7 +115,8 @@ def render_html(manifest: dict[str, Any], run_dir: Path) -> str:
         f"mode {manifest.get('mode')} · lane {manifest.get('lane')} · k {k} · "
         f"selection {manifest.get('selection')} · effort {manifest.get('reasoning_effort')} · "
         f"temp {manifest.get('temperature')} · prompt {manifest.get('prompt_version')} · "
-        f"git {manifest.get('git_sha')}"
+        f"git {manifest.get('git_sha')}. "
+        "pass@k is correctness (all_pass); on-time / over-time are vs the statement limit."
     )
     rows = []
     for row in groups:

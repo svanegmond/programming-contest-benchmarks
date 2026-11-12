@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 from cco_eval.providers import generate_openrouter
 from cco_eval.waterloo import AgentOutcome, Lane
-from runners.agent_loop import run_agent
+from runners.agent_loop import _coarse_verdict, run_agent
 from runners.common import ProblemData, build_single_prompt, build_single_system_prompt, load_problem
 from runners.judge_client import StubJudge
 from runners.single_shot import extract_solution
@@ -260,6 +260,9 @@ def test_real_problem_prompt_and_workspace_hold_only_that_problem(tmp_path):
     assert "published past Canadian Computing Olympiad" in system
     assert "short rationale" in system
     assert "bits/stdc++.h" in system
+    assert "Respect the time limit" not in system
+    assert "tight olympiad" not in build_single_system_prompt(problem, Lane.FREE)
+    assert "tight limits" not in system
     for other in ("Splitting Hares", "Legends", "O Canada", "Zombie Apocalypse", "Pirates"):
         assert other not in prompt
         assert other not in system
@@ -271,6 +274,37 @@ def test_real_problem_prompt_and_workspace_hold_only_that_problem(tmp_path):
     assert (workspace / "sample-0.out").read_text() == "6 2\n"
     for other in ("Splitting Hares", "Legends"):
         assert other not in (workspace / "statement.md").read_text()
+
+
+def test_coarse_verdict_accepts_correct_output_past_the_statement_limit(tmp_path):
+    assert _coarse_verdict({"all_pass": True, "outcome": "pass_over_time"}, tmp_path) == "accepted"
+    (tmp_path / "test_results.jsonl").write_text(json.dumps({"verdict": "killed"}) + "\n", encoding="utf-8")
+    assert _coarse_verdict({"all_pass": False, "outcome": "fail"}, tmp_path) == "too_slow"
+
+
+def test_stub_grade_slow_correct_output_is_all_pass(tmp_path):
+    problem_dir = tmp_path / "problem"
+    problem_dir.mkdir()
+    (problem_dir / "in.txt").write_text("2 3\n", encoding="utf-8")
+    (problem_dir / "out.txt").write_text("5\n", encoding="utf-8")
+    tests = problem_dir / "tests.jsonl"
+    tests.write_text(json.dumps({
+        "id": "t1", "input_path": "in.txt", "expected_path": "out.txt", "subtask": "all",
+    }) + "\n", encoding="utf-8")
+    (problem_dir / "problem.json").write_text(json.dumps({
+        "id": "slow", "time_limit_s": 0.05, "memory_limit_mb": 128,
+    }), encoding="utf-8")
+    code = problem_dir / "sol.py"
+    code.write_text(
+        "import time, sys\ntime.sleep(0.12)\nprint(sum(map(int, sys.stdin.read().split())))\n",
+        encoding="utf-8",
+    )
+    verdict = StubJudge().grade(
+        attempt_id="a", code_path=code, lang="python",
+        problem_json=problem_dir / "problem.json", tests_jsonl=tests, out_dir=tmp_path / "grade",
+    )
+    assert verdict["all_pass"] is True
+    assert verdict["outcome"] == "pass_over_time"
 
 
 def test_model_tool_mistakes_go_back_to_the_model_not_harness_error(tmp_path):

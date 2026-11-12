@@ -22,6 +22,15 @@ def _record(problem: str, language: str | None, outcome: Outcome3, partial: floa
     return RunRecord(attempt, verdict, sample)
 
 
+def test_pass_at_k_counts_correct_output_even_when_over_the_statement_limit():
+    records = [_record("p1", "cpp", Outcome3.PASS_OVER_TIME, 1.0)]
+    row = summarize_groups(records, 1)[0]
+    assert row["pass_at_k"] == 1.0
+    assert row["over_time"] == 1
+    assert row["on_time"] == 0
+    assert row["fail"] == 0
+
+
 def test_summary_splits_by_language_and_does_not_take_the_better_language():
     records = [
         _record("p1", "cpp", Outcome3.PASS_ON_TIME, 1.0),

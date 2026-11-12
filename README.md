@@ -54,15 +54,17 @@ python -m waterloo publish RUN_ID --site site/
 |---|---|---|
 | `--mode` | required | `single_shot` or `agentic` |
 | `--lane` | `cpp` | Headline C++ lane. `python` forces PyPy3. `free` lets the model pick; reports split by language and never take the better language per problem. Standard library only. |
-| `--k` | `1` | Samples per problem. Reports unbiased pass@k (Chen et al. 2021) and mean `partial_score`. |
+| `--k` | `1` | Samples per problem. Reports unbiased pass@k (Chen et al. 2021) on correctness (`all_pass`) and mean `partial_score`. Statement time is recorded, not a pass/fail cut. |
 | `--temperature` | `0` | Configurable; raise it for k>1 studies. |
 | `--reasoning-effort` | `high` | Sent for every reasoning model and recorded. `none` omits the parameter. |
 | `--max-tokens` | catalog | OpenRouter public catalog, with a 65,536 floor for reasoning models. Allowed in both modes. |
 | `--timeout` | `7200` | HTTP transport timeout for dead connections (retried). Not a generation budget. There is no wall-clock limit on the model or the agent. |
 | `--max-turns` | `20` | Agentic stopping condition. |
 | `--cluster-select` | off | AlphaCode-style filter/cluster when k>1. Logs the chosen sample and why. Official tests are still graded for pass@k. |
-| `--multi-submit` | off | Agentic: verdict-only feedback (`accepted` / `wrong_answer` / `too_slow` / `runtime_error` / `compile_error`), counting failed submits. |
+| `--multi-submit` | off | Agentic: verdict-only feedback (`accepted` / `wrong_answer` / `too_slow` / `runtime_error` / `compile_error`), counting failed submits. `too_slow` means the 120s per-test give-up timeout killed the program, not “over the statement limit”. |
 | `--dry-run` | off | Write `run-config.json` without calling a model. |
+
+Statement time limits are recorded on every test (`over_time`, `pass_on_time` / `pass_over_time`) and shown in reports. They are not a pass/fail cut: pass@k and `partial_score` use correctness. Each test is killed after 120 seconds so a runaway cannot hang the judge.
 
 A future `libraries` lane is not built. The agent would request packages, the harness would check an allowlist and install pinned versions offline for both the agent sandbox and the judge, and versions plus hashes would be recorded.
 

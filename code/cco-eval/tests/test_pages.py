@@ -38,6 +38,7 @@ def test_publish_writes_html_and_run_config_with_git_sha(tmp_path):
     assert config["lane"] == "cpp"
     assert "private-host" not in json.dumps(config)
     assert "mean partial_score" in html
+    assert "correctness" in html
     assert "0.75" in html
     assert "Download run-config.json" in html
     assert "pass@k" in summary

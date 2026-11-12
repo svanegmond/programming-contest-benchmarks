@@ -24,7 +24,7 @@ from cco_eval.decoding import (
 )
 from cco_eval.pages import markdown_report, public_run_config, publish as write_pages
 from cco_eval.utils import write_json
-from cco_eval.waterloo import Budget, Lane, Mode, RunManifest, Verdict, to_json
+from cco_eval.waterloo import Budget, GIVE_UP_TIMEOUT_S, Lane, Mode, RunManifest, Verdict, to_json
 from runners.agent_loop import run_agent
 from runners.common import (
     DEFAULT_JUDGE_PATH, DEFAULT_ZIPS_ROOT, REPO_ROOT,
@@ -154,7 +154,7 @@ def run(args):
         cohort_hash=hashlib.sha256(args.cohort.read_bytes()).hexdigest(), models=models,
         mode=Mode(args.mode),
         caps={"max_tokens": max_tokens, "reasoning_effort": effort_sent,
-              "backend": "vm", "memory_mb": 2048, "kill_factor": 3},
+              "backend": "vm", "memory_mb": 2048, "give_up_timeout_s": GIVE_UP_TIMEOUT_S},
         budget=budget, problem_ids=ids, timeout_s=args.timeout,
         judge={"ssh_host": args.ssh_host, "judge_path": args.judge_path, "zips_root": args.zips_root},
         k=args.k, temperature=args.temperature, reasoning_effort=args.reasoning_effort,

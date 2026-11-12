@@ -146,10 +146,8 @@ def _run_fields(result: dict[str, Any]) -> dict[str, Any]:
 
 
 def _coarse_verdict(verdict: dict[str, Any], out_dir: Path) -> str:
-    if verdict.get("all_pass") and verdict.get("outcome") != "pass_over_time":
+    if verdict.get("all_pass"):
         return "accepted"
-    if verdict.get("outcome") == "pass_over_time":
-        return "too_slow"
     tests_path = out_dir / "test_results.jsonl"
     kinds: set[str] = set()
     if tests_path.is_file():

@@ -208,19 +208,19 @@ def language_block(lane: Lane) -> str:
         return (
             "Write GNU C++20 compiled with g++ (`-std=gnu++20`). "
             "`#include <bits/stdc++.h>` and the usual standard headers are available. "
-            "Fast I/O (`ios::sync_with_stdio(false); cin.tie(nullptr);`) is recommended on tight limits. "
+            "Fast I/O (`ios::sync_with_stdio(false); cin.tie(nullptr);`) is available. "
             "Tag the final fence `cpp`."
         )
     if lane is Lane.PYTHON:
         return (
             "Write Python 3, run with PyPy3. "
-            "Fast I/O (`sys.stdin.buffer` / `sys.stdout.write`) is recommended on tight limits. "
+            "Fast I/O (`sys.stdin.buffer` / `sys.stdout.write`) is available. "
             "Tag the final fence `python`."
         )
     if lane is Lane.FREE:
         return (
             "Choose exactly one language: GNU C++20 (g++) or Python 3 (PyPy3). "
-            "Tag the final fence `cpp` or `python`. C++ is usually safer on tight olympiad limits. "
+            "Tag the final fence `cpp` or `python`. "
             "In C++, `#include <bits/stdc++.h>` and fast I/O (`ios::sync_with_stdio(false); cin.tie(nullptr);`) "
             "are available. In Python, prefer `sys.stdin.buffer` / `sys.stdout.write`."
         )
@@ -238,17 +238,14 @@ def fence_instruction(lane: Lane) -> str:
 
 
 def build_single_system_prompt(problem: ProblemData, lane: Lane = Lane.CPP) -> str:
-    limits = f"Respect the time limit of {problem.time_limit_s:g} seconds"
-    if problem.memory_limit_mb:
-        limits += f" and memory limit of {problem.memory_limit_mb} MB"
-    limits += "."
+    memory = f" Memory limit: {problem.memory_limit_mb} MB." if problem.memory_limit_mb else ""
     return (
         "You are solving a published past Canadian Computing Olympiad (CCO) problem. "
         "The statement is public contest material used to evaluate models. "
         "A complete, compiling solution is required even if you are unsure.\n\n"
         f"{language_block(lane)}\n\n"
-        "Use only the language standard library. Read input from stdin and write output to stdout. "
-        f"{limits}\n\n"
+        "Use only the language standard library. Read input from stdin and write output to stdout."
+        f"{memory}\n\n"
         "You may write a short rationale. End with exactly one fenced program "
         f"{fence_instruction(lane)} — the final fenced block is the submission."
     )

@@ -10,7 +10,7 @@ from typing import Any
 OPENROUTER_MODELS_URL = "https://openrouter.ai/api/v1/models"
 # Unknown or under-specified reasoning models must never silently fall back to 32k.
 REASONING_TOKEN_FLOOR = 65536
-PROMPT_VERSION = "cco-v2"
+PROMPT_VERSION = "cco-v3"
 DEFAULT_REASONING_EFFORT = "high"
 DEFAULT_HTTP_TIMEOUT_S = 7200.0
 EFFORT_RANK = ("high", "medium", "low", "minimal")
