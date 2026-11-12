@@ -42,7 +42,31 @@ def public_run_config(manifest: dict[str, Any]) -> dict[str, Any]:
         "multi_submit": manifest.get("multi_submit", False),
         "problem_ids": manifest.get("problem_ids"),
         "backend": caps.get("backend"),
+        "batch_models": caps.get("batch_models", []),
     }
+
+
+BATCH_PUBLIC_FIELDS = (
+    "batch_id", "model", "submit_model", "endpoint", "provider", "status", "submitted_at",
+    "completed_at", "latency_s", "request_counts", "usage",
+)
+
+
+def batch_jobs(run_dir: Path) -> list[dict[str, Any]]:
+    """Finished Batch API jobs recorded for a run (job ids, timestamps, usage, cost)."""
+    jobs = []
+    for path in sorted((run_dir / "batches").glob("*.json")):
+        state = json.loads(path.read_text(encoding="utf-8"))
+        jobs.append({key: state.get(key) for key in BATCH_PUBLIC_FIELDS})
+    return jobs
+
+
+def telemetry_rows(run_dir: Path) -> dict[str, dict[str, Any]]:
+    path = run_dir / "telemetry.jsonl"
+    if not path.is_file():
+        return {}
+    rows = (json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+    return {row["attempt_id"]: row for row in rows}
 
 
 def costs(run_dir: Path) -> dict[str, float | None]:
@@ -158,7 +182,11 @@ def render_html(manifest: dict[str, Any], run_dir: Path) -> str:
 def publish(run_dir: Path, out: Path) -> None:
     manifest = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     out.mkdir(parents=True, exist_ok=True)
-    write_json(out / "run-config.json", public_run_config(manifest))
+    config = public_run_config(manifest)
+    jobs = batch_jobs(run_dir)
+    if jobs:
+        config["batches"] = jobs
+    write_json(out / "run-config.json", config)
     rows = result_rows(run_dir)
     with (out / "results.csv").open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=CSV_FIELDS, lineterminator="\n")
@@ -166,3 +194,91 @@ def publish(run_dir: Path, out: Path) -> None:
         writer.writerows(rows)
     (out / "summary.md").write_text(markdown_report(manifest, run_dir) + "\n", encoding="utf-8")
     (out / "index.html").write_text(render_html(manifest, run_dir), encoding="utf-8")
+
+
+def _tests_passed(attempt_path: Path) -> str:
+    results = attempt_path.parent / "judge" / "test_results.jsonl"
+    if not results.is_file():
+        return "-"
+    rows = [json.loads(line) for line in results.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return f"{sum(1 for r in rows if r.get('verdict') == 'pass')}/{len(rows)}"
+
+
+def overview_rows(run_dir: Path) -> list[dict[str, str]]:
+    telemetry = telemetry_rows(run_dir)
+    rows = []
+    for attempt_path in sorted(run_dir.rglob("attempt.json")):
+        verdict_path = attempt_path.with_name("verdict.json")
+        if not verdict_path.is_file():
+            continue
+        attempt = json.loads(attempt_path.read_text(encoding="utf-8"))
+        verdict = json.loads(verdict_path.read_text(encoding="utf-8"))
+        t = telemetry.get(attempt["id"], {})
+        generation = attempt.get("generation") or {}
+        batch = generation.get("batch") or {}
+        out_tokens = t.get("output_tokens")
+        reasoning = t.get("reasoning_tokens")
+        tokens = "-" if out_tokens is None else f"{out_tokens:,}" + (f" ({reasoning:,})" if reasoning else "")
+        latency = t.get("latency_ms")
+        cost = t.get("cost_usd")
+        usage = (generation.get("raw_provider_metadata") or {}).get("usage") or {}
+        upstream = (usage.get("cost_details") or {}).get("upstream_inference_cost")
+        cost_text = "-" if cost is None else f"${cost:.3f}"
+        if usage.get("is_byok") and isinstance(upstream, (int, float)):
+            cost_text = f"${upstream:.3f} (BYOK, billed by provider)"
+        outcome = verdict.get("outcome", "")
+        if not attempt.get("code_path"):
+            outcome = f"no program ({generation.get('stop_reason') or 'none'})"
+        rows.append({
+            "run": run_dir.name, "problem": attempt["problem_id"], "model": attempt["model"].removeprefix("openrouter/"),
+            "outcome": str(outcome), "tests": _tests_passed(attempt_path), "tokens": tokens,
+            "time": "-" if latency is None else f"{latency / 1000:.0f} s",
+            "cost": cost_text,
+            "api": "batch" if batch else "sync",
+        })
+    return sorted(rows, key=lambda r: (r["problem"], r["model"]))
+
+
+OVERVIEW_COLUMNS = (("problem", "Problem"), ("model", "Model"), ("api", "API"), ("outcome", "Outcome"),
+                    ("tests", "Tests passed"), ("tokens", "Output tokens (reasoning)"), ("time", "Time"),
+                    ("cost", "Cost"))
+
+
+def publish_site(run_dirs: list[Path], out: Path, notes: list[str] | None = None,
+                 title: str = "CCO benchmark runs") -> None:
+    """One page per run under ``out/<run_id>/`` plus a single overview ``index.html``."""
+    out.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for run_dir in run_dirs:
+        publish(run_dir, out / run_dir.name)
+        rows.extend(overview_rows(run_dir))
+    head = "".join(f"<th>{html.escape(label)}</th>" for _, label in OVERVIEW_COLUMNS) + "<th>Run</th>"
+    body = "\n".join(
+        "<tr>" + "".join(f"<td>{html.escape(row[key])}</td>" for key, _ in OVERVIEW_COLUMNS)
+        + f'<td><a href="{html.escape(row["run"])}/">{html.escape(row["run"])}</a> · '
+        f'<a href="{html.escape(row["run"])}/run-config.json">config</a></td></tr>'
+        for row in rows)
+    note_html = "".join(f"<li>{html.escape(note)}</li>" for note in notes or [])
+    (out / "index.html").write_text(f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>{html.escape(title)}</title>
+<style>body{{font-family:system-ui,sans-serif;max-width:72rem;margin:2rem auto;padding:0 1rem}}
+table{{border-collapse:collapse}}td,th{{border:1px solid #ccc;padding:.3rem .6rem;text-align:left}}</style>
+</head>
+<body>
+<h1>{html.escape(title)}</h1>
+<table>
+<thead><tr>{head}</tr></thead>
+<tbody>
+{body}
+</tbody>
+</table>
+<ul>{note_html}</ul>
+<p>Each run links its run-config.json (models, caps, git SHA, batch job ids). Time is model latency
+(for batch: submit to finalize). Cost is what OpenRouter reported.</p>
+</body>
+</html>
+""", encoding="utf-8")
+    (out / ".nojekyll").write_text("", encoding="utf-8")

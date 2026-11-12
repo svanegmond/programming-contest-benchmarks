@@ -13,6 +13,10 @@ Raw output (code, transcripts, prompts) stays in `runs-raw/`, which is gitignore
 - `results.csv`: one row per attempt, including `language`, `verdict`, `outcome`, `partial_score` and `cost_usd`.
 - `summary.md`: the same table in Markdown.
 
+Several runs can share one site: `python -m waterloo publish RUN_A RUN_B --note "..." --site site/` writes each run under `site/RUN_ID/` and an overview `index.html` with one row per attempt (outcome, tests passed, output tokens, time, cost, sync or batch) plus the notes.
+
+For Batch API runs, `run-config.json` also lists `batch_models` and `batches` (job id, provider, submitted and completed time, latency, request counts, usage and cost).
+
 Host names, SSH targets, code, transcripts and prompts are omitted.
 
 ## How a run lands on Pages
@@ -20,6 +24,6 @@ Host names, SSH targets, code, transcripts and prompts are omitted.
 1. `python -m waterloo run --models openrouter/... --cohort cohorts/mine.json --mode single_shot` from a clean checkout. Add `--dry-run` to resolve config without calling a model.
 2. `python -m waterloo report RUN_ID` prints the table locally.
 3. `python -m waterloo publish RUN_ID --site /tmp/cco-pages`.
-4. Push `/tmp/cco-pages` to the `gh-pages` branch (orphan branch, not `main`). `.github/workflows/pages.yml` deploys that branch.
+4. Push `/tmp/cco-pages` to the `gh-pages` branch (orphan branch, not `main`). `.github/workflows/pages.yml` deploys that branch; Actions reads the workflow from the pushed branch, so keep a copy of it on `gh-pages` too.
 
 Do not commit `site/` or `runs-raw/` to `main`.

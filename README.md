@@ -62,9 +62,22 @@ python -m waterloo publish RUN_ID --site site/
 | `--max-turns` | `20` | Agentic stopping condition. |
 | `--cluster-select` | off | AlphaCode-style filter/cluster when k>1. Logs the chosen sample and why. Official tests are still graded for pass@k. |
 | `--multi-submit` | off | Agentic: verdict-only feedback (`accepted` / `wrong_answer` / `too_slow` / `runtime_error` / `compile_error`), counting failed submits. `too_slow` means the 120s per-test give-up timeout killed the program, not “over the statement limit”. |
-| `--dry-run` | off | Write `run-config.json` without calling a model. |
+| `--batch` | off | Single-shot only: send every model through OpenRouter's Batch API. Same as naming a model `openrouter/<slug>:batch`. See below. |
+| `--dry-run` | off | Write `run-config.json` without calling a model. With batch models it also prints the worst-case cost. |
 
 Statement time limits are recorded on every test (`over_time`, `pass_on_time` / `pass_over_time`) and shown in reports. They are not a pass/fail cut: pass@k and `partial_score` use correctness. Each test is killed after 120 seconds so a runaway cannot hang the judge.
+
+### Batch API (single-shot)
+
+OpenRouter lists batch pricing (usually half the sync price) on `<slug>:batch` catalog ids. Those ids are not callable on `/chat/completions`; a batch goes to `POST /api/v1/batches` with the base slug. Name a model `openrouter/<slug>:batch`, or pass `--batch` to do that for every model. The `:batch` id is what the run records, and its catalog entry supplies the token cap, effort and price.
+
+- One batch per model holds every unfinished sample of the cohort. The request bodies are the ones the sync path sends.
+- Before submitting, the harness reads `GET /api/v1/credits` and refuses if the remaining balance is below the worst case: an over-estimated prompt plus `max_tokens` of output for every request, at the `:batch` price. Lower `--max-tokens` to fit.
+- Polling has no wall-clock limit. It starts at 30 s, backs off to 5 min, waits 2 min on `429` and keeps going through `5xx`. `402`, `404` and `410` stop the run.
+- The job id is written to `runs-raw/RUN_ID/batches/<model>.active.json` as soon as OpenRouter accepts the batch. Rerun the same command after an interruption and it resumes polling that job instead of resubmitting. Once its results are recorded the file is renamed `<model>.<batch_id>.json`.
+- Requests the batch did not answer are not scored. The run exits non-zero and lists them; rerunning submits a new batch for just those.
+- `attempt.json` records `generation.batch` (job id, submitted and completed time, latency, provider). Latency is submit to finalize. `run-config.json` on Pages lists the jobs with usage and cost.
+- Agentic mode and `--cluster-select` reject batch models: an agent turn depends on the previous tool result.
 
 A future `libraries` lane is not built. The agent would request packages, the harness would check an allowlist and install pinned versions offline for both the agent sandbox and the judge, and versions plus hashes would be recorded.
 

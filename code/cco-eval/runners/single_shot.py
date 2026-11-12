@@ -12,7 +12,12 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
-from cco_eval.decoding import DEFAULT_REASONING_EFFORT
+from cco_eval.batch import BatchRequest, submit_slug
+from cco_eval.decoding import (
+    DEFAULT_REASONING_EFFORT, model_id, resolve_reasoning_effort, supported_parameters,
+)
+from cco_eval.models import GenerateResult
+from cco_eval.providers import openrouter_chat_payload
 from cco_eval.waterloo import Attempt, FailureKind, Lane, Language, Mode, Outcome3, Verdict, to_json
 from cco_eval.utils import write_json
 from runners.common import (
@@ -130,6 +135,20 @@ def _generate(model: str, messages: list[dict[str, object]], timeout: float, max
     )
 
 
+def batch_request(problem: ProblemData, model: str, custom_id: str, *, max_tokens: int | None,
+                  temperature: float, reasoning_effort: str | None, lane: Lane,
+                  catalog: dict[str, Any] | None) -> tuple[BatchRequest, list[dict[str, object]]]:
+    """The Batch API request line for one sample: the same body ``run_one`` sends synchronously."""
+    messages = build_single_messages(problem, lane)
+    effort = resolve_reasoning_effort(model_id(model), reasoning_effort, catalog)
+    body = openrouter_chat_payload(
+        submit_slug(model), messages, resolve_max_tokens(model, max_tokens, catalog=catalog),
+        reasoning_effort=effort, temperature=temperature,
+        supported_parameters=supported_parameters(model_id(model), catalog),
+    )
+    return BatchRequest(custom_id=custom_id, body=body), messages
+
+
 def _no_code_verdict(attempt_id: str, problem_id: str, env_id: str) -> Verdict:
     return Verdict(attempt_id=attempt_id, problem_id=problem_id, subtask_pass={}, all_pass=False,
                    partial_score=0.0, outcome=Outcome3.FAIL, env_id=env_id)
@@ -139,20 +158,28 @@ def run_one(problem: ProblemData, model: str, sample_index: int, *, out: Path, r
             judge: Any, timeout: float, max_tokens: int | None = None, tests_path: Path | None = None,
             grade: bool = True, temperature: float = 0.0,
             reasoning_effort: str | None = DEFAULT_REASONING_EFFORT, lane: Lane = Lane.FREE,
-            catalog: dict[str, Any] | None = None) -> dict[str, Any]:
+            catalog: dict[str, Any] | None = None,
+            generation: GenerateResult | None = None) -> dict[str, Any]:
     """Generate once and judge it. With grade=False the code still runs on every test and each
-    stdout is kept, but no verdict is produced: a checker grades those problems later."""
+    stdout is kept, but no verdict is produced: a checker grades those problems later.
+
+    Pass ``generation`` when the response already exists (a Batch API result); then no model
+    call is made here and the rest of the pipeline is identical."""
     messages = build_single_messages(problem, lane)
     prompt = str(messages[0]["content"]) + "\n\n" + str(messages[1]["content"])
     effective_max_tokens = resolve_max_tokens(model, max_tokens, catalog=catalog)
-    generation = _generate(
-        model, messages, timeout, effective_max_tokens,
-        temperature=temperature, reasoning_effort=reasoning_effort, catalog=catalog,
-    )
+    if generation is None:
+        generation = _generate(
+            model, messages, timeout, effective_max_tokens,
+            temperature=temperature, reasoning_effort=reasoning_effort, catalog=catalog,
+        )
     generation_record = {
         **generation.to_record(), "max_tokens": effective_max_tokens,
         "temperature": temperature, "reasoning_effort": reasoning_effort, "lane": lane.value,
     }
+    batch_meta = (generation.raw_provider_metadata or {}).get("batch")
+    if batch_meta:
+        generation_record["batch"] = batch_meta
     failure_kind = (
         FailureKind.TRUNCATED
         if (generation.stop_reason or "").lower() in {"length", "max_tokens", "max_output_tokens"}

@@ -182,6 +182,42 @@ def generate_openrouter(
 ) -> GenerateResult:
     """Call OpenRouter's OpenAI-compatible chat completions endpoint."""
     start = time.perf_counter()
+    payload = openrouter_chat_payload(
+        model, messages, max_tokens, tools=tools, reasoning_effort=reasoning_effort,
+        temperature=temperature, supported_parameters=supported_parameters,
+    )
+    request = urllib.request.Request(
+        base_url.rstrip("/") + "/chat/completions",
+        data=json.dumps(payload).encode("utf-8"),
+        headers=openrouter_headers(api_key),
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        parsed = json.loads(response.read().decode("utf-8", errors="replace"))
+    return parse_openrouter_chat(parsed, model, ms_since(start))
+
+
+def openrouter_headers(api_key: str) -> dict[str, str]:
+    return {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://github.com/svanegmond/programming-contest-benchmarks",
+        "X-Title": "programming-contest-benchmarks CCO eval",
+        "User-Agent": "cco-eval/1.0",
+    }
+
+
+def openrouter_chat_payload(
+    model: str,
+    messages: list[dict[str, object]],
+    max_tokens: int,
+    *,
+    tools: list[dict[str, object]] | None = None,
+    reasoning_effort: str | None = None,
+    temperature: float = 0.0,
+    supported_parameters: list[str] | None = None,
+) -> dict[str, object]:
+    """Request body shared by the sync endpoint and Batch API request lines."""
     payload: dict[str, object] = {
         "model": model,
         "messages": messages,
@@ -195,20 +231,11 @@ def generate_openrouter(
         payload["tool_choice"] = "auto"
     if reasoning_effort:
         payload["reasoning"] = {"effort": reasoning_effort}
-    request = urllib.request.Request(
-        base_url.rstrip("/") + "/chat/completions",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/svanegmond/programming-contest-benchmarks",
-            "X-Title": "programming-contest-benchmarks CCO eval",
-            "User-Agent": "cco-eval/1.0",
-        },
-        method="POST",
-    )
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        parsed = json.loads(response.read().decode("utf-8", errors="replace"))
+    return payload
+
+
+def parse_openrouter_chat(parsed: dict[str, object], model: str, latency_ms: float | None) -> GenerateResult:
+    """Turn a chat-completions response body (sync or batch result) into a GenerateResult."""
     choices = parsed.get("choices", [])
     choice = choices[0] if choices and isinstance(choices[0], dict) else {}
     message = choice.get("message", {}) if isinstance(choice, dict) else {}
@@ -238,7 +265,7 @@ def generate_openrouter(
         text=text,
         provider="openrouter",
         model=str(parsed.get("model", model)),
-        latency_ms=ms_since(start),
+        latency_ms=latency_ms,
         input_tokens=int_or_none(usage.get("prompt_tokens")),
         output_tokens=int_or_none(usage.get("completion_tokens")),
         stop_reason=str(choice["finish_reason"]) if isinstance(choice, dict) and choice.get("finish_reason") is not None else None,
