@@ -127,6 +127,16 @@ def test_poll_backs_off_through_429_and_5xx_without_a_deadline(tmp_path):
     assert saved["latency_s"] == 90.0 and saved["completed_at"].endswith("Z")
 
 
+def test_poll_tolerates_404_right_after_submit_then_gives_up(tmp_path):
+    state = {"batch_id": "batch_1", "model": MODEL, "submitted_unix": 1000.0}
+    polls = [(404, {})] * 2 + [completed([result("a")])]
+    final = batch_api.poll(state, tmp_path / "s.json", FakeHTTP(polls), sleep=lambda _: None, log=lambda _: None)
+    assert final["status"] == "completed"
+    missing = [(404, {"error": {"message": "not found"}})] * (batch_api.NOT_FOUND_TOLERANCE + 1)
+    with pytest.raises(batch_api.BatchHTTPError, match="404"):
+        batch_api.poll(state, tmp_path / "s.json", FakeHTTP(missing), sleep=lambda _: None, log=lambda _: None)
+
+
 def test_poll_raises_on_terminal_http_errors(tmp_path):
     state = {"batch_id": "batch_1", "model": MODEL, "submitted_unix": 0}
     with pytest.raises(batch_api.BatchHTTPError, match="410"):

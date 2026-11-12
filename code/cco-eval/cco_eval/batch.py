@@ -30,6 +30,12 @@ CHAT_ENDPOINT = "/v1/chat/completions"
 POLL_START_S = 30.0
 POLL_MAX_S = 300.0
 RATE_LIMIT_WAIT_S = 120.0
+# A just-accepted batch can 404 for a moment before reads see it. Count-based, not a clock.
+NOT_FOUND_TOLERANCE = 10
+
+
+def _log(message: str) -> None:
+    print(message, flush=True)
 
 
 def is_batch_model(model: str) -> bool:
@@ -140,7 +146,7 @@ def _read(path: Path) -> dict[str, Any] | None:
 
 def submit_or_resume(model: str, requests: list[BatchRequest], state_path: Path, http: Any,
                      *, now: Callable[[], float] = time.time,
-                     log: Callable[[str], None] = print) -> dict[str, Any]:
+                     log: Callable[[str], None] = _log) -> dict[str, Any]:
     """Return the batch state, submitting only when ``state_path`` has no job id yet."""
     state = _read(state_path)
     if state and state.get("batch_id"):
@@ -169,12 +175,13 @@ def submit_or_resume(model: str, requests: list[BatchRequest], state_path: Path,
 
 def poll(state: dict[str, Any], state_path: Path, http: Any, *,
          sleep: Callable[[float], None] | None = None, now: Callable[[], float] = time.time,
-         log: Callable[[str], None] = print, start_s: float = POLL_START_S,
+         log: Callable[[str], None] = _log, start_s: float = POLL_START_S,
          max_s: float = POLL_MAX_S) -> dict[str, Any]:
     """Poll until a final status with results. No wall-clock limit, by design."""
     sleep = sleep or time.sleep
     delay = start_s
     last_status = state.get("status")
+    not_found = 0
     while True:
         try:
             status, payload = http.request("GET", f"/batches/{state['batch_id']}")
@@ -209,7 +216,9 @@ def poll(state: dict[str, Any], state_path: Path, http: Any, *,
             delay = min(delay * 1.5, max_s)
         elif status == 429:
             wait = RATE_LIMIT_WAIT_S
-        elif status >= 500:
+        elif status >= 500 or (status == 404 and not_found < NOT_FOUND_TOLERANCE):
+            not_found += status == 404
+            log(f"batch poll got {status}; retrying in {delay:.0f}s")
             wait = delay
             delay = min(delay * 2, max_s)
         else:
