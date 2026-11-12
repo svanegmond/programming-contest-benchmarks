@@ -198,7 +198,7 @@ def test_openrouter_result_preserves_cost_and_tool_calls():
     assert result.raw_provider_metadata["tool_calls"][0]["id"] == "c1"
     request = urlopen.call_args.args[0]
     assert request.full_url.endswith("/chat/completions")
-    assert json.loads(request.data)["reasoning"] == {"effort": "low"}
+    assert json.loads(request.data)["reasoning"] == {"effort": "low", "exclude": False}
 
 
 def test_run_tool_reports_a_sample_mismatch_diff(tmp_path):

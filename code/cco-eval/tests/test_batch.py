@@ -284,3 +284,33 @@ def test_publish_overview_includes_batch_jobs(experiment, monkeypatch):
     assert config["batch_models"] == [MODEL]
     assert config["batches"][0]["batch_id"] == "batch_1"
     assert config["git_sha"]
+
+
+def test_batch_results_keep_reasoning_and_the_overview_links_it(experiment, monkeypatch):
+    root, argv = experiment
+    reasoning_body = chat_body()
+    reasoning_body["choices"][0]["message"]["reasoning"] = "Sum the two integers. " * 10
+    reasoning_body["usage"]["completion_tokens_details"] = {"reasoning_tokens": 50}
+    http = FakeHTTP([completed([result("p--s1", reasoning_body), result("q--s1")])])
+    use_http(monkeypatch, http)
+    assert cli.main(argv) == 0
+    assert http.submitted["requests"][0]["body"]["reasoning"] == {"effort": "high", "exclude": False}
+    run_dir = next((root / "runs").iterdir())
+    kinds = {}
+    for path in run_dir.rglob("attempt.json"):
+        attempt = json.loads(path.read_text())
+        kinds[attempt["problem_id"]] = attempt["reasoning"]["kind"]
+        assert path.with_name("reasoning.json").is_file() and path.with_name("reasoning.md").is_file()
+    assert kinds == {"p": "full", "q": "none"}
+    telemetry = {row["problem_id"]: row for row in map(json.loads, (run_dir / "telemetry.jsonl").read_text().splitlines())}
+    assert telemetry["p"]["reasoning_kind"] == "full" and telemetry["p"]["reasoning_tokens"] == 50
+    site = root / "site"
+    assert cli.main(["publish", run_dir.name, "--note", "n", "--site", str(site), "--out", str(root / "runs")]) == 0
+    index = (site / "index.html").read_text()
+    assert "<th>Reasoning</th>" in index and f'href="{run_dir.name}/reasoning/p--acme-coder-batch--s1.md">full<' in index
+    assert ">none<" in index
+    bare = root / "bare"
+    assert cli.main(["publish", run_dir.name, "--note", "n", "--site", str(bare), "--out", str(root / "runs"),
+                     "--no-reasoning"]) == 0
+    assert "<th>Reasoning</th>" not in (bare / "index.html").read_text()
+    assert not (bare / run_dir.name / "reasoning").exists()

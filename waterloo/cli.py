@@ -85,6 +85,8 @@ def telemetry(result):
         "cost_usd": usage.get("cost"), "latency_ms": generation.get("latency_ms"),
         "finish_reason": generation.get("stop_reason"), "upstream_provider": meta.get("provider"),
         "extraction_error": generation.get("extraction_error"),
+        "reasoning_kind": (generation.get("reasoning") or {}).get("kind"),
+        "visible_reasoning_chars": (generation.get("reasoning") or {}).get("visible_chars"),
     }
     if calls is None:
         return row
@@ -92,6 +94,9 @@ def telemetry(result):
     for field in ("input_tokens", "output_tokens", "reasoning_tokens", "cost_usd", "latency_ms"):
         values = [r[field] for r in rows]
         row[field] = sum(values) if values and all(v is not None for v in values) else None
+    summary = attempt.get("reasoning") or {}
+    row["reasoning_kind"] = summary.get("kind")
+    row["visible_reasoning_chars"] = summary.get("visible_chars")
     row["turns_used"] = result["attempt"].get("turns_used")
     row["agent_outcome"] = result["attempt"].get("agent_outcome")
     row["wall_s"] = result["attempt"].get("wall_s")
@@ -339,10 +344,12 @@ def report(args):
 
 
 def publish(args):
+    include = not args.no_reasoning
     if len(args.run_id) == 1 and not args.note:
-        write_pages(args.out / args.run_id[0], args.site)
+        write_pages(args.out / args.run_id[0], args.site, include_reasoning=include)
     else:
-        publish_site([args.out / run_id for run_id in args.run_id], args.site, args.note, args.title)
+        publish_site([args.out / run_id for run_id in args.run_id], args.site, args.note, args.title,
+                     include_reasoning=include)
     print(args.site / "index.html")
     return 0
 
@@ -395,6 +402,8 @@ def parser():
     pages.add_argument("--note", action="append", default=[], help="Overview footnote (repeatable).")
     pages.add_argument("--title", default="CCO benchmark runs", help="Overview page title.")
     pages.add_argument("--site", type=Path, default=BENCH / "site")
+    pages.add_argument("--no-reasoning", action="store_true",
+                       help="Leave reasoning traces (excerpts and full files) out of the site.")
     pages.set_defaults(handler=publish)
     for sub in (admission, experiment):
         sub.add_argument("--ssh-host", default=DEFAULT_SSH_HOST)

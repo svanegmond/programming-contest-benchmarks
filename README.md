@@ -4,6 +4,8 @@ A harness and an admitted problem set for evaluating language models on Canadian
 
 Model-written solutions, transcripts and prompts are not published. A solution or prompt on the public web can end up in a future model's training data and make later evaluations of that model meaningless. Published runs are GitHub Pages reports with identifiers, verdicts, `partial_score`, pass@k and a downloadable run-config (see [docs/runs.md](docs/runs.md)). They are not committed to `main`.
 
+Model reasoning traces are the one exception, and they are on by default. A report shows an excerpt of each trace and links the full trace, with secrets, host names and fenced code removed. Prose reasoning still describes the solution, so it has the same contamination risk. `publish --no-reasoning` leaves the traces out.
+
 ## The cohort
 
 All 72 problems (12 contests, 6 each) were put through admission. 51 are admitted and 21 are rejected, each with a closed-set reason in `problems/<id>/status.json`. [reports/DASHBOARD.md](reports/DASHBOARD.md) lists them all.
@@ -46,7 +48,7 @@ python -m waterloo report RUN_ID
 python -m waterloo publish RUN_ID --site site/
 ```
 
-`run` writes raw output (code, transcripts, prompts) to `runs-raw/`, which is gitignored. Publish with `python -m waterloo publish`; [docs/runs.md](docs/runs.md) has the Pages steps.
+`run` writes raw output (code, transcripts, prompts, reasoning traces) to `runs-raw/`, which is gitignored. Publish with `python -m waterloo publish`; [docs/runs.md](docs/runs.md) has the Pages steps.
 
 ### Flags
 
@@ -78,6 +80,25 @@ OpenRouter lists batch pricing (usually half the sync price) on `<slug>:batch` c
 - Requests the batch did not answer are not scored. The run exits non-zero and lists them; rerunning submits a new batch for just those.
 - `attempt.json` records `generation.batch` (job id, submitted and completed time, latency, provider). Latency is submit to finalize. `run-config.json` on Pages lists the jobs with usage and cost.
 - Agentic mode and `--cluster-select` reject batch models: an agent turn depends on the previous tool result.
+
+### Reasoning traces
+
+Every OpenRouter request that sends a reasoning effort sends `reasoning: {"effort": ..., "exclude": false}`, on both the sync and the batch path. OpenRouter returns reasoning by default unless `exclude` is true, so `exclude: false` only makes that explicit. With `--reasoning-effort none` no `reasoning` object is sent. The response's `message.reasoning` string (or its `reasoning_content` alias) and the `message.reasoning_details` array (`reasoning.text`, `reasoning.summary`, `reasoning.encrypted`) are kept for every attempt:
+
+- `reasoning.json` holds the raw `reasoning` string and `reasoning_details` array per turn (one turn in single-shot, one per model call in agentic mode), plus the per-turn counts. Signatures and encrypted blobs are kept unchanged.
+- `reasoning.md` holds the readable text, with a heading per turn in agentic mode.
+- `attempt.json` has a `reasoning` block: `kind`, `visible_chars`, `visible_tokens_est` (characters / 4), `billed_reasoning_tokens` (`usage.completion_tokens_details.reasoning_tokens`), `turns`, `trace_path` and `text_path`. `generation.reasoning` (single-shot) and `generation.calls[].reasoning` (agentic) carry the same counts. `telemetry.jsonl` adds `reasoning_kind` and `visible_reasoning_chars`.
+
+`kind` is one of these:
+
+| Kind | Meaning |
+|---|---|
+| `full` | Readable reasoning text (`reasoning.text` items or the `reasoning` string). |
+| `summary` | `reasoning.summary` items, or text that is under half the billed reasoning tokens. Claude's summarized thinking and Gemini thought summaries look like text but are condensed. `kind_basis` in `reasoning.json` says which rule applied. |
+| `encrypted` | Only `reasoning.encrypted` blobs, with nothing readable. |
+| `none` | Nothing returned. If reasoning tokens were billed, the report labels it hidden. |
+
+Agentic mode saves each turn's reasoning but does not send `reasoning_details` back to the model on the next turn, so agent behaviour is the same as before trace capture.
 
 A future `libraries` lane is not built. The agent would request packages, the harness would check an allowlist and install pinned versions offline for both the agent sandbox and the judge, and versions plus hashes would be recorded.
 

@@ -5,10 +5,12 @@ from __future__ import annotations
 import csv
 import html
 import json
+import re
 from pathlib import Path
 from typing import Any
 
 from cco_eval.metrics import summarize_groups
+from cco_eval.reasoning import kind_label, public_trace, published_excerpt, sensitive_literals
 from cco_eval.run_records import load_run
 from cco_eval.utils import write_json
 
@@ -95,13 +97,102 @@ def result_rows(run_dir: Path) -> list[dict[str, object]]:
     return sorted(rows, key=lambda row: (str(row["model"]), str(row["problem"]), int(row["sample"])))
 
 
+def _slug(value: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_.-]+", "-", value).strip("-") or "x"
+
+
+def short_kind(kind: str | None, billed: int | None = None) -> str:
+    if kind is None:
+        return "not recorded"
+    if kind == "none":
+        return "hidden" if billed else "none"
+    return {"full": "full", "summary": "summary only", "encrypted": "encrypted (unreadable)"}.get(kind, kind)
+
+
+def publish_reasoning(run_dir: Path, out: Path, literals: list[str] | None = None) -> list[dict[str, Any]]:
+    """Write redacted traces to ``out/reasoning/`` and return one entry per attempt that has one.
+
+    Attempts recorded before trace capture have no ``reasoning.json`` and are skipped."""
+    literals = sensitive_literals() if literals is None else literals
+    entries = []
+    for attempt_path in sorted(run_dir.rglob("attempt.json")):
+        trace_path = attempt_path.with_name("reasoning.json")
+        if not trace_path.is_file():
+            continue
+        attempt = json.loads(attempt_path.read_text(encoding="utf-8"))
+        trace = json.loads(trace_path.read_text(encoding="utf-8"))
+        published, text = public_trace(trace, literals)
+        model = str(attempt["model"]).removeprefix("openrouter/")
+        stem = f"{_slug(attempt['problem_id'])}--{_slug(model)}--s{attempt.get('sample_index', 1)}"
+        target = out / "reasoning"
+        target.mkdir(parents=True, exist_ok=True)
+        write_json(target / f"{stem}.json", published)
+        (target / f"{stem}.md").write_text(text, encoding="utf-8")
+        summary = trace.get("summary") or {}
+        entries.append({
+            "attempt_id": attempt["id"], "problem": attempt["problem_id"], "model": model,
+            "sample": attempt.get("sample_index", 1), "mode": attempt.get("mode"),
+            "kind": summary.get("kind"), "label": kind_label(str(summary.get("kind")),
+                                                              summary.get("billed_reasoning_tokens")),
+            "visible_chars": summary.get("visible_chars"),
+            "visible_tokens_est": summary.get("visible_tokens_est"),
+            "billed_reasoning_tokens": summary.get("billed_reasoning_tokens"),
+            "turns": summary.get("turns"), "excerpt": published_excerpt(published),
+            "md": f"reasoning/{stem}.md", "json": f"reasoning/{stem}.json",
+            **published["published"],
+        })
+    return sorted(entries, key=lambda e: (e["problem"], e["model"], e["sample"]))
+
+
+def _counts(entry: dict[str, Any]) -> str:
+    billed = entry.get("billed_reasoning_tokens")
+    return (f"{entry.get('visible_chars') or 0:,} visible characters "
+            f"(~{entry.get('visible_tokens_est') or 0:,} tokens est.) vs "
+            f"{'unknown' if billed is None else f'{billed:,}'} billed reasoning tokens")
+
+
+TRACE_PUBLIC_FIELDS = ("problem", "model", "sample", "kind", "visible_chars", "visible_tokens_est",
+                       "billed_reasoning_tokens", "turns", "md", "json", "redactions", "code_blocks_omitted")
+
+
+def reasoning_markdown(traces: list[dict[str, Any]]) -> list[str]:
+    lines = ["", "## Reasoning traces", "",
+             "Excerpts are the first and last ~600 characters. Secrets, host names and fenced code are "
+             "removed from published traces.", ""]
+    for entry in traces:
+        lines += [f"### `{entry['model']}` · {entry['problem']} · s{entry['sample']}", "",
+                  f"{entry['label']}. {_counts(entry)}. [Full trace]({entry['md']}) · [JSON]({entry['json']})", ""]
+        if entry["excerpt"]:
+            lines += ["```text", entry["excerpt"].replace("```", "ˋˋˋ"), "```", ""]
+    return lines
+
+
+def reasoning_html(traces: list[dict[str, Any]]) -> str:
+    if not traces:
+        return ""
+    parts = ["<h2>Reasoning traces</h2>",
+             "<p>Excerpts are the first and last ~600 characters. Secrets, host names and fenced code are "
+             "removed from published traces.</p>"]
+    for entry in traces:
+        parts.append(
+            f"<h3><code>{html.escape(entry['model'])}</code> · {html.escape(entry['problem'])} · "
+            f"s{entry['sample']}</h3>"
+            f"<p><strong>{html.escape(entry['label'])}</strong>. {html.escape(_counts(entry))}. "
+            f'<a href="{html.escape(entry["md"])}">Full trace</a> · '
+            f'<a href="{html.escape(entry["json"])}">JSON</a></p>')
+        if entry["excerpt"]:
+            parts.append(f'<pre style="white-space:pre-wrap">{html.escape(entry["excerpt"])}</pre>')
+    return "\n".join(parts)
+
+
 def _fmt(value: object) -> str:
     if isinstance(value, float):
         return f"{value:.4f}".rstrip("0").rstrip(".")
     return str(value)
 
 
-def markdown_report(manifest: dict[str, Any], run_dir: Path, *, include_download: bool = True) -> str:
+def markdown_report(manifest: dict[str, Any], run_dir: Path, *, include_download: bool = True,
+                    traces: list[dict[str, Any]] | None = None) -> str:
     records = load_run(run_dir)
     k = int(manifest.get("k") or 1)
     groups = summarize_groups(records, k)
@@ -126,11 +217,13 @@ def markdown_report(manifest: dict[str, Any], run_dir: Path, *, include_download
         )
     if include_download:
         lines.extend(["", "[Download run-config.json](run-config.json)"])
+    if traces:
+        lines.extend(reasoning_markdown(traces))
     lines.append("")
     return "\n".join(lines)
 
 
-def render_html(manifest: dict[str, Any], run_dir: Path) -> str:
+def render_html(manifest: dict[str, Any], run_dir: Path, traces: list[dict[str, Any]] | None = None) -> str:
     records = load_run(run_dir)
     k = int(manifest.get("k") or 1)
     groups = summarize_groups(records, k)
@@ -174,26 +267,33 @@ def render_html(manifest: dict[str, Any], run_dir: Path) -> str:
 {body}
 </tbody>
 </table>
+{reasoning_html(traces or [])}
 </body>
 </html>
 """
 
 
-def publish(run_dir: Path, out: Path) -> None:
+def publish(run_dir: Path, out: Path, *, include_reasoning: bool = True) -> list[dict[str, Any]]:
+    """Write one run's report. Returns the published reasoning-trace entries (empty when off)."""
     manifest = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     out.mkdir(parents=True, exist_ok=True)
     config = public_run_config(manifest)
     jobs = batch_jobs(run_dir)
     if jobs:
         config["batches"] = jobs
+    traces = publish_reasoning(run_dir, out) if include_reasoning else []
+    config["reasoning_published"] = include_reasoning
+    if traces:
+        config["reasoning_traces"] = [{key: entry.get(key) for key in TRACE_PUBLIC_FIELDS} for entry in traces]
     write_json(out / "run-config.json", config)
     rows = result_rows(run_dir)
     with (out / "results.csv").open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=CSV_FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
-    (out / "summary.md").write_text(markdown_report(manifest, run_dir) + "\n", encoding="utf-8")
-    (out / "index.html").write_text(render_html(manifest, run_dir), encoding="utf-8")
+    (out / "summary.md").write_text(markdown_report(manifest, run_dir, traces=traces) + "\n", encoding="utf-8")
+    (out / "index.html").write_text(render_html(manifest, run_dir, traces), encoding="utf-8")
+    return traces
 
 
 def _tests_passed(attempt_path: Path) -> str:
@@ -234,7 +334,9 @@ def overview_rows(run_dir: Path) -> list[dict[str, str]]:
             "outcome": str(outcome), "tests": _tests_passed(attempt_path), "tokens": tokens,
             "time": "-" if latency is None else f"{latency / 1000:.0f} s",
             "cost": cost_text,
-            "api": "batch" if batch else "sync",
+            "api": "batch" if batch else "sync", "attempt_id": attempt["id"],
+            "reasoning": short_kind((attempt.get("reasoning") or {}).get("kind"),
+                                    (attempt.get("reasoning") or {}).get("billed_reasoning_tokens")),
         })
     return sorted(rows, key=lambda r: (r["problem"], r["model"]))
 
@@ -244,17 +346,27 @@ OVERVIEW_COLUMNS = (("problem", "Problem"), ("model", "Model"), ("api", "API"), 
                     ("cost", "Cost"))
 
 
+def _reasoning_cell(row: dict[str, str], links: dict[str, str]) -> str:
+    link = links.get(row["attempt_id"])
+    text = html.escape(row["reasoning"])
+    return f'<td><a href="{html.escape(link)}">{text}</a></td>' if link else f"<td>{text}</td>"
+
+
 def publish_site(run_dirs: list[Path], out: Path, notes: list[str] | None = None,
-                 title: str = "CCO benchmark runs") -> None:
+                 title: str = "CCO benchmark runs", *, include_reasoning: bool = True) -> None:
     """One page per run under ``out/<run_id>/`` plus a single overview ``index.html``."""
     out.mkdir(parents=True, exist_ok=True)
     rows = []
+    links: dict[str, str] = {}
     for run_dir in run_dirs:
-        publish(run_dir, out / run_dir.name)
+        for entry in publish(run_dir, out / run_dir.name, include_reasoning=include_reasoning):
+            links[entry["attempt_id"]] = f"{run_dir.name}/{entry['md']}"
         rows.extend(overview_rows(run_dir))
-    head = "".join(f"<th>{html.escape(label)}</th>" for _, label in OVERVIEW_COLUMNS) + "<th>Run</th>"
+    reasoning_head = "<th>Reasoning</th>" if include_reasoning else ""
+    head = "".join(f"<th>{html.escape(label)}</th>" for _, label in OVERVIEW_COLUMNS) + reasoning_head + "<th>Run</th>"
     body = "\n".join(
         "<tr>" + "".join(f"<td>{html.escape(row[key])}</td>" for key, _ in OVERVIEW_COLUMNS)
+        + (_reasoning_cell(row, links) if include_reasoning else "")
         + f'<td><a href="{html.escape(row["run"])}/">{html.escape(row["run"])}</a> · '
         f'<a href="{html.escape(row["run"])}/run-config.json">config</a></td></tr>'
         for row in rows)
@@ -277,7 +389,8 @@ table{{border-collapse:collapse}}td,th{{border:1px solid #ccc;padding:.3rem .6re
 </table>
 <ul>{note_html}</ul>
 <p>Each run links its run-config.json (models, caps, git SHA, batch job ids). Time is model latency
-(for batch: submit to finalize). Cost is what OpenRouter reported.</p>
+(for batch: submit to finalize). Cost is what OpenRouter reported. Reasoning links each attempt's
+published trace: full text, a provider summary, an encrypted blob, or hidden (billed but not returned).</p>
 </body>
 </html>
 """, encoding="utf-8")

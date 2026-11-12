@@ -16,6 +16,10 @@ class GenerateResult:
     stop_reason: str | None = None
     raw_provider_metadata: dict[str, object] | None = None
     error: str | None = None
+    # OpenRouter ``message.reasoning`` and ``message.reasoning_details``; kept off ``to_record``
+    # so attempt.json stays small. Runners save them to reasoning.json.
+    reasoning: str | None = None
+    reasoning_details: list[dict[str, object]] | None = None
 
     @property
     def ok(self) -> bool:
