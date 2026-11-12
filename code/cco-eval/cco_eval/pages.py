@@ -221,6 +221,11 @@ def overview_rows(run_dir: Path) -> list[dict[str, str]]:
         tokens = "-" if out_tokens is None else f"{out_tokens:,}" + (f" ({reasoning:,})" if reasoning else "")
         latency = t.get("latency_ms")
         cost = t.get("cost_usd")
+        usage = (generation.get("raw_provider_metadata") or {}).get("usage") or {}
+        upstream = (usage.get("cost_details") or {}).get("upstream_inference_cost")
+        cost_text = "-" if cost is None else f"${cost:.3f}"
+        if usage.get("is_byok") and isinstance(upstream, (int, float)):
+            cost_text = f"${upstream:.3f} (BYOK, billed by provider)"
         outcome = verdict.get("outcome", "")
         if not attempt.get("code_path"):
             outcome = f"no program ({generation.get('stop_reason') or 'none'})"
@@ -228,7 +233,7 @@ def overview_rows(run_dir: Path) -> list[dict[str, str]]:
             "run": run_dir.name, "problem": attempt["problem_id"], "model": attempt["model"].removeprefix("openrouter/"),
             "outcome": str(outcome), "tests": _tests_passed(attempt_path), "tokens": tokens,
             "time": "-" if latency is None else f"{latency / 1000:.0f} s",
-            "cost": "-" if cost is None else f"${cost:.3f}",
+            "cost": cost_text,
             "api": "batch" if batch else "sync",
         })
     return sorted(rows, key=lambda r: (r["problem"], r["model"]))
