@@ -305,12 +305,15 @@ def test_batch_results_keep_reasoning_and_the_overview_links_it(experiment, monk
     telemetry = {row["problem_id"]: row for row in map(json.loads, (run_dir / "telemetry.jsonl").read_text().splitlines())}
     assert telemetry["p"]["reasoning_kind"] == "full" and telemetry["p"]["reasoning_tokens"] == 50
     site = root / "site"
-    assert cli.main(["publish", run_dir.name, "--note", "n", "--site", str(site), "--out", str(root / "runs")]) == 0
+    assert cli.main(["publish", run_dir.name, "--note", "n", "--site", str(site), "--out", str(root / "runs"),
+                     "--with-reasoning"]) == 0
     index = (site / "index.html").read_text()
     assert "<th>Reasoning</th>" in index and f'href="{run_dir.name}/reasoning/p--acme-coder-batch--s1.md">full<' in index
     assert ">none<" in index
     bare = root / "bare"
-    assert cli.main(["publish", run_dir.name, "--note", "n", "--site", str(bare), "--out", str(root / "runs"),
-                     "--no-reasoning"]) == 0
-    assert "<th>Reasoning</th>" not in (bare / "index.html").read_text()
+    assert cli.main(["publish", run_dir.name, "--note", "n", "--site", str(bare), "--out", str(root / "runs")]) == 0
+    bare_index = (bare / "index.html").read_text()
+    assert "<th>Reasoning</th>" in bare_index
+    assert ">withheld<" in bare_index and "Reasoning traces were withheld from this report." in bare_index
+    assert "not recorded" not in bare_index
     assert not (bare / run_dir.name / "reasoning").exists()

@@ -109,6 +109,30 @@ def short_kind(kind: str | None, billed: int | None = None) -> str:
     return {"full": "full", "summary": "summary only", "encrypted": "encrypted (unreadable)"}.get(kind, kind)
 
 
+WITHHELD_NOTE = "Reasoning traces were withheld from this report."
+
+
+def _trace_recorded(attempt: dict[str, Any], attempt_path: Path) -> bool:
+    return attempt.get("reasoning") is not None or attempt_path.with_name("reasoning.json").is_file()
+
+
+def run_has_traces(run_dir: Path) -> bool:
+    for attempt_path in run_dir.rglob("attempt.json"):
+        attempt = json.loads(attempt_path.read_text(encoding="utf-8"))
+        if _trace_recorded(attempt, attempt_path):
+            return True
+    return False
+
+
+def reasoning_label(attempt: dict[str, Any], attempt_path: Path, *, published: bool) -> str:
+    if not _trace_recorded(attempt, attempt_path):
+        return "not recorded"
+    if not published:
+        return "withheld"
+    reasoning = attempt.get("reasoning") or {}
+    return short_kind(reasoning.get("kind"), reasoning.get("billed_reasoning_tokens"))
+
+
 def publish_reasoning(run_dir: Path, out: Path, literals: list[str] | None = None) -> list[dict[str, Any]]:
     """Write redacted traces to ``out/reasoning/`` and return one entry per attempt that has one.
 
@@ -192,7 +216,7 @@ def _fmt(value: object) -> str:
 
 
 def markdown_report(manifest: dict[str, Any], run_dir: Path, *, include_download: bool = True,
-                    traces: list[dict[str, Any]] | None = None) -> str:
+                    traces: list[dict[str, Any]] | None = None, withheld: bool = False) -> str:
     records = load_run(run_dir)
     k = int(manifest.get("k") or 1)
     groups = summarize_groups(records, k)
@@ -219,11 +243,14 @@ def markdown_report(manifest: dict[str, Any], run_dir: Path, *, include_download
         lines.extend(["", "[Download run-config.json](run-config.json)"])
     if traces:
         lines.extend(reasoning_markdown(traces))
+    elif withheld:
+        lines.extend(["", WITHHELD_NOTE])
     lines.append("")
     return "\n".join(lines)
 
 
-def render_html(manifest: dict[str, Any], run_dir: Path, traces: list[dict[str, Any]] | None = None) -> str:
+def render_html(manifest: dict[str, Any], run_dir: Path, traces: list[dict[str, Any]] | None = None,
+                withheld: bool = False) -> str:
     records = load_run(run_dir)
     k = int(manifest.get("k") or 1)
     groups = summarize_groups(records, k)
@@ -268,12 +295,13 @@ def render_html(manifest: dict[str, Any], run_dir: Path, traces: list[dict[str, 
 </tbody>
 </table>
 {reasoning_html(traces or [])}
+{f"<p>{html.escape(WITHHELD_NOTE)}</p>" if withheld and not traces else ""}
 </body>
 </html>
 """
 
 
-def publish(run_dir: Path, out: Path, *, include_reasoning: bool = True) -> list[dict[str, Any]]:
+def publish(run_dir: Path, out: Path, *, include_reasoning: bool = False) -> list[dict[str, Any]]:
     """Write one run's report. Returns the published reasoning-trace entries (empty when off)."""
     manifest = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     out.mkdir(parents=True, exist_ok=True)
@@ -291,8 +319,10 @@ def publish(run_dir: Path, out: Path, *, include_reasoning: bool = True) -> list
         writer = csv.DictWriter(stream, fieldnames=CSV_FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
-    (out / "summary.md").write_text(markdown_report(manifest, run_dir, traces=traces) + "\n", encoding="utf-8")
-    (out / "index.html").write_text(render_html(manifest, run_dir, traces), encoding="utf-8")
+    withheld = (not include_reasoning) and run_has_traces(run_dir)
+    (out / "summary.md").write_text(
+        markdown_report(manifest, run_dir, traces=traces, withheld=withheld) + "\n", encoding="utf-8")
+    (out / "index.html").write_text(render_html(manifest, run_dir, traces, withheld=withheld), encoding="utf-8")
     return traces
 
 
@@ -304,7 +334,7 @@ def _tests_passed(attempt_path: Path) -> str:
     return f"{sum(1 for r in rows if r.get('verdict') == 'pass')}/{len(rows)}"
 
 
-def overview_rows(run_dir: Path) -> list[dict[str, str]]:
+def overview_rows(run_dir: Path, *, published: bool = False) -> list[dict[str, str]]:
     telemetry = telemetry_rows(run_dir)
     rows = []
     for attempt_path in sorted(run_dir.rglob("attempt.json")):
@@ -335,8 +365,7 @@ def overview_rows(run_dir: Path) -> list[dict[str, str]]:
             "time": "-" if latency is None else f"{latency / 1000:.0f} s",
             "cost": cost_text,
             "api": "batch" if batch else "sync", "attempt_id": attempt["id"],
-            "reasoning": short_kind((attempt.get("reasoning") or {}).get("kind"),
-                                    (attempt.get("reasoning") or {}).get("billed_reasoning_tokens")),
+            "reasoning": reasoning_label(attempt, attempt_path, published=published),
         })
     return sorted(rows, key=lambda r: (r["problem"], r["model"]))
 
@@ -352,8 +381,19 @@ def _reasoning_cell(row: dict[str, str], links: dict[str, str]) -> str:
     return f'<td><a href="{html.escape(link)}">{text}</a></td>' if link else f"<td>{text}</td>"
 
 
+def _overview_footer(rows: list[dict[str, str]], *, include_reasoning: bool) -> str:
+    prefix = ("Each run links its run-config.json (models, caps, git SHA, batch job ids). Time is model latency "
+              "(for batch: submit to finalize). Cost is what OpenRouter reported. ")
+    if include_reasoning:
+        return (prefix + "Reasoning links each attempt's published trace: full text, a provider summary, "
+                "an encrypted blob, or hidden (billed but not returned).")
+    if any(row["reasoning"] == "withheld" for row in rows):
+        return prefix + WITHHELD_NOTE
+    return prefix + "Reasoning was not recorded for these runs."
+
+
 def publish_site(run_dirs: list[Path], out: Path, notes: list[str] | None = None,
-                 title: str = "CCO benchmark runs", *, include_reasoning: bool = True) -> None:
+                 title: str = "CCO benchmark runs", *, include_reasoning: bool = False) -> None:
     """One page per run under ``out/<run_id>/`` plus a single overview ``index.html``."""
     out.mkdir(parents=True, exist_ok=True)
     rows = []
@@ -361,16 +401,16 @@ def publish_site(run_dirs: list[Path], out: Path, notes: list[str] | None = None
     for run_dir in run_dirs:
         for entry in publish(run_dir, out / run_dir.name, include_reasoning=include_reasoning):
             links[entry["attempt_id"]] = f"{run_dir.name}/{entry['md']}"
-        rows.extend(overview_rows(run_dir))
-    reasoning_head = "<th>Reasoning</th>" if include_reasoning else ""
-    head = "".join(f"<th>{html.escape(label)}</th>" for _, label in OVERVIEW_COLUMNS) + reasoning_head + "<th>Run</th>"
+        rows.extend(overview_rows(run_dir, published=include_reasoning))
+    head = "".join(f"<th>{html.escape(label)}</th>" for _, label in OVERVIEW_COLUMNS) + "<th>Reasoning</th><th>Run</th>"
     body = "\n".join(
         "<tr>" + "".join(f"<td>{html.escape(row[key])}</td>" for key, _ in OVERVIEW_COLUMNS)
-        + (_reasoning_cell(row, links) if include_reasoning else "")
+        + _reasoning_cell(row, links)
         + f'<td><a href="{html.escape(row["run"])}/">{html.escape(row["run"])}</a> · '
         f'<a href="{html.escape(row["run"])}/run-config.json">config</a></td></tr>'
         for row in rows)
     note_html = "".join(f"<li>{html.escape(note)}</li>" for note in notes or [])
+    footer = _overview_footer(rows, include_reasoning=include_reasoning)
     (out / "index.html").write_text(f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -388,9 +428,7 @@ table{{border-collapse:collapse}}td,th{{border:1px solid #ccc;padding:.3rem .6re
 </tbody>
 </table>
 <ul>{note_html}</ul>
-<p>Each run links its run-config.json (models, caps, git SHA, batch job ids). Time is model latency
-(for batch: submit to finalize). Cost is what OpenRouter reported. Reasoning links each attempt's
-published trace: full text, a provider summary, an encrypted blob, or hidden (billed but not returned).</p>
+<p>{html.escape(footer)}</p>
 </body>
 </html>
 """, encoding="utf-8")
