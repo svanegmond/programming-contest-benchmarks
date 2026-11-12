@@ -1,0 +1,4 @@
+problem,mode,model,sample,language,verdict,outcome,partial_score,cost_usd
+cco-2026-d2p2,single_shot,openrouter/anthropic/claude-sonnet-5.5,1,cpp,pass,pass_on_time,1.0,0
+cco-2026-d2p2,single_shot,openrouter/google/gemini-4-argon,1,cpp,pass,pass_on_time,1.0,0.22302
+cco-2026-d2p2,single_shot,openrouter/google/gemini-4-carbon,1,,fail,fail,0.0,0

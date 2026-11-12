@@ -1,0 +1,4 @@
+problem,mode,model,sample,language,verdict,outcome,partial_score,cost_usd
+cco-2019-d1p1,single_shot,openrouter/anthropic/claude-sonnet-5.5,1,cpp,pass,pass_on_time,1.0,0
+cco-2019-d1p1,single_shot,openrouter/google/gemini-4-argon,1,cpp,pass,pass_on_time,1.0,0.07567
+cco-2019-d1p1,single_shot,openrouter/google/gemini-4-carbon,1,cpp,pass,pass_on_time,1.0,0.27438
