@@ -7,54 +7,72 @@ import json
 import re
 import shutil
 import sys
-import time
-import urllib.error
 import uuid
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
-from cco_eval.waterloo import Attempt, FailureKind, Language, Mode, Outcome3, Verdict, to_json
+from cco_eval.decoding import DEFAULT_REASONING_EFFORT
+from cco_eval.waterloo import Attempt, FailureKind, Lane, Language, Mode, Outcome3, Verdict, to_json
 from cco_eval.utils import write_json
 from runners.common import (
     DEFAULT_CORPUS, DEFAULT_JUDGE_PATH, DEFAULT_ZIPS_ROOT, ProblemData,
-    append_result, attempt_dir, build_single_prompt, create_run_id, dump_attempt,
+    append_result, attempt_dir, build_single_messages, create_run_id, dump_attempt,
     load_problem, record_statement_file, resolve_max_tokens, resolve_problems, run_env_id,
     run_model, sha256_text,
 )
 from runners.judge_client import DEFAULT_SSH_HOST, RemoteJudge, StubJudge
 
 
-def extract_solution(response: str) -> tuple[Language, str]:
-    match = re.search(r"```\s*(cpp|c\+\+|cc|python|python3|py)\s*\n(.*?)```", response, re.I | re.S)
-    if match:
+_LANGUAGE_TAGS = r"(cpp|c\+\+|cc|cxx|python|python3|py)"
+_TAG_LANGUAGE = {
+    "cpp": Language.CPP, "c++": Language.CPP, "cc": Language.CPP, "cxx": Language.CPP,
+    "python": Language.PYTHON, "python3": Language.PYTHON, "py": Language.PYTHON,
+}
+_CPP_START = r"(?:#include|using\b|int\b|void\b|auto\b|struct\b|class\b|template\b|const\b|long\b|std::|//|/\*)"
+_PYTHON_START = r"(?:import\b|from\b|def\b|class\b|async\s+def\b|if\b|for\b|while\b|#|@)"
+
+
+def _lane_allows(tag: str, lane: Lane) -> bool:
+    language = _TAG_LANGUAGE[tag.lower()]
+    if lane is Lane.CPP:
+        return language is Language.CPP
+    if lane is Lane.PYTHON:
+        return language is Language.PYTHON
+    if lane is Lane.FREE:
+        return True
+    raise ValueError(f"unknown lane: {lane}")
+
+
+def _require_code_like(tag: str, code: str) -> None:
+    first_code_line = next((line.strip() for line in code.splitlines() if line.strip()), "")
+    expected = _CPP_START if _TAG_LANGUAGE[tag.lower()] is Language.CPP else _PYTHON_START
+    if not re.match(expected, first_code_line):
+        raise ValueError("model response must contain a fenced cpp or python program")
+
+
+def extract_solution(response: str, lane: Lane = Lane.FREE) -> tuple[Language, str]:
+    """Return the final fenced program. Earlier fences are treated as rationale."""
+    last: tuple[str, str, bool] | None = None
+    for match in re.finditer(rf"```\s*{_LANGUAGE_TAGS}\s*\n", response, re.I):
         tag = match.group(1).lower()
-        code = match.group(2)
-    else:
-        language_tags = r"(cpp|c\+\+|cc|python|python3|py)"
-        open_fences = list(re.finditer(rf"```\s*{language_tags}\s*\n", response, re.I))
-        unclosed = next(
-            (candidate for candidate in reversed(open_fences)
-             if "```" not in response[candidate.end():]),
-            None,
-        )
-        if unclosed:
-            tag, code = unclosed.group(1).lower(), response[unclosed.end():]
-        else:
-            # Recover a code body when a truncated response starts with its
-            # language label but the model omitted the opening fence.
-            match = re.match(rf"\s*{language_tags}\s*\n(.*)", response, re.I | re.S)
-            if not match:
-                raise ValueError("model response must contain a fenced cpp or python program")
-            tag, code = match.group(1).lower(), match.group(2)
-        first_code_line = next((line.strip() for line in code.splitlines() if line.strip()), "")
-        cpp_start = r"(?:#include|using\b|int\b|void\b|auto\b|struct\b|class\b|template\b|const\b|long\b|std::|//|/\*)"
-        python_start = r"(?:import\b|from\b|def\b|class\b|async\s+def\b|if\b|for\b|while\b|#|@)"
-        expected = cpp_start if tag in {"cpp", "c++", "cc"} else python_start
-        if not re.match(expected, first_code_line):
-            raise ValueError("model response must contain a fenced cpp or python program")
-    language = Language.CPP if tag in {"cpp", "c++", "cc"} else Language.PYTHON
-    return language, code.strip() + "\n"
+        if not _lane_allows(tag, lane):
+            continue
+        rest = response[match.end():]
+        close = re.search(r"```", rest)
+        body = rest[: close.start()] if close else rest
+        last = (tag, body, close is not None)
+    if last:
+        tag, code, closed = last
+        if not closed:
+            _require_code_like(tag, code)
+        return _TAG_LANGUAGE[tag], code.strip() + "\n"
+    match = re.match(rf"\s*{_LANGUAGE_TAGS}\s*\n(.*)", response, re.I | re.S)
+    if match and _lane_allows(match.group(1).lower(), lane):
+        tag, code = match.group(1).lower(), match.group(2)
+        _require_code_like(tag, code)
+        return _TAG_LANGUAGE[tag], code.strip() + "\n"
+    raise ValueError("model response must contain a final fenced cpp or python program")
 
 
 def _prepared_grade_files(problem: ProblemData, target: Path,
@@ -62,6 +80,7 @@ def _prepared_grade_files(problem: ProblemData, target: Path,
     tests_source = tests_path or problem.tests_path
     if tests_source is None:
         raise FileNotFoundError(f"no tests.jsonl found for {problem.id}; cannot grade")
+    target.mkdir(parents=True, exist_ok=True)
     if problem.problem_json_path:
         problem_json = target / "problem.json"
         shutil.copyfile(problem.problem_json_path, problem_json)
@@ -103,15 +122,12 @@ def _prepared_grade_files(problem: ProblemData, target: Path,
     return problem_json, tests
 
 
-def _generate(model: str, prompt: str, timeout: float, max_tokens: int, tries: int = 3):
-    for attempt in range(1, tries + 1):
-        try:
-            return run_model(model, [{"role": "user", "content": prompt}], None, timeout, max_tokens)
-        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
-            retryable = not isinstance(exc, urllib.error.HTTPError) or exc.code in {408, 429} or exc.code >= 500
-            if attempt == tries or not retryable:
-                raise
-            time.sleep(5 * attempt)
+def _generate(model: str, messages: list[dict[str, object]], timeout: float, max_tokens: int,
+              *, temperature: float, reasoning_effort: str | None, catalog: dict[str, Any] | None):
+    return run_model(
+        model, messages, None, timeout, max_tokens,
+        temperature=temperature, reasoning_effort=reasoning_effort, catalog=catalog,
+    )
 
 
 def _no_code_verdict(attempt_id: str, problem_id: str, env_id: str) -> Verdict:
@@ -121,13 +137,22 @@ def _no_code_verdict(attempt_id: str, problem_id: str, env_id: str) -> Verdict:
 
 def run_one(problem: ProblemData, model: str, sample_index: int, *, out: Path, run_id: str,
             judge: Any, timeout: float, max_tokens: int | None = None, tests_path: Path | None = None,
-            grade: bool = True) -> dict[str, Any]:
+            grade: bool = True, temperature: float = 0.0,
+            reasoning_effort: str | None = DEFAULT_REASONING_EFFORT, lane: Lane = Lane.FREE,
+            catalog: dict[str, Any] | None = None) -> dict[str, Any]:
     """Generate once and judge it. With grade=False the code still runs on every test and each
     stdout is kept, but no verdict is produced: a checker grades those problems later."""
-    prompt = build_single_prompt(problem)
-    effective_max_tokens = resolve_max_tokens(model, max_tokens)
-    generation = _generate(model, prompt, timeout, effective_max_tokens)
-    generation_record = {**generation.to_record(), "max_tokens": effective_max_tokens}
+    messages = build_single_messages(problem, lane)
+    prompt = str(messages[0]["content"]) + "\n\n" + str(messages[1]["content"])
+    effective_max_tokens = resolve_max_tokens(model, max_tokens, catalog=catalog)
+    generation = _generate(
+        model, messages, timeout, effective_max_tokens,
+        temperature=temperature, reasoning_effort=reasoning_effort, catalog=catalog,
+    )
+    generation_record = {
+        **generation.to_record(), "max_tokens": effective_max_tokens,
+        "temperature": temperature, "reasoning_effort": reasoning_effort, "lane": lane.value,
+    }
     failure_kind = (
         FailureKind.TRUNCATED
         if (generation.stop_reason or "").lower() in {"length", "max_tokens", "max_output_tokens"}
@@ -139,12 +164,12 @@ def run_one(problem: ProblemData, model: str, sample_index: int, *, out: Path, r
     (artifact / "prompt.txt").write_text(prompt, encoding="utf-8")
     (artifact / "raw_response.txt").write_text(generation.text, encoding="utf-8")
     try:
-        language, code = extract_solution(generation.text)
+        language, code = extract_solution(generation.text, lane)
     except ValueError as exc:
         attempt_id = f"{run_id}-{problem.id}-single-{sample_index}-{uuid.uuid4().hex[:8]}"
         transcript_path = artifact / "transcript.jsonl"
         transcript_path.write_text(
-            json.dumps({"role": "user", "content": prompt}, ensure_ascii=False) + "\n"
+            "".join(json.dumps(message, ensure_ascii=False) + "\n" for message in messages)
             + json.dumps({"role": "assistant", "content": generation.text,
                           "generation": generation_record}, ensure_ascii=False) + "\n",
             encoding="utf-8",
@@ -181,7 +206,8 @@ def run_one(problem: ProblemData, model: str, sample_index: int, *, out: Path, r
         sample_index=sample_index, generation=generation_record, failure_kind=failure_kind,
     )
     with (artifact / "transcript.jsonl").open("w", encoding="utf-8") as fh:
-        fh.write(json.dumps({"role": "user", "content": prompt}, ensure_ascii=False) + "\n")
+        for message in messages:
+            fh.write(json.dumps(message, ensure_ascii=False) + "\n")
         fh.write(json.dumps({"role": "assistant", "content": generation.text,
                              "generation": generation_record}, ensure_ascii=False) + "\n")
     dump_attempt(artifact / "attempt.json", attempt)
@@ -202,11 +228,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--problems", required=True, help="Comma-separated IDs or 'admitted'.")
     parser.add_argument("--model", required=True)
-    parser.add_argument("--k", type=int, default=3)
+    parser.add_argument("--k", type=int, default=1)
     parser.add_argument("--judge", choices=("remote", "stub"), default="remote")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
-    parser.add_argument("--timeout", type=float, default=180)
+    parser.add_argument("--timeout", type=float, default=7200,
+                        help="HTTP transport timeout in seconds for dead connections.")
     parser.add_argument("--max-tokens", type=int, default=None,
                         help="Override the model-specific OpenRouter output-token limit.")
     parser.add_argument("--ssh-host", default=DEFAULT_SSH_HOST)

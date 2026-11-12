@@ -28,7 +28,11 @@ def load_run(run_dir: Path) -> list[RunRecord]:
         attempt_data = json.loads(attempt_path.read_text())
         verdict_data = json.loads(verdict_path.read_text())
         if attempt_data.get("budget") is not None:
-            attempt_data["budget"] = Budget(**attempt_data["budget"])
+            raw_budget = dict(attempt_data["budget"])
+            attempt_data["budget"] = Budget(
+                max_turns=int(raw_budget["max_turns"]),
+                wall_clock_s=raw_budget.get("wall_clock_s"),
+            )
         attempt = Attempt(**attempt_data)
         verdict = Verdict(**verdict_data)
         if verdict.attempt_id != attempt.id or verdict.problem_id != attempt.problem_id:

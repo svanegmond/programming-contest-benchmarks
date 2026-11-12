@@ -6,6 +6,8 @@ import hashlib
 import json
 import os
 import re
+import time
+import urllib.error
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -13,8 +15,16 @@ from typing import Any
 
 from admit import extract_samples
 from cco_eval.corpus_cco import build_index, find_problem, iter_problems, parse_problem_html
+from cco_eval.decoding import (
+    DEFAULT_REASONING_EFFORT,
+    REASONING_TOKEN_FLOOR,
+    resolve_max_tokens,
+    resolve_reasoning_effort,
+    supported_parameters,
+)
 from cco_eval.providers import DEFAULT_OPENROUTER_URL, generate_openrouter
 from cco_eval.utils import append_jsonl, write_json
+from cco_eval.waterloo import Lane, to_json
 from runners.judge_client import DEFAULT_JUDGE_PATH, DEFAULT_ZIPS_ROOT  # noqa: F401
 
 HERE = Path(__file__).resolve()
@@ -22,22 +32,7 @@ REPO_ROOT = HERE.parents[3]
 PROJECT_DIR = HERE.parents[1]
 DEFAULT_CORPUS = REPO_ROOT / "statements"
 
-# OpenRouter's /api/v1/models catalog max_completion_tokens values, checked
-# 2026-10-29 for the models used in the Waterloo pilot.
-OPENROUTER_MAX_OUTPUT_TOKENS = {
-    "google/gemini-3.8-flash": 65536,
-    "openai/gpt-oss-20b": 32768,
-}
-DEFAULT_REASONING_MAX_TOKENS = 32768
-
-
-def resolve_max_tokens(model: str, override: int | None = None) -> int:
-    if override is not None:
-        if override < 1:
-            raise ValueError("max_tokens must be positive")
-        return override
-    model_id = model.removeprefix("openrouter/")
-    return OPENROUTER_MAX_OUTPUT_TOKENS.get(model_id, DEFAULT_REASONING_MAX_TOKENS)
+DEFAULT_REASONING_MAX_TOKENS = REASONING_TOKEN_FLOOR
 
 
 @dataclass
@@ -208,15 +203,68 @@ def _memory_limit(statement: str) -> int | None:
     return int(value / 1024 if unit == "KB" else value * 1024 if unit == "GB" else value)
 
 
-def build_single_prompt(problem: ProblemData) -> str:
-    return f"""Solve this programming problem. Choose exactly one language: C++ (gnu++20, compiled with g++) or Python 3 (run with PyPy3). Use only the language standard library. Read input from stdin and write output to stdout. Respect the time limit of {problem.time_limit_s:g} seconds""" + (f" and memory limit of {problem.memory_limit_mb} MB" if problem.memory_limit_mb else "") + f""".
+def language_block(lane: Lane) -> str:
+    if lane is Lane.CPP:
+        return (
+            "Write GNU C++20 compiled with g++ (`-std=gnu++20`). "
+            "`#include <bits/stdc++.h>` and the usual standard headers are available. "
+            "Fast I/O (`ios::sync_with_stdio(false); cin.tie(nullptr);`) is available. "
+            "Tag the final fence `cpp`."
+        )
+    if lane is Lane.PYTHON:
+        return (
+            "Write Python 3, run with PyPy3. "
+            "Fast I/O (`sys.stdin.buffer` / `sys.stdout.write`) is available. "
+            "Tag the final fence `python`."
+        )
+    if lane is Lane.FREE:
+        return (
+            "Choose exactly one language: GNU C++20 (g++) or Python 3 (PyPy3). "
+            "Tag the final fence `cpp` or `python`. "
+            "In C++, `#include <bits/stdc++.h>` and fast I/O (`ios::sync_with_stdio(false); cin.tie(nullptr);`) "
+            "are available. In Python, prefer `sys.stdin.buffer` / `sys.stdout.write`."
+        )
+    raise ValueError(f"unknown lane: {lane}")
 
-Return the complete program in one fenced code block tagged `cpp` or `python`. Do not include explanation outside the code block.
 
-Problem: {problem.id} - {problem.title}
+def fence_instruction(lane: Lane) -> str:
+    if lane is Lane.CPP:
+        return "tagged `cpp`"
+    if lane is Lane.PYTHON:
+        return "tagged `python`"
+    if lane is Lane.FREE:
+        return "tagged `cpp` or `python`"
+    raise ValueError(f"unknown lane: {lane}")
 
-{problem.statement}
-"""
+
+def build_single_system_prompt(problem: ProblemData, lane: Lane = Lane.CPP) -> str:
+    memory = f" Memory limit: {problem.memory_limit_mb} MB." if problem.memory_limit_mb else ""
+    return (
+        "You are solving a published past Canadian Computing Olympiad (CCO) problem. "
+        "The statement is public contest material used to evaluate models. "
+        "A complete, compiling solution is required even if you are unsure.\n\n"
+        f"{language_block(lane)}\n\n"
+        "Use only the language standard library. Read input from stdin and write output to stdout."
+        f"{memory}\n\n"
+        "You may write a short rationale. End with exactly one fenced program "
+        f"{fence_instruction(lane)} — the final fenced block is the submission."
+    )
+
+
+def build_single_prompt(problem: ProblemData, lane: Lane = Lane.CPP) -> str:
+    memory = f"\nMemory limit: {problem.memory_limit_mb} MB" if problem.memory_limit_mb else ""
+    return (
+        f"Problem: {problem.id} - {problem.title}\n\n"
+        f"Time limit: {problem.time_limit_s:g} seconds{memory}\n\n"
+        f"{problem.statement}\n"
+    )
+
+
+def build_single_messages(problem: ProblemData, lane: Lane = Lane.CPP) -> list[dict[str, object]]:
+    return [
+        {"role": "system", "content": build_single_system_prompt(problem, lane)},
+        {"role": "user", "content": build_single_prompt(problem, lane)},
+    ]
 
 
 def create_run_id() -> str:
@@ -244,23 +292,48 @@ def resolve_problems(value: str, corpus: Path) -> list[str]:
     return ids
 
 
-def run_model(model: str, messages: list[dict[str, object]], tools: list[dict[str, object]] | None, timeout: float, max_tokens: int = DEFAULT_REASONING_MAX_TOKENS):
+def run_model(
+    model: str,
+    messages: list[dict[str, object]],
+    tools: list[dict[str, object]] | None,
+    timeout: float,
+    max_tokens: int = DEFAULT_REASONING_MAX_TOKENS,
+    *,
+    temperature: float = 0.0,
+    reasoning_effort: str | None = DEFAULT_REASONING_EFFORT,
+    catalog: dict[str, Any] | None = None,
+    tries: int = 3,
+):
     api_key = os.environ.get("OPENROUTER_API_KEY")
     if not api_key:
         raise RuntimeError("missing OPENROUTER_API_KEY")
     api_model = model.removeprefix("openrouter/")
-    reasoning_effort = "low" if api_model.startswith("openai/gpt-oss-") else None
-    return generate_openrouter(api_model, messages, api_key, timeout, max_tokens, tools=tools,
-                               base_url=DEFAULT_OPENROUTER_URL, reasoning_effort=reasoning_effort)
+    effort = resolve_reasoning_effort(api_model, reasoning_effort, catalog)
+    params = supported_parameters(api_model, catalog)
+    last_exc: Exception | None = None
+    for attempt in range(1, tries + 1):
+        try:
+            return generate_openrouter(
+                api_model, messages, api_key, timeout, max_tokens, tools=tools,
+                base_url=DEFAULT_OPENROUTER_URL, reasoning_effort=effort,
+                temperature=temperature, supported_parameters=params,
+            )
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+            last_exc = exc
+            retryable = not isinstance(exc, urllib.error.HTTPError) or exc.code in {408, 429} or exc.code >= 500
+            if isinstance(exc, urllib.error.HTTPError) and exc.code in {401, 403, 404}:
+                retryable = False
+            if attempt == tries or not retryable:
+                raise
+            time.sleep(min(5 * attempt, 30))
+    raise last_exc if last_exc else RuntimeError("model request failed")
 
 
 def dump_attempt(path: Path, attempt: object) -> None:
-    from cco_eval.waterloo import to_json
     write_json(path, to_json(attempt))
 
 
 def append_result(path: Path, attempt: object, verdict: dict[str, Any]) -> None:
-    from cco_eval.waterloo import to_json
     append_jsonl(path, {"attempt": to_json(attempt), "verdict": verdict})
 
 

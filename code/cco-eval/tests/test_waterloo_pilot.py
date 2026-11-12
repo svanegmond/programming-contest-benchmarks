@@ -92,7 +92,7 @@ def test_truncated_response_with_unclosed_program_is_still_judged_and_flagged(tm
 
 def test_openrouter_output_caps_match_model_catalog_and_allow_override():
     assert resolve_max_tokens("openrouter/google/gemini-3.8-flash") == 65536
-    assert resolve_max_tokens("openrouter/openai/gpt-oss-20b") == 32768
+    assert resolve_max_tokens("openrouter/openai/gpt-oss-20b") == 65536
     assert resolve_max_tokens("openrouter/openai/gpt-oss-20b", 12000) == 12000
 
 

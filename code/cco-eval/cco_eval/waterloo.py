@@ -41,6 +41,12 @@ class Mode(StrEnum):
     AGENTIC = "agentic"
 
 
+class Lane(StrEnum):
+    CPP = "cpp"
+    PYTHON = "python"
+    FREE = "free"
+
+
 class Language(StrEnum):
     CPP = "cpp"
     PYTHON = "python"
@@ -48,7 +54,7 @@ class Language(StrEnum):
 
 class AgentOutcome(StrEnum):
     SUBMITTED = "submitted"
-    WALL_CLOCK_EXHAUSTED = "wall_clock_exhausted"
+    WALL_CLOCK_EXHAUSTED = "wall_clock_exhausted"  # historical; new runs never emit this
     TURN_BUDGET_EXHAUSTED = "turn_budget_exhausted"
     NO_SOLUTION_WRITTEN = "no_solution_written"
     HARNESS_ERROR = "harness_error"
@@ -71,6 +77,18 @@ class Outcome3(StrEnum):
 class FailureKind(StrEnum):
     TRUNCATED = "truncated"
     NO_PROGRAM = "no_program"
+
+
+# Per-test sandbox give-up. Statement time_limit_s is recorded as over_time, not a fail.
+GIVE_UP_TIMEOUT_S = 120.0
+
+
+def sandbox_timeout_s(time_limit_s: float, give_up_s: float | None = None) -> float:
+    limit = float(time_limit_s)
+    give_up = GIVE_UP_TIMEOUT_S if give_up_s is None else float(give_up_s)
+    if limit <= 0 or give_up <= 0:
+        raise ValueError("timeouts must be positive")
+    return max(limit, give_up)
 
 
 @dataclass
@@ -115,8 +133,8 @@ class Admission:
 
 @dataclass
 class Budget:
-    wall_clock_s: float
     max_turns: int
+    wall_clock_s: float | None = None
 
 
 @dataclass
@@ -132,6 +150,13 @@ class RunManifest:
     problem_ids: list[str]
     timeout_s: float
     judge: dict[str, str]
+    k: int = 1
+    temperature: float = 0.0
+    reasoning_effort: str | None = "high"
+    lane: str = "cpp"
+    selection: str = "pass_at_k"
+    prompt_version: str = "cco-v3"
+    multi_submit: bool = False
 
 
 @dataclass
@@ -154,6 +179,7 @@ class Attempt:
     wall_s: float | None = None
     generation: dict[str, object] = field(default_factory=dict)
     failure_kind: FailureKind | None = None
+    failed_submits: int = 0
 
 
 @dataclass

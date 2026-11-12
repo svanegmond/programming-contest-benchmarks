@@ -18,10 +18,23 @@ from pathlib import Path
 from typing import Any, Iterator
 
 try:
-    from cco_eval.waterloo import Outcome3, TestResult, TestVerdict, Verdict
+    from cco_eval.waterloo import (
+        GIVE_UP_TIMEOUT_S,
+        Outcome3,
+        TestResult,
+        TestVerdict,
+        Verdict,
+        sandbox_timeout_s,
+    )
 except ModuleNotFoundError:
     from dataclasses import dataclass
     from enum import StrEnum
+
+    GIVE_UP_TIMEOUT_S = 120.0
+
+    def sandbox_timeout_s(time_limit_s: float, give_up_s: float | None = None) -> float:
+        give_up = GIVE_UP_TIMEOUT_S if give_up_s is None else float(give_up_s)
+        return max(float(time_limit_s), give_up)
 
     class Outcome3(StrEnum):
         PASS_ON_TIME = "pass_on_time"
@@ -539,6 +552,7 @@ def _grade(
     out_dir: Path,
     *,
     run_only: bool = False,
+    give_up_timeout_s: float = GIVE_UP_TIMEOUT_S,
 ) -> dict[str, Any]:
     problem = json.loads(problem_path.read_text(encoding="utf-8"))
     cases = _jsonl(tests_path)
@@ -555,6 +569,9 @@ def _grade(
     memory_limit_mb = problem.get("memory_limit_mb")
     if not math.isfinite(time_limit_s) or time_limit_s <= 0:
         raise ValueError("problem time_limit_s must be a positive finite number")
+    if not math.isfinite(give_up_timeout_s) or give_up_timeout_s <= 0:
+        raise ValueError("give_up_timeout_s must be a positive finite number")
+    isolate_kill_factor = sandbox_timeout_s(time_limit_s, give_up_timeout_s) / time_limit_s
     if memory_limit_mb is not None:
         memory_limit_mb = int(memory_limit_mb)
         if memory_limit_mb < 1:
@@ -628,7 +645,7 @@ def _grade(
                     artifact,
                     input_bytes,
                     time_limit_s,
-                    3,
+                    isolate_kill_factor,
                 )
                 actual = execution["stdout"]
                 test_score = None
@@ -823,12 +840,17 @@ def grade(
     out_dir: Path,
     *,
     run_only: bool = False,
+    give_up_timeout_s: float = GIVE_UP_TIMEOUT_S,
 ) -> dict[str, Any]:
     with vm_exclusive(backend) as lock_wait_s:
         result = _grade(backend, code, lang, problem_path, tests_path, zips_root, attempt_id, out_dir,
-                        run_only=run_only)
+                        run_only=run_only, give_up_timeout_s=give_up_timeout_s)
     (out_dir / "judge.json").write_text(
-        json.dumps({"backend": backend, "vm_lock_wait_s": lock_wait_s}, indent=2) + "\n",
+        json.dumps({
+            "backend": backend,
+            "vm_lock_wait_s": lock_wait_s,
+            "give_up_timeout_s": give_up_timeout_s,
+        }, indent=2) + "\n",
         encoding="utf-8",
     )
     result["vm_lock_wait_s"] = lock_wait_s

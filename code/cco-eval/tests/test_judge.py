@@ -8,6 +8,7 @@ import time
 import zipfile
 from pathlib import Path
 
+from cco_eval.waterloo import GIVE_UP_TIMEOUT_S, sandbox_timeout_s
 from judge import core
 from judge.cli import _parser
 from judge.core import classify_outcome, outputs_match
@@ -39,6 +40,12 @@ def test_outcome3_classification():
     assert classify_outcome(True, True) == Outcome3.PASS_OVER_TIME
     assert classify_outcome(False, False) == Outcome3.FAIL
     assert classify_outcome(False, True) == Outcome3.FAIL
+
+
+def test_sandbox_timeout_is_a_floor_not_a_contest_multiple():
+    assert sandbox_timeout_s(1) == GIVE_UP_TIMEOUT_S
+    assert sandbox_timeout_s(30) == GIVE_UP_TIMEOUT_S
+    assert sandbox_timeout_s(200) == 200
 
 
 def test_backend_option_works_before_or_after_command():
@@ -102,6 +109,66 @@ def test_grade_uses_test_data_inside_zip_members(tmp_path, monkeypatch):
     assert result["verdict"]["partial_score"] == 1.0
     test_result = json.loads((tmp_path / "out/test_results.jsonl").read_text())
     assert test_result["verdict"] == "pass"
+
+
+def test_grade_over_statement_limit_is_still_correct_and_uses_give_up_timeout(tmp_path, monkeypatch):
+    seen: list[float] = []
+
+    class Runner:
+        def prepare(self, lang, source, workdir):
+            artifact = workdir / "compiled"
+            artifact.write_bytes(source)
+            return {"ok": True, "artifact": str(artifact)}
+
+        def run_artifact(self, lang, artifact, stdin, time_limit_s, kill_factor):
+            seen.append(kill_factor)
+            return {
+                "stdout": stdin.upper(),
+                "stderr": b"",
+                "returncode": 0,
+                "cpu_s": 5.0,
+                "wall_s": 5.0,
+                "peak_memory_mb": 1.0,
+                "killed": False,
+                "over_time": True,
+                "meta": {},
+            }
+
+        def release(self, artifact):
+            pass
+
+    with zipfile.ZipFile(tmp_path / "cases.zip", "w") as archive:
+        archive.writestr("nested/input.txt", "sample input\n")
+        archive.writestr("nested/expected.txt", "SAMPLE INPUT\n")
+
+    code = tmp_path / "submission.py"
+    code.write_text("print('sample input')\n")
+    problem = tmp_path / "problem.json"
+    problem.write_text(json.dumps({
+        "id": "cco-test",
+        "time_limit_s": 1,
+        "memory_limit_mb": None,
+        "grading_kind": "exact",
+        "subtasks": [{"name": "main", "weight": 1.0}],
+    }))
+    tests = tmp_path / "tests.jsonl"
+    tests.write_text(json.dumps({
+        "problem_id": "cco-test",
+        "subtask": "main",
+        "input_path": "cases.zip::nested/input.txt",
+        "expected_path": "cases.zip::nested/expected.txt",
+    }) + "\n")
+    monkeypatch.setattr(core, "_make_runner", lambda backend: Runner())
+    monkeypatch.setattr(core, "env_id", lambda backend="host": "test-env")
+
+    result = core.grade(
+        "host", code, "python", problem, tests, tmp_path, "attempt-slow", tmp_path / "out"
+    )
+
+    assert result["verdict"]["all_pass"] is True
+    assert result["verdict"]["outcome"] == "pass_over_time"
+    assert seen == [GIVE_UP_TIMEOUT_S]
+    assert json.loads((tmp_path / "out/judge.json").read_text())["give_up_timeout_s"] == GIVE_UP_TIMEOUT_S
 
 
 def test_run_only_does_not_read_expected_outputs_or_write_a_verdict(tmp_path, monkeypatch):

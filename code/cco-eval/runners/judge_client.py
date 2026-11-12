@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from cco_eval.utils import write_json
+from cco_eval.waterloo import GIVE_UP_TIMEOUT_S, sandbox_timeout_s
 
 DEFAULT_SSH_HOST = os.environ.get("WATERLOO_SSH_HOST", "user@judge-host.example")
 REMOTE_ROOT = os.environ.get("WATERLOO_REMOTE_ROOT", "/srv/waterloo")
@@ -21,6 +22,12 @@ DEFAULT_JUDGE_PATH = f"{REMOTE_ROOT}/src-judge/code/cco-eval/judge"
 DEFAULT_ZIPS_ROOT = f"{REMOTE_ROOT}/zips"
 CPP_FLAGS = ["-std=gnu++20", "-O2", "-pipe"]
 STDOUT_HEAD_CHARS = 2000
+
+
+def _kill_factor(time_limit_s: float, kill_factor: float | None) -> float:
+    if kill_factor is not None:
+        return float(kill_factor)
+    return sandbox_timeout_s(time_limit_s) / float(time_limit_s)
 
 
 def _run(command: list[str], *, timeout: float | None = None) -> subprocess.CompletedProcess[str]:
@@ -100,19 +107,19 @@ class RemoteJudge:
         *,
         attempt_id: str,
         memory_mb: int | None = None,
-        kill_factor: int = 3,
+        kill_factor: float | None = None,
         output_dir: Path | None = None,
     ) -> dict[str, Any]:
         remote_dir = self._prepare(attempt_id, [code_path, stdin_path])
-        suffix = ".cpp" if lang == "cpp" else ".py"
         code_remote, stdin_remote = f"{remote_dir}/{code_path.name}", f"{remote_dir}/{stdin_path.name}"
+        factor = _kill_factor(time_limit_s, kill_factor)
         command = ["python3", "-m", "judge", "run", "--backend", self.backend, "--lang", lang,
                    "--code", code_remote, "--stdin", stdin_remote, "--time-limit", str(time_limit_s),
-                   "--kill-factor", str(kill_factor)]
+                   "--kill-factor", str(factor)]
         if memory_mb is not None:
             command += ["--memory-mb", str(memory_mb)]
         script = f"cd {shlex.quote(self._judge_cwd)} && " + " ".join(map(shlex.quote, command))
-        result = _last_json(self._ssh(script, timeout=max(self.ssh_timeout, time_limit_s * kill_factor + 30)))
+        result = _last_json(self._ssh(script, timeout=max(self.ssh_timeout, time_limit_s * factor + 30)))
         for key in ("stdout_path",):
             remote_path = result.get(key)
             if isinstance(remote_path, str) and remote_path:
@@ -139,11 +146,12 @@ class RemoteJudge:
         command = ["python3", "-m", "judge", "grade", "--code", f"{remote_dir}/{code_path.name}",
                    "--lang", lang, "--problem", f"{remote_dir}/{problem_json.name}", "--tests",
                    f"{remote_dir}/{tests_jsonl.name}", "--zips-root", self.zips_root,
-                   "--attempt-id", attempt_id, "--out", remote_out]
+                   "--attempt-id", attempt_id, "--out", remote_out,
+                   "--give-up-timeout", str(GIVE_UP_TIMEOUT_S)]
         if run_only:
             command.append("--run-only")
         script = f"cd {shlex.quote(self._judge_cwd)} && " + " ".join(map(shlex.quote, command))
-        stdout = self._ssh(script, timeout=self.ssh_timeout)
+        stdout = self._ssh(script, timeout=max(self.ssh_timeout, GIVE_UP_TIMEOUT_S * 150 + 600))
         out_dir.mkdir(parents=True, exist_ok=True)
         if run_only:
             _run(["scp", f"{self.ssh_host}:{remote_out}/run_results.jsonl", str(out_dir / "run_results.jsonl")])
@@ -170,7 +178,7 @@ class StubJudge:
 
     def run(
         self, lang: str, code_path: Path, stdin_path: Path, time_limit_s: float,
-        *, attempt_id: str = "stub", memory_mb: int | None = None, kill_factor: int = 3,
+        *, attempt_id: str = "stub", memory_mb: int | None = None, kill_factor: float | None = None,
         output_dir: Path | None = None,
     ) -> dict[str, Any]:
         workdir = output_dir or code_path.parent
@@ -190,10 +198,11 @@ class StubJudge:
         argv = [str(executable)] if executable else ["python3", str(code_path)]
         started = time.perf_counter()
         output_path = workdir / f"{attempt_id}-run.stdout"
+        timeout_s = time_limit_s * _kill_factor(time_limit_s, kill_factor)
         try:
             with stdin_path.open("rb") as stdin, output_path.open("wb") as stdout:
                 proc = subprocess.run(argv, cwd=workdir, stdin=stdin, stdout=stdout,
-                                      stderr=subprocess.PIPE, timeout=time_limit_s * kill_factor)
+                                      stderr=subprocess.PIPE, timeout=timeout_s)
             stderr = proc.stderr.decode("utf-8", errors="replace")
             elapsed = time.perf_counter() - started
             timed_out = False
@@ -268,7 +277,7 @@ class StubJudge:
                 stdout_path = Path(str(result["stdout_path"])) if result.get("stdout_path") else None
                 got = stdout_path.read_bytes() if stdout_path and stdout_path.exists() else b""
                 want = expected_path.read_bytes()
-            passed = not result.get("over_time") and result.get("verdict") == "ran" and got.strip() == want.strip()
+            passed = result.get("verdict") == "ran" and got.strip() == want.strip()
             case_verdict = "pass" if passed else "killed" if result.get("verdict") == "killed" else "compile_error" if not result.get("compile", {}).get("ok") else "runtime_error" if result.get("verdict") == "runtime_error" else "wrong_answer"
             records.append({"attempt_id": attempt_id, "test_id": str(test.get("id", index)),
                             "subtask": str(test.get("subtask", "all")), "verdict": case_verdict,

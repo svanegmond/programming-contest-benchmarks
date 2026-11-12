@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import Sequence
 
-from .core import env_id, grade, run_single
+from .core import GIVE_UP_TIMEOUT_S, env_id, grade, run_single
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -36,6 +36,9 @@ def _parser() -> argparse.ArgumentParser:
     grading.add_argument("--out", type=Path, required=True)
     grading.add_argument("--run-only", action="store_true",
                           help="Run every test and retain stdout without comparing outputs.")
+    grading.add_argument("--give-up-timeout", type=float, default=GIVE_UP_TIMEOUT_S,
+                         help="Per-test sandbox kill timeout in seconds (default 120). "
+                              "Statement time_limit_s is recorded, not used as a fail cut.")
     return parser
 
 
@@ -65,6 +68,7 @@ def main(argv: Sequence[str] | None = None) -> None:
                 args.attempt_id,
                 args.out,
                 run_only=args.run_only,
+                give_up_timeout_s=args.give_up_timeout,
             )
         print(json.dumps(result, ensure_ascii=False))
     except Exception as error:

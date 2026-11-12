@@ -7,9 +7,9 @@ from typing import Any
 from unittest.mock import patch
 
 from cco_eval.providers import generate_openrouter
-from cco_eval.waterloo import AgentOutcome
-from runners.agent_loop import run_agent
-from runners.common import ProblemData, build_single_prompt, load_problem
+from cco_eval.waterloo import AgentOutcome, Lane
+from runners.agent_loop import _coarse_verdict, run_agent
+from runners.common import ProblemData, build_single_prompt, build_single_system_prompt, load_problem
 from runners.judge_client import StubJudge
 from runners.single_shot import extract_solution
 
@@ -81,12 +81,13 @@ def test_every_agent_outcome_and_budget_auto_submit(tmp_path):
     def slow_client(messages, tools, timeout):
         if not any(message.get("role") == "assistant" for message in messages):
             return tool("write_file", path="solution.py", content=code)
-        time.sleep(0.45)
+        time.sleep(0.05)
         return {"role": "assistant", "content": ""}
 
-    wall = run_script(tmp_path, problem, slow_client, run="wall-budget", max_turns=3, wall=0.4)
-    assert wall["attempt"]["agent_outcome"] == AgentOutcome.WALL_CLOCK_EXHAUSTED
-    assert wall["attempt"]["auto_submitted"]
+    slow = run_script(tmp_path, problem, slow_client, run="no-wall", max_turns=2)
+    assert slow["attempt"]["agent_outcome"] == AgentOutcome.TURN_BUDGET_EXHAUSTED
+    assert slow["attempt"]["auto_submitted"]
+    assert slow["attempt"]["turns_used"] == 2
 
     empty = run_script(tmp_path, problem,
         ScriptedModel([{"role": "assistant", "content": ""}]), run="empty")
@@ -107,6 +108,11 @@ def test_agent_workspace_contains_only_statement_and_samples(tmp_path):
     assert files == {"statement.md", "sample-0.in", "sample-0.out"}
     assert "hidden.in" not in files
     assert "tests.jsonl" not in files
+    prompt = (Path(result["artifact"]) / "prompt.txt").read_text()
+    assert "published past Canadian Computing Olympiad" in prompt
+    assert "brute-force" in prompt
+    assert "run_custom" in prompt
+    assert "300" not in prompt
 
 
 def test_run_tool_shows_the_model_its_program_output_and_keeps_run_files_out_of_the_workspace(tmp_path):
@@ -121,6 +127,8 @@ def test_run_tool_shows_the_model_its_program_output_and_keeps_run_files_out_of_
     calls = [json.loads(line) for line in (artifact / "transcript.jsonl").read_text().splitlines()]
     ran = next(c for c in calls if c.get("type") == "tool_call" and c["name"] == "run")
     assert ran["result"]["stdout_head"] == "5\n"
+    assert ran["result"]["sample_pass"] is True
+    assert ran["result"]["diff"] == ""
     assert {p.name for p in (artifact / "workspace").iterdir()} == {
         "statement.md", "sample-0.in", "sample-0.out", "solution.py"}
     assert list((artifact / "run-output").iterdir())
@@ -193,13 +201,71 @@ def test_openrouter_result_preserves_cost_and_tool_calls():
     assert json.loads(request.data)["reasoning"] == {"effort": "low"}
 
 
+def test_run_tool_reports_a_sample_mismatch_diff(tmp_path):
+    problem = setup_problem(tmp_path)
+    result = run_script(tmp_path, problem, ScriptedModel([
+        tool("write_file", path="solution.py", content="print(0)\n"),
+        tool("run", lang="python", code_path="solution.py", stdin_path="sample-0.in"),
+        {"role": "assistant", "content": ""},
+    ]), run="mismatch", max_turns=3)
+    calls = [json.loads(line) for line in (Path(result["artifact"]) / "transcript.jsonl").read_text().splitlines()]
+    ran = next(c for c in calls if c.get("type") == "tool_call" and c["name"] == "run")
+    assert ran["result"]["sample_pass"] is False
+    assert "5" in ran["result"]["diff"] and "0" in ran["result"]["diff"]
+
+
+def test_run_custom_accepts_model_written_stdin(tmp_path):
+    problem = setup_problem(tmp_path)
+    code = "import sys\nprint(sys.stdin.read().strip())\n"
+    result = run_script(tmp_path, problem, ScriptedModel([
+        tool("write_file", path="solution.py", content=code),
+        tool("run_custom", lang="python", code_path="solution.py", stdin="hello-custom\n"),
+        {"role": "assistant", "content": ""},
+    ]), run="custom", max_turns=3)
+    calls = [json.loads(line) for line in (Path(result["artifact"]) / "transcript.jsonl").read_text().splitlines()]
+    ran = next(c for c in calls if c.get("type") == "tool_call" and c["name"] == "run_custom")
+    assert "hello-custom" in ran["result"]["stdout_head"]
+    assert "official" in ran["result"]["note"]
+
+
+def test_multi_submit_returns_verdict_only_and_counts_failures(tmp_path):
+    problem = setup_problem(tmp_path)
+    wrong = "print(0)\n"
+    right = "import sys\na, b = map(int, sys.stdin.read().split())\nprint(a+b)\n"
+    result = run_agent(
+        problem, "mock/script", 1, out=tmp_path / "out", run_id="multi",
+        judge=StubJudge(), max_turns=4, request_timeout_s=1, multi_submit=True,
+        model_client=ScriptedModel([
+            tool("write_file", path="wrong.py", content=wrong),
+            tool("submit", lang="python", code_path="wrong.py"),
+            tool("write_file", path="solution.py", content=right),
+            tool("submit", lang="python", code_path="solution.py"),
+        ]),
+    )
+    assert result["attempt"]["agent_outcome"] == AgentOutcome.SUBMITTED
+    assert result["attempt"]["failed_submits"] == 1
+    assert result["verdict"]["all_pass"]
+    transcript = (Path(result["artifact"]) / "transcript.jsonl").read_text()
+    assert "wrong_answer" in transcript
+    assert "partial_score" not in transcript
+    assert "hidden-1" not in transcript
+
+
 def test_real_problem_prompt_and_workspace_hold_only_that_problem(tmp_path):
     problem = load_problem("cco-2016-d1p1")
     prompt = build_single_prompt(problem)
+    system = build_single_system_prompt(problem, Lane.CPP)
     assert "Field Trip" in prompt
     assert "8 5 2" in prompt
+    assert "published past Canadian Computing Olympiad" in system
+    assert "short rationale" in system
+    assert "bits/stdc++.h" in system
+    assert "Respect the time limit" not in system
+    assert "tight olympiad" not in build_single_system_prompt(problem, Lane.FREE)
+    assert "tight limits" not in system
     for other in ("Splitting Hares", "Legends", "O Canada", "Zombie Apocalypse", "Pirates"):
         assert other not in prompt
+        assert other not in system
     assert len(prompt) < 8000
     result = run_script(tmp_path, problem, ScriptedModel([{"role": "assistant", "content": ""}]), run="real")
     workspace = Path(result["artifact"]) / "workspace"
@@ -208,6 +274,37 @@ def test_real_problem_prompt_and_workspace_hold_only_that_problem(tmp_path):
     assert (workspace / "sample-0.out").read_text() == "6 2\n"
     for other in ("Splitting Hares", "Legends"):
         assert other not in (workspace / "statement.md").read_text()
+
+
+def test_coarse_verdict_accepts_correct_output_past_the_statement_limit(tmp_path):
+    assert _coarse_verdict({"all_pass": True, "outcome": "pass_over_time"}, tmp_path) == "accepted"
+    (tmp_path / "test_results.jsonl").write_text(json.dumps({"verdict": "killed"}) + "\n", encoding="utf-8")
+    assert _coarse_verdict({"all_pass": False, "outcome": "fail"}, tmp_path) == "too_slow"
+
+
+def test_stub_grade_slow_correct_output_is_all_pass(tmp_path):
+    problem_dir = tmp_path / "problem"
+    problem_dir.mkdir()
+    (problem_dir / "in.txt").write_text("2 3\n", encoding="utf-8")
+    (problem_dir / "out.txt").write_text("5\n", encoding="utf-8")
+    tests = problem_dir / "tests.jsonl"
+    tests.write_text(json.dumps({
+        "id": "t1", "input_path": "in.txt", "expected_path": "out.txt", "subtask": "all",
+    }) + "\n", encoding="utf-8")
+    (problem_dir / "problem.json").write_text(json.dumps({
+        "id": "slow", "time_limit_s": 0.05, "memory_limit_mb": 128,
+    }), encoding="utf-8")
+    code = problem_dir / "sol.py"
+    code.write_text(
+        "import time, sys\ntime.sleep(0.12)\nprint(sum(map(int, sys.stdin.read().split())))\n",
+        encoding="utf-8",
+    )
+    verdict = StubJudge().grade(
+        attempt_id="a", code_path=code, lang="python",
+        problem_json=problem_dir / "problem.json", tests_jsonl=tests, out_dir=tmp_path / "grade",
+    )
+    assert verdict["all_pass"] is True
+    assert verdict["outcome"] == "pass_over_time"
 
 
 def test_model_tool_mistakes_go_back_to_the_model_not_harness_error(tmp_path):
