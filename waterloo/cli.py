@@ -344,7 +344,7 @@ def report(args):
 
 
 def publish(args):
-    include = not args.no_reasoning
+    include = args.with_reasoning
     if len(args.run_id) == 1 and not args.note:
         write_pages(args.out / args.run_id[0], args.site, include_reasoning=include)
     else:
@@ -402,8 +402,11 @@ def parser():
     pages.add_argument("--note", action="append", default=[], help="Overview footnote (repeatable).")
     pages.add_argument("--title", default="CCO benchmark runs", help="Overview page title.")
     pages.add_argument("--site", type=Path, default=BENCH / "site")
+    pages.add_argument("--with-reasoning", action="store_true",
+                       help="Publish redacted reasoning excerpts and full traces. Off by default; "
+                            "use only for problems whose solutions are already public.")
     pages.add_argument("--no-reasoning", action="store_true",
-                       help="Leave reasoning traces (excerpts and full files) out of the site.")
+                       help="Accepted for compatibility; traces are already omitted by default.")
     pages.set_defaults(handler=publish)
     for sub in (admission, experiment):
         sub.add_argument("--ssh-host", default=DEFAULT_SSH_HOST)

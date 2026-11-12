@@ -2,9 +2,9 @@
 
 A harness and an admitted problem set for evaluating language models on Canadian Computing Olympiad (CCO) problems. It covers the 12 CCO contests from 2015 to 2026. The official CEMC test data decides every verdict.
 
-Model-written solutions, transcripts and prompts are not published. A solution or prompt on the public web can end up in a future model's training data and make later evaluations of that model meaningless. Published runs are GitHub Pages reports with identifiers, verdicts, `partial_score`, pass@k and a downloadable run-config (see [docs/runs.md](docs/runs.md)). They are not committed to `main`.
+Model-written solutions, transcripts, prompts and reasoning traces are not published by default. A solution, or a trace that describes one, can end up in a future model's training data if it is on the public web, and make later evaluations of that model meaningless. Published runs are GitHub Pages reports with identifiers, verdicts, `partial_score`, pass@k and a downloadable run-config (see [docs/runs.md](docs/runs.md)). They are not committed to `main`.
 
-Model reasoning traces are the one exception, and they are on by default. A report shows an excerpt of each trace and links the full trace, with secrets, host names and fenced code removed. Prose reasoning still describes the solution, so it has the same contamination risk. `publish --no-reasoning` leaves the traces out.
+`run` always saves traces locally as `reasoning.json` and `reasoning.md` under `runs-raw/`. `publish --with-reasoning` adds redacted excerpts and full traces to the report. Use that only for problems whose solutions are already public, such as older contest years. Redaction strips secrets, host names and fenced code blocks, but prose and unfenced code can still reveal the algorithm.
 
 ## The cohort
 
@@ -48,7 +48,7 @@ python -m waterloo report RUN_ID
 python -m waterloo publish RUN_ID --site site/
 ```
 
-`run` writes raw output (code, transcripts, prompts, reasoning traces) to `runs-raw/`, which is gitignored. Publish with `python -m waterloo publish`; [docs/runs.md](docs/runs.md) has the Pages steps.
+`run` writes raw output (code, transcripts, prompts, reasoning traces) to `runs-raw/`, which is gitignored. `publish` omits traces unless you pass `--with-reasoning`. [docs/runs.md](docs/runs.md) has the Pages steps.
 
 ### Flags
 
@@ -99,6 +99,8 @@ Every OpenRouter request that sends a reasoning effort sends `reasoning: {"effor
 | `none` | Nothing returned. If reasoning tokens were billed, the report labels it hidden. |
 
 Agentic mode saves each turn's reasoning but does not send `reasoning_details` back to the model on the next turn, so agent behaviour is the same as before trace capture.
+
+Traces stay in the local run. They are published only with `--with-reasoning`, as described above.
 
 A future `libraries` lane is not built. The agent would request packages, the harness would check an allowlist and install pinned versions offline for both the agent sandbox and the judge, and versions plus hashes would be recorded.
 

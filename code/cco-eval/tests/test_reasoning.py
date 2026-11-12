@@ -197,7 +197,7 @@ def test_publish_writes_excerpt_and_redacted_full_trace(tmp_path, monkeypatch):
              + "\n```cpp\nint main() { return 0; }\n```\nEnd of thinking.")
     run = _run_dir(tmp_path, body({"reasoning": trace}, reasoning_tokens=len(trace) // 4))
     site = tmp_path / "site"
-    publish(run, site)
+    publish(run, site, include_reasoning=True)
     config = json.loads((site / "run-config.json").read_text())
     entry = config["reasoning_traces"][0]
     assert config["reasoning_published"] is True and entry["kind"] == "full"
@@ -213,11 +213,56 @@ def test_publish_writes_excerpt_and_redacted_full_trace(tmp_path, monkeypatch):
 def test_publish_labels_hidden_traces_and_can_leave_traces_out(tmp_path):
     run = _run_dir(tmp_path, HIDDEN)
     site = tmp_path / "site"
-    publish(run, site)
+    publish(run, site, include_reasoning=True)
     assert "Hidden: 5,810 reasoning tokens were billed but none were returned" in (site / "index.html").read_text()
     bare = tmp_path / "bare"
-    publish(run, bare, include_reasoning=False)
+    publish(run, bare)
     config = json.loads((bare / "run-config.json").read_text())
     assert config["reasoning_published"] is False and "reasoning_traces" not in config
     assert not (bare / "reasoning").exists()
-    assert "Reasoning traces" not in (bare / "index.html").read_text()
+    html = (bare / "index.html").read_text()
+    summary = (bare / "summary.md").read_text()
+    assert "Reasoning traces were withheld from this report." in html
+    assert "Reasoning traces were withheld from this report." in summary
+    assert "not recorded" not in html and "not recorded" not in summary
+    assert "<h2>Reasoning traces</h2>" not in html
+
+
+def test_publish_withholds_traces_by_default(tmp_path):
+    run = _run_dir(tmp_path, KIMI)
+    site = tmp_path / "site"
+    publish(run, site)
+    config = json.loads((site / "run-config.json").read_text())
+    html = (site / "index.html").read_text()
+    assert config["reasoning_published"] is False and "reasoning_traces" not in config
+    assert not (site / "reasoning").exists()
+    assert "Reasoning traces were withheld from this report." in html
+    assert LONG not in html and "not recorded" not in html
+    published = tmp_path / "published"
+    publish(run, published, include_reasoning=True)
+    assert json.loads((published / "run-config.json").read_text())["reasoning_published"] is True
+    assert (published / "reasoning").is_dir()
+    assert "Reasoning traces were withheld from this report." not in (published / "index.html").read_text()
+
+
+def test_publish_cli_with_reasoning_and_no_reasoning_noop(tmp_path):
+    from waterloo import cli
+    run = _run_dir(tmp_path, KIMI)
+    out = str(tmp_path / "runs")
+    bare = tmp_path / "bare"
+    assert cli.main(["publish", "r1", "--note", "n", "--site", str(bare), "--out", out]) == 0
+    index = (bare / "index.html").read_text()
+    assert ">withheld<" in index and "Reasoning traces were withheld from this report." in index
+    assert LONG not in index and "not recorded" not in index
+    assert not (bare / "r1" / "reasoning").exists()
+    noop = tmp_path / "noop"
+    assert cli.main(["publish", "r1", "--note", "n", "--site", str(noop), "--out", out, "--no-reasoning"]) == 0
+    assert ">withheld<" in (noop / "index.html").read_text()
+    assert not (noop / "r1" / "reasoning").exists()
+    full = tmp_path / "full"
+    assert cli.main(["publish", "r1", "--note", "n", "--site", str(full), "--out", out, "--with-reasoning"]) == 0
+    index = (full / "index.html").read_text()
+    assert f'href="r1/reasoning/' in index and ">full<" in index
+    assert (full / "r1" / "reasoning").is_dir()
+    assert "withheld" not in index
+
